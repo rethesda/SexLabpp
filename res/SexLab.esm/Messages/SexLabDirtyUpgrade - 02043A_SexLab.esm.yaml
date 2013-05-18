@@ -3,13 +3,13 @@ EditorID: SexLabDirtyUpgrade
 FormVersion: 43
 Description:
   TargetLanguage: English
-  Value: >-
+  Value: >+
     WARNING
 
-    You are upgrading your install of SexLab from revision %.0f to revision %.0f without having first reset and cleaned your install.
+    You are upgrading your install of SexLab from version %.2f to version %.2f without having first reset and cleaned your install.
 
 
-    While it is entirely possible nothing bad will result of this, it is not guaranteed and may very likely likely result bloated saves, stuck animations, or other unforeseen bugs and as such is not recommended. Proceed at your own risk.
+    While it is entirely possible nothing bad will result of this in most cases, it is not guaranteed and may very likely likely result bloated saves, stuck animations, or other unforeseen bugs and as such is not recommended. Proceed at your own risk.
 Name:
   TargetLanguage: English
   Value: SexLab Dirty Upgrade
