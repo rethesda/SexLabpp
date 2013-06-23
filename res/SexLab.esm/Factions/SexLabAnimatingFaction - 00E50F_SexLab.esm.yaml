@@ -9,4 +9,6 @@ Flags:
 CrimeValues:
   Arrest: True
   AttackOnSight: True
+Ranks:
+- Number: 0
 VendorValues: {}

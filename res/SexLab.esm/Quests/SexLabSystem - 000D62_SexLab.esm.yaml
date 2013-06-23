@@ -193,6 +193,9 @@ VirtualMachineAdapter:
       Name: APUNKNOWN
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: ArrokAnal
+      Object: 0022EB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: ArrokBlowjob
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -227,6 +230,9 @@ VirtualMachineAdapter:
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ArrokOral
+      Object: 0022EB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ArrokRape
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ArrokReverseCowgirl
@@ -386,16 +392,6 @@ VirtualMachineAdapter:
       Alias: 0
     Scripts:
     - Name: SKI_PlayerLoadGameAlias
-  - Property:
-      Name: ''
-      Object: 000D62:SexLab.esm
-      Alias: 20
-    Scripts:
-    - Name: sslSystemAlias
-      Properties:
-      - MutagenObjectType: ScriptObjectProperty
-        Name: SexLab
-        Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
   Value: SexLab Primary System
@@ -404,16 +400,11 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 49
+QuestFormVersion: 43
 Filter: SexLab\
 NextAliasID: 72
 Aliases:
 - Name: PlayerAlias
-  Flags: []
-  ForcedReference: 000014:Skyrim.esm
-  VoiceTypes: Null
-- ID: 20
-  Name: SystemCheck
   Flags: []
   ForcedReference: 000014:Skyrim.esm
   VoiceTypes: Null

@@ -1,0 +1,11 @@
+FormKey: 02CBB6:SexLab.esm
+EditorID: SexLabMoanMild
+FormVersion: 43
+Name:
+  TargetLanguage: English
+  Value: MoanMild
+Quest: 01102B:SexLab.esm
+Category: Misc
+Subtype: Hello
+SubtypeName: HELO
+Unknown: 6860

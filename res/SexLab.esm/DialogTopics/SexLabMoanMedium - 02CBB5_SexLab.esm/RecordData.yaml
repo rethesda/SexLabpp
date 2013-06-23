@@ -1,0 +1,11 @@
+FormKey: 02CBB5:SexLab.esm
+EditorID: SexLabMoanMedium
+FormVersion: 43
+Name:
+  TargetLanguage: English
+  Value: MoanMedium
+Quest: 01102B:SexLab.esm
+Category: Misc
+Subtype: ObserveCombat
+SubtypeName: OBCO
+Unknown: 6860
