@@ -10,6 +10,8 @@ BodyTemplate:
   ArmorType: Clothing
   ActsLike44: True
 Race: 000019:Skyrim.esm
+Keywords:
+- 02F16E:SexLab.esm
 Description:
   TargetLanguage: English
   Value: ''

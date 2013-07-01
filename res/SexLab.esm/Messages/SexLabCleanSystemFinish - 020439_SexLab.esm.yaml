@@ -4,10 +4,10 @@ FormVersion: 43
 Description:
   TargetLanguage: English
   Value: >-
-    The SexLab system has been cleaned up and disabled, you should now save your game before continuing.
+    The SexLab system has been cleaned and reset to it's default state. You should now save your game and reload before continuing.
 
 
-    After saving your game in this state, it is safe to upgrade, uninstall, or reload the system in subsequent save loads.
+    After saving your game in this state, it is safe to upgrade, uninstall, or reload the system.
 Name:
   TargetLanguage: English
   Value: SexLab Cleaned/Disabled

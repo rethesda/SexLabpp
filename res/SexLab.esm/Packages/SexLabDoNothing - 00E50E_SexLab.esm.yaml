@@ -9,24 +9,23 @@ ScheduleMonth: -1
 ScheduleDayOfWeek: Any
 ScheduleHour: -1
 ScheduleMinute: -1
-Unknown3: 0x000000
+Unknown3: 0x697074
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: GetInFactionConditionData
+    Faction: 00E50F:SexLab.esm
+  ComparisonValue: 1
 OwnerQuest: 000D62:SexLab.esm
-PackageTemplate: 016FAA:Skyrim.esm
-DataInputVersion: 3
+PackageTemplate: 0654E2:Skyrim.esm
 Data:
-- Key: 0
+- Key: 3
   Value:
-    MutagenObjectType: PackageDataLocation
-    Location:
-      Target:
-        MutagenObjectType: LocationFallback
-        Type: NearEditorLocation
-- Key: 2
-  Value:
-    MutagenObjectType: PackageDataBool
+    MutagenObjectType: PackageDataFloat
 - Key: 4
   Value:
     MutagenObjectType: PackageDataBool
+    Data: True
 XnamMarker: 0x05
 OnBegin:
   Topics:

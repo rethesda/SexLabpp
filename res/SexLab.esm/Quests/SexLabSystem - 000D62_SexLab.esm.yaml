@@ -361,6 +361,9 @@ VirtualMachineAdapter:
       Name: SexLabDoggyStyle
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: SexLabForbid
+      Object: 02F6D1:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: SexLabHuggingSex
       Object: 0022EB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -403,7 +406,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 44
+QuestFormVersion: 0
 Filter: SexLab\
 NextAliasID: 72
 Aliases:

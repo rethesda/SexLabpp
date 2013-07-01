@@ -3,13 +3,17 @@ EditorID: SexLabDirtyUpgrade
 FormVersion: 43
 Description:
   TargetLanguage: English
-  Value: >+
-    WARNING
-
-    You are upgrading your install of SexLab from version %.2f to version %.2f without having first reset and cleaned your install.
+  Value: >-
+    WARNING:
 
 
-    While it is entirely possible nothing bad will result of this in most cases, it is not guaranteed and may very likely likely result bloated saves, stuck animations, or other unforeseen bugs and as such is not recommended. Proceed at your own risk.
+    You are upgrading your install of SexLab from version %.2f to version %.2f without having first reset and cleaned your SexLab install via the "Clean Systen" option available in the mod configuration menu. SexLab will attempt to compensate for this and correct itself, results however are not guranteed. 
+
+
+    While it is entirely possible and even likely nothing bad will result of this in most cases, it is not guaranteed and may very well result in corrupted saves, actors stuck in animations, or any number of potentially unforeseen bugs. Proceed at your own risk.
+
+
+    It is reccomended that you open the SexLab configuration menu, and run the "Clean System" option before continuing with  installing the upgrade on this save paticular.
 Name:
   TargetLanguage: English
   Value: SexLab Dirty Upgrade
@@ -17,3 +21,7 @@ INAM: 0x00000000
 Quest: 000D62:SexLab.esm
 Flags:
 - MessageBox
+MenuButtons:
+- Text:
+    TargetLanguage: English
+    Value: I understand the potential risk.
