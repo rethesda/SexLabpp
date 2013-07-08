@@ -454,6 +454,9 @@ VirtualMachineAdapter:
       Name: mSystemDisabled
       Object: 02043B:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: mSystemUpdated
+      Object: 0321F8:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: mUseBed
       Object: 0181B2:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
