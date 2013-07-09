@@ -1,7 +1,8 @@
-FormKey: 02CBB8:SexLab.esm
+FormKey: 032CC0:SexLab.esm
+VersionControl: 32521
 FormVersion: 43
 Flags: {}
-PreviousDialog: Null
+PreviousDialog: 02CBB8:SexLab.esm
 FavorLevel: None
 Responses:
 - Emotion: Happy
@@ -16,24 +17,14 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Unknown2: 11588
+  Unknown2: 5512
+  Data:
+    MutagenObjectType: GetIsVoiceTypeConditionData
+    VoiceTypeOrList: 068ACA:Skyrim.esm
+  ComparisonValue: 1
+- MutagenObjectType: ConditionFloat
+  Unknown2: 5512
   Data:
     MutagenObjectType: GetInFactionConditionData
     Faction: 00E50F:SexLab.esm
-  ComparisonValue: 1
-- MutagenObjectType: ConditionFloat
-  Flags:
-  - OR
-  Unknown2: 11588
-  Data:
-    MutagenObjectType: GetIsVoiceTypeConditionData
-    VoiceTypeOrList: 02CBBE:SexLab.esm
-  ComparisonValue: 1
-- MutagenObjectType: ConditionFloat
-  Flags:
-  - OR
-  Unknown2: 11588
-  Data:
-    MutagenObjectType: GetIsVoiceTypeConditionData
-    VoiceTypeOrList: 02CBBD:SexLab.esm
   ComparisonValue: 1
