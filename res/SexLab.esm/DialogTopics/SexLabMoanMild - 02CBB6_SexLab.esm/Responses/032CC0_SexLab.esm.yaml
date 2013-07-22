@@ -1,5 +1,4 @@
 FormKey: 032CC0:SexLab.esm
-VersionControl: 32521
 FormVersion: 43
 Flags: {}
 PreviousDialog: 02CBB8:SexLab.esm
@@ -17,13 +16,13 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Unknown2: 5512
+  Unknown2: 11942
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
     VoiceTypeOrList: 068ACA:Skyrim.esm
   ComparisonValue: 1
 - MutagenObjectType: ConditionFloat
-  Unknown2: 5512
+  Unknown2: 11942
   Data:
     MutagenObjectType: GetInFactionConditionData
     Faction: 00E50F:SexLab.esm

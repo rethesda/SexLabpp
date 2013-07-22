@@ -1,0 +1,13 @@
+FormKey: 033785:SexLab.esm
+EditorID: SexLabKey
+FormVersion: 43
+VirtualMachineAdapter:
+  Scripts:
+  - Name: sslThreadKey
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: SexLab
+      Object: 000D62:SexLab.esm
+Name:
+  TargetLanguage: English
+  Value: SSL Key

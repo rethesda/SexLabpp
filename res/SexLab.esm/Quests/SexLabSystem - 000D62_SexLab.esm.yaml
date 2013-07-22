@@ -183,6 +183,9 @@ VirtualMachineAdapter:
       Name: Thread14
       Object: 00792F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadKey
+      Object: 033CE8:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: ThreadView00
       Object: 030196:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -529,7 +532,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 44
+QuestFormVersion: 45
 Filter: SexLab\
 NextAliasID: 97
 Aliases:
