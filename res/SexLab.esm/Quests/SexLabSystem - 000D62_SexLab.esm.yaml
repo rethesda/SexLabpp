@@ -373,6 +373,9 @@ VirtualMachineAdapter:
       Name: CumOralAnal
       Object: 01464F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: CumOralSpell
+      Object: 03629A:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: CumVaginal
       Object: 01464C:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -527,6 +530,18 @@ VirtualMachineAdapter:
       Alias: 0
     Scripts:
     - Name: SKI_PlayerLoadGameAlias
+  - Property:
+      Name: ''
+      Object: 000D62:SexLab.esm
+      Alias: 54
+    Scripts:
+    - Name: sslActorAlias
+  - Property:
+      Name: ''
+      Object: 000D62:SexLab.esm
+      Alias: 53
+    Scripts:
+    - Name: sslActorAlias
 Name:
   TargetLanguage: English
   Value: SexLab Primary System
@@ -535,7 +550,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 23
+QuestFormVersion: 46
 Filter: SexLab\
 NextAliasID: 97
 Aliases:
