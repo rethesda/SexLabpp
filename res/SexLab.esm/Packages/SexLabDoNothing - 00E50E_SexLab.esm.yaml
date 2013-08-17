@@ -16,7 +16,7 @@ Conditions:
     MutagenObjectType: GetInFactionConditionData
     Faction: 00E50F:SexLab.esm
   ComparisonValue: 1
-OwnerQuest: 000D62:SexLab.esm
+OwnerQuest: 0372C4:SexLab.esm
 PackageTemplate: 0654E2:Skyrim.esm
 Data:
 - Key: 3
