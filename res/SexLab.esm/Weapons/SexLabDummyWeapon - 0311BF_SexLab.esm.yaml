@@ -18,7 +18,7 @@ UnequipSound: 03CEDB:Skyrim.esm
 BasicStats: {}
 Data:
   AnimationType: OneHandDagger
-  Unused: 0x3B9152
+  Unused: 0x2C2FEE
   Speed: 1.3
   Reach: 0.7
   Unused2: 147

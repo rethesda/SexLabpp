@@ -1,5 +1,4 @@
 FormKey: 0372C4:SexLab.esm
-VersionControl: 32784
 EditorID: SexLabView
 FormVersion: 43
 VirtualMachineAdapter:
@@ -1696,9 +1695,10 @@ Name:
   Value: SexLab Controller Views
 Flags:
 - StartGameEnabled
+- 0x10
 - RunOnce
 Priority: 99
-QuestFormVersion: 45
+QuestFormVersion: 0
 Filter: SexLab\
 NextAliasID: 76
 Aliases:
