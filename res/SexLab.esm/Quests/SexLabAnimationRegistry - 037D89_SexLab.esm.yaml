@@ -1,209 +1,29 @@
 FormKey: 037D89:SexLab.esm
-VersionControl: 32791
 EditorID: SexLabAnimationRegistry
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
-  - Name: sslAnimAggrBehind
-  - Name: sslAnimAggrDoggyStyle
-  - Name: sslAnimAggrMissionary
-  - Name: sslAnimAPAnal
-  - Name: sslAnimAPBedMissionary
-  - Name: sslAnimAPBlowjob
-  - Name: sslAnimAPBoobjob
-  - Name: sslAnimAPCowgirl
-  - Name: sslAnimAPDoggyStyle
-  - Name: sslAnimAPFaceDown
-  - Name: sslAnimAPFemaleSolo
-  - Name: sslAnimAPFisting
-  - Name: sslAnimAPHandjob
-  - Name: sslAnimAPHoldLegUp
-  - Name: sslAnimAPKneelBlowjob
-  - Name: sslAnimAPLegUp
-  - Name: sslAnimAPReverseCowgirl
-  - Name: sslAnimAPShoulder
-  - Name: sslAnimAPSkullFuck
-  - Name: sslAnimAPStandBlowjob
-  - Name: sslAnimAPStanding
-  - Name: sslAnimAPUnknown
-  - Name: sslanimarrokanal
-  - Name: sslAnimArrokBlowjob
-  - Name: sslAnimArrokBoobjob
-  - Name: sslAnimArrokCowgirl
-  - Name: sslAnimArrokDevilsThreeway
-  - Name: sslAnimArrokDoggyStyle
-  - Name: sslAnimArrokForeplay
-  - Name: sslAnimArrokHugfuck
-  - Name: sslAnimArrokLegUp
-  - Name: sslAnimArrokLesbian
-  - Name: sslAnimArrokMaleMasturbation
-  - Name: sslAnimArrokMissionary
-  - Name: sslAnimArrokOral
-  - Name: sslAnimArrokRape
-  - Name: sslAnimArrokReverseCowgirl
-  - Name: sslAnimArrokSideways
-  - Name: sslAnimArrokSittingForeplay
-  - Name: sslAnimArrokStanding
-  - Name: sslAnimArrokStandingForeplay
-  - Name: sslAnimArrokTricycle
+  - Name: sslAnimationDefaults
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Registry
+      Object: 037D89:SexLab.esm
+  - Name: sslAnimationFactory
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Registry
+      Object: 037D89:SexLab.esm
   - Name: sslAnimationRegistry
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: APAnal
+      Name: defaults
       Object: 037D89:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
-      Name: APBedMissionary
-      Object: 037D89:SexLab.esm
+      Name: SexLabAnimationSlot000
+      Object: 038859:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
-      Name: APBlowjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APBoobjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APCowgirl
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APDoggyStyle
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APFaceDown
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APFemaleSolo
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APFisting
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APHandjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APHoldLegUp
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APKneelBlowjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APLegUp
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APShoulder
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APSkullFuck
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APStandBlowjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APStanding
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: APUNKNOWN
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokAnal
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokBlowjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokBoobJob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokCowgirl
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokDevilsThreeway
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokDoggyStyle
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokForeplay
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokHugFuck
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokLegUp
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokLesbian
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokMaleMasturbation
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokMissionary
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokOral
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokRape
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokReverseCowgirl
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokSideways
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokSittingForeplay
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokStanding
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokStandingForeplay
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ArrokTricycle
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabAggrBehind
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabAggrDoggyStyle
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabAggrMissonary
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabBoobjob
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabDoggyStyle
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabHuggingSex
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabMissonary
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabReverseCowgirl
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabSideways
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabStanding
-      Object: 037D89:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: SexLabTribadism
-      Object: 037D89:SexLab.esm
-  - Name: sslAnimBoobjob
-  - Name: sslAnimDoggyStyle
-  - Name: sslAnimHuggingSex
-  - Name: sslAnimMissionary
-  - Name: sslAnimReverseCowgirl
-  - Name: sslAnimSideways
-  - Name: sslAnimStanding
-  - Name: sslAnimTribadism
-  - Name: sslBaseAnimation
+      Name: SexLabAnimationSlot001
+      Object: 03885A:SexLab.esm
   Versioning:
   - Break0
   ExtraBindDataVersion: 0
@@ -213,7 +33,8 @@ Name:
   Value: Animation Registry
 Flags:
 - StartGameEnabled
+- 0x10
 Priority: 90
 QuestFormVersion: 44
 Filter: SexLab\
-NextAliasID: 0
+NextAliasID: 12
