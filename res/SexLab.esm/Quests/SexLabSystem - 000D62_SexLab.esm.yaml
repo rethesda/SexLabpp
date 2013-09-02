@@ -12,7 +12,7 @@ VirtualMachineAdapter:
       Name: AnimatingFaction
       Object: 00E50F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
-      Name: AnimationRegistry
+      Name: AnimationSlots
       Object: 03931F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: config
@@ -27,7 +27,7 @@ VirtualMachineAdapter:
       Name: ThreadSlots
       Object: 0372C4:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
-      Name: VoiceRegistry
+      Name: VoiceSlots
       Object: 039DE5:SexLab.esm
   - Name: sslSystemConfig
     Properties:
@@ -151,7 +151,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 44
+QuestFormVersion: 35
 Filter: SexLab\
 NextAliasID: 97
 Aliases:

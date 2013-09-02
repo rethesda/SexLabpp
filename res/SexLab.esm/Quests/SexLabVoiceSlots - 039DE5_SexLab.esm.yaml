@@ -1,5 +1,5 @@
 FormKey: 039DE5:SexLab.esm
-EditorID: SexLabVoiceRegistry
+EditorID: SexLabVoiceSlots
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
@@ -116,7 +116,7 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLabvMale04MildM
       Object: 031C91:SexLab.esm
-  - Name: sslVoiceRegistry
+  - Name: sslVoiceSlots
     Properties:
     - MutagenObjectType: ScriptObjectProperty
       Name: config
@@ -849,12 +849,12 @@ VirtualMachineAdapter:
         Object: 039DE5:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab Voice Regisry
+  Value: SexLab Voice Slots
 Flags:
 - StartGameEnabled
 - 0x10
 Priority: 90
-QuestFormVersion: 0
+QuestFormVersion: 35
 Filter: SexLab\
 NextAliasID: 51
 Aliases:

@@ -1,5 +1,5 @@
 FormKey: 03931F:SexLab.esm
-EditorID: SexLabAnimationRegistry
+EditorID: SexLabAnimationSlots
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
@@ -8,7 +8,7 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: Registry
       Object: 03931F:SexLab.esm
-  - Name: sslAnimationRegistry
+  - Name: sslAnimationSlots
     Properties:
     - MutagenObjectType: ScriptObjectProperty
       Name: defaults
@@ -1017,12 +1017,12 @@ VirtualMachineAdapter:
     - Name: sslBaseAnimation
 Name:
   TargetLanguage: English
-  Value: SexLab Animation Registry
+  Value: SexLab Animation Slots
 Flags:
 - StartGameEnabled
 - 0x10
 Priority: 90
-QuestFormVersion: 44
+QuestFormVersion: 35
 Filter: SexLab\
 NextAliasID: 101
 Aliases:

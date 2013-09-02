@@ -1,0 +1,48 @@
+FormKey: 03AE18:SexLab.esm
+VersionControl: 33026
+EditorID: SexLabConfiguration
+FormVersion: 43
+VirtualMachineAdapter:
+  Scripts:
+  - Name: sslConfigMenu
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorSlots
+      Object: 0372C4:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimationSlots
+      Object: 03931F:SexLab.esm
+    - MutagenObjectType: ScriptStringProperty
+      Name: ModName
+      Data: SexLab Framework
+    - MutagenObjectType: ScriptObjectProperty
+      Name: SexLab
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 0372C4:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 039DE5:SexLab.esm
+  FileName: ''
+  Aliases:
+  - Property:
+      Name: ''
+      Object: 03AE18:SexLab.esm
+      Alias: 0
+    Scripts:
+    - Name: SKI_PlayerLoadGameAlias
+Name:
+  TargetLanguage: English
+  Value: SexLab Configuration
+Flags:
+- StartGameEnabled
+Priority: 95
+QuestFormVersion: 35
+Filter: SexLab\
+NextAliasID: 1
+Aliases:
+- Name: PlayerAlias
+  Flags: []
+  ForcedReference: 000014:Skyrim.esm
+  VoiceTypes: Null
