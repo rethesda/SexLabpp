@@ -43,7 +43,7 @@ VirtualMachineAdapter:
       Object: 03CE6B:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: Stats
-      Object: 03CE6F:SexLab.esm
+      Object: 03CE6B:SexLab.esm
   - Name: sslActorSlots
     Properties:
     - MutagenObjectType: ScriptObjectProperty
@@ -1114,7 +1114,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 99
-QuestFormVersion: 0
+QuestFormVersion: 45
 Filter: SexLab\
 NextAliasID: 76
 Aliases:
