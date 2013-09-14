@@ -49,66 +49,6 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: Lib
       Object: 03CE6E:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView000
-      Object: 03CE6E:SexLab.esm
-      Alias: 1
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView001
-      Object: 03CE6E:SexLab.esm
-      Alias: 2
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView002
-      Object: 03CE6E:SexLab.esm
-      Alias: 3
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView003
-      Object: 03CE6E:SexLab.esm
-      Alias: 4
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView004
-      Object: 03CE6E:SexLab.esm
-      Alias: 5
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView005
-      Object: 03CE6E:SexLab.esm
-      Alias: 6
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView006
-      Object: 03CE6E:SexLab.esm
-      Alias: 7
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView007
-      Object: 03CE6E:SexLab.esm
-      Alias: 8
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView008
-      Object: 03CE6E:SexLab.esm
-      Alias: 9
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView009
-      Object: 03CE6E:SexLab.esm
-      Alias: 10
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView010
-      Object: 03CE6E:SexLab.esm
-      Alias: 11
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView011
-      Object: 03CE6E:SexLab.esm
-      Alias: 12
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView012
-      Object: 03CE6E:SexLab.esm
-      Alias: 13
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView013
-      Object: 03CE6E:SexLab.esm
-      Alias: 14
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadView014
-      Object: 03CE6E:SexLab.esm
-      Alias: 15
   FileName: ''
   Aliases:
   - Property:
@@ -269,7 +209,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 0
+QuestFormVersion: 45
 Filter: SexLab\
 NextAliasID: 16
 Aliases:
