@@ -57,6 +57,9 @@ VirtualMachineAdapter:
       Name: Slots
       Object: 044A6C:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: TrollRace
+      Object: 013205:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: UndeadDragonRace
       Object: 1052A3:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -388,8 +391,8 @@ Flags:
 - StartGameEnabled
 - 0x10
 - RunOnce
-Priority: 99
-QuestFormVersion: 49
+Priority: 55
+QuestFormVersion: 48
 Filter: SexLab\
 NextAliasID: 52
 Aliases:
