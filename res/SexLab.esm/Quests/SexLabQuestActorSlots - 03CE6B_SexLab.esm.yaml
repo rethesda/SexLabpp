@@ -39,6 +39,9 @@ VirtualMachineAdapter:
       Name: DummyWeapon
       Object: 0311BF:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: ForbiddenFaction
+      Object: 049068:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: GenderFaction
       Object: 043A43:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -832,7 +835,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 60
-QuestFormVersion: 33
+QuestFormVersion: 48
 Filter: SexLab\
 NextAliasID: 76
 Aliases:

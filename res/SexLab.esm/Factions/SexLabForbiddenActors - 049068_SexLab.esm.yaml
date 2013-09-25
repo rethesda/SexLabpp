@@ -1,0 +1,13 @@
+FormKey: 049068:SexLab.esm
+VersionControl: 33049
+EditorID: SexLabForbiddenActors
+FormVersion: 43
+Name:
+  TargetLanguage: English
+  Value: SexLab Forbidden Actors
+Flags:
+- HiddenFromPC
+CrimeValues:
+  Arrest: True
+  AttackOnSight: True
+VendorValues: {}
