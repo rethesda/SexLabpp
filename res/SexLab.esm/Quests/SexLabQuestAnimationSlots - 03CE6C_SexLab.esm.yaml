@@ -11,6 +11,9 @@ VirtualMachineAdapter:
   - Name: sslAnimationLibrary
     Properties:
     - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 03CE6B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: CreatureSlots
       Object: 044A6C:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -640,7 +643,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 55
-QuestFormVersion: 49
+QuestFormVersion: 48
 Filter: SexLab\
 NextAliasID: 101
 Aliases:
