@@ -13,11 +13,10 @@ ModHeader:
   Description: >-
     Version 1.23
 
-    Released 2013/10/13
+    Released 2013/10/16
 
     LoversLab.com
   MasterReferences:
   - Master: Skyrim.esm
     FileSize: 0
   INTV: 1
-  INCC: 1
