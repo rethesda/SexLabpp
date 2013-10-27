@@ -3,6 +3,7 @@ EditorID: SexLabQuestActorSlots
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
+  - Name: sslactorexpression
   - Name: sslActorLibrary
     Properties:
     - MutagenObjectType: ScriptObjectProperty
@@ -38,6 +39,9 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: DummyWeapon
       Object: 0311BF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Expression
+      Object: 03CE6B:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ForbiddenFaction
       Object: 049068:SexLab.esm
@@ -835,7 +839,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 100
-QuestFormVersion: 49
+QuestFormVersion: 52
 Filter: SexLab\
 NextAliasID: 76
 Aliases:
