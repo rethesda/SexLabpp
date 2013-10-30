@@ -69,6 +69,9 @@ VirtualMachineAdapter:
       Name: Slots
       Object: 044A6C:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: TrollFrostRace
+      Object: 013206:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: TrollRace
       Object: 013205:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty

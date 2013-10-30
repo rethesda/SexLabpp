@@ -1,5 +1,4 @@
 FormKey: 04D664:SexLab.esm
-VersionControl: 33308
 FormVersion: 43
 Flags: {}
 PreviousDialog: 03F426:SexLab.esm
@@ -19,13 +18,13 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Unknown2: 5903
+  Unknown2: 13029
   Data:
     MutagenObjectType: GetInFactionConditionData
     Faction: 00E50F:SexLab.esm
   ComparisonValue: 1
 - MutagenObjectType: ConditionFloat
-  Unknown2: 5903
+  Unknown2: 13029
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
     VoiceTypeOrList: 02CBBC:SexLab.esm
