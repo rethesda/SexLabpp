@@ -54,6 +54,9 @@ VirtualMachineAdapter:
       Name: kwCumVaginal
       Object: 0419DB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: NoStripList
+      Object: 04E12B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: NudeSuit
       Object: 018715:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -65,6 +68,12 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: Stats
       Object: 03CE6B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: StripList
+      Object: 04E12C:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ValidActorList
+      Object: 04E12D:SexLab.esm
   - Name: sslActorSlots
     Properties:
     - MutagenObjectType: ScriptObjectProperty
@@ -75,6 +84,9 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: Lib
       Object: 03CE6B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: PlayerSexPartners
+      Object: 04E12F:SexLab.esm
   FileName: ''
   Aliases:
   - Property:
@@ -835,7 +847,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 100
-QuestFormVersion: 50
+QuestFormVersion: 34
 Filter: SexLab\
 NextAliasID: 76
 Aliases:
