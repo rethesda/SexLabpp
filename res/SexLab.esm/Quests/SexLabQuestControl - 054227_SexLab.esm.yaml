@@ -37,18 +37,12 @@ VirtualMachineAdapter:
         Name: CameraHead
         Object: 05524E:SexLab.esm
       - MutagenObjectType: ScriptObjectProperty
-        Name: CameraRace
-        Object: 053762:SexLab.esm
+        Name: CameraMarker
+        Object: 057D63:SexLab.esm
       - MutagenObjectType: ScriptObjectProperty
         Name: CloneAlias
         Object: 054227:SexLab.esm
         Alias: 1
-      - MutagenObjectType: ScriptObjectProperty
-        Name: FadeToBlack
-        Object: 0F756D:Skyrim.esm
-      - MutagenObjectType: ScriptObjectProperty
-        Name: FadeToBlackBack
-        Object: 0F756F:Skyrim.esm
       - MutagenObjectType: ScriptObjectProperty
         Name: FadeToBlackHold
         Object: 0F756E:Skyrim.esm
@@ -58,12 +52,6 @@ VirtualMachineAdapter:
       - MutagenObjectType: ScriptObjectProperty
         Name: PlayerRef
         Object: 000014:Skyrim.esm
-      - MutagenObjectType: ScriptObjectProperty
-        Name: SexLabVoiceF
-        Object: 02CBBE:SexLab.esm
-      - MutagenObjectType: ScriptObjectProperty
-        Name: SexLabVoiceM
-        Object: 02CBBD:SexLab.esm
 Name:
   TargetLanguage: English
   Value: SexLab Controls
@@ -72,7 +60,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 95
-QuestFormVersion: 33
+QuestFormVersion: 34
 Filter: SexLab\
 NextAliasID: 2
 Aliases:
