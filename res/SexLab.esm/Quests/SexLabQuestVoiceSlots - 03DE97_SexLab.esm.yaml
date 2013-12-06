@@ -122,7 +122,7 @@ VirtualMachineAdapter:
       Name: PlayerRef
       Object: 000014:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
-      Name: RememberVoice
+      Name: SavedVoices
       Object: 0592EC:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLabMoanHot
