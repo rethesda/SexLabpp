@@ -1,9 +1,9 @@
-FormKey: 0073CC:SexLab.esm
-EditorID: SexLabDebugSpell
+FormKey: 05FE9B:SexLab.esm
+EditorID: SexLabDebugSelfSpell
 FormVersion: 43
 Name:
   TargetLanguage: English
-  Value: SexLab Debug (Target)
+  Value: SexLab Debug (Self)
 MenuDisplayObject: 10AB43:Skyrim.esm
 EquipmentType: 013F44:Skyrim.esm
 Description:
@@ -15,9 +15,7 @@ Flags:
 - NoAbsorbOrReflect
 - NoDualCastModification
 CastType: FireAndForget
-TargetType: TargetActor
-Range: 100
 Effects:
-- BaseEffect: 0073CB:SexLab.esm
+- BaseEffect: 05FE9E:SexLab.esm
   Data:
     Duration: 120

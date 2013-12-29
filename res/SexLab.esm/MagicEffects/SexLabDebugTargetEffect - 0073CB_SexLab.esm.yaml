@@ -1,5 +1,5 @@
 FormKey: 0073CB:SexLab.esm
-EditorID: SexLabDebug
+EditorID: SexLabDebugTargetEffect
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
@@ -10,9 +10,12 @@ VirtualMachineAdapter:
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: Sex Lab Debug
+  Value: SexLab Debug
+Keywords:
+- 05FE9D:SexLab.esm
+Flags:
+- DispelWithKeywords
 MagicSkill: Illusion
-ResistValue: ResistShock
 Unknown1: 11593
 Archetype:
   MutagenObjectType: MagicEffectArchetype
@@ -22,7 +25,7 @@ CastType: FireAndForget
 TargetType: Aimed
 CastingArt: 03CDFC:Skyrim.esm
 DualCastScale: 1
-CastingSoundLevel: Normal
+CastingSoundLevel: Silent
 Description:
   TargetLanguage: English
   Value: Blah.
