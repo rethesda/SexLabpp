@@ -4,12 +4,9 @@ Flags: {}
 PreviousDialog: 03F425:SexLab.esm
 FavorLevel: None
 Responses:
-- Emotion: Fear
-  EmotionValue: 65
+- EmotionValue: 50
   ResponseNumber: 1
   Unknown2: 0x2C2054
-  Flags:
-  - UseEmotionAnimation
   Unknown3: 0x566965
   Text:
     TargetLanguage: English
@@ -18,13 +15,13 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Unknown2: 9171
+  Unknown2: 9004
   Data:
     MutagenObjectType: GetInFactionConditionData
     Faction: 00E50F:SexLab.esm
   ComparisonValue: 1
 - MutagenObjectType: ConditionFloat
-  Unknown2: 9171
+  Unknown2: 9004
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
     VoiceTypeOrList: 02CBBC:SexLab.esm
