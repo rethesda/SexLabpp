@@ -54,6 +54,9 @@ VirtualMachineAdapter:
       Name: CumVaginalSpell
       Object: 041478:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: DoNothing
+      Object: 00E50E:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: DummyWeapon
       Object: 0311BF:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
