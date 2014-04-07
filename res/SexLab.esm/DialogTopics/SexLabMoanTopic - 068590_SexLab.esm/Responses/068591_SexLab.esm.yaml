@@ -15,17 +15,7 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Flags:
-  - OR
-  Unknown2: 8262
-  Data:
-    MutagenObjectType: GetIsVoiceTypeConditionData
-    VoiceTypeOrList: 068ACA:Skyrim.esm
-  ComparisonValue: 1
-- MutagenObjectType: ConditionFloat
-  Flags:
-  - OR
-  Unknown2: 8262
+  Unknown2: 8206
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
     VoiceTypeOrList: 02CBBC:SexLab.esm

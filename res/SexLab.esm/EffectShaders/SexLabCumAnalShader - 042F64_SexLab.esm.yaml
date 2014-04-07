@@ -11,7 +11,7 @@ MembraneSourceBlendMode: SourceAlpha
 MembraneZTest: EqualTo
 FillColorKey1: '#00000000'
 FillFadeOutTime: 5
-FillTextureAnimationSpeedV: -0.001
+FillTextureAnimationSpeedV: 0.0005
 EdgeEffectFallOff: 1
 EdgeEffectColor: '#00000000'
 EdgeEffectAlphaPulseFrequency: 1

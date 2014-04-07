@@ -1,5 +1,4 @@
 FormKey: 072727:SexLab.esm
-VersionControl: 3869
 EditorID: SexLabDev
 FormVersion: 43
 VirtualMachineAdapter:
@@ -14,6 +13,7 @@ Name:
   Value: SexLab Development Utility
 Flags:
 - StartGameEnabled
+- 0x10
 Priority: 99
 QuestFormVersion: 31
 Filter: SexLab\

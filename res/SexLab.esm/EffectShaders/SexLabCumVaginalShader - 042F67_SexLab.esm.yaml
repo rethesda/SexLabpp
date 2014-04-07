@@ -12,7 +12,7 @@ MembraneZTest: EqualTo
 FillColorKey1: '#00000000'
 FillFadeOutTime: 5
 FillPersistentAlphaRatio: 1
-FillTextureAnimationSpeedV: -0.001
+FillTextureAnimationSpeedV: -0.0005
 EdgeEffectFallOff: 1
 EdgeEffectColor: '#00000000'
 EdgeEffectAlphaPulseFrequency: 1
@@ -55,7 +55,6 @@ ColorScale: 1
 Flags:
 - NoParticleShader
 - AffectSkinOnly
-- UseBloodGeometry
 FillTextureScaleU: 1
 FillTextureScaleV: 1
 SceneGraphEmitDepthLimit: 660799488
