@@ -1,13 +1,14 @@
-FormKey: 068591:SexLab.esm
+FormKey: 074CD6:SexLab.esm
+VersionControl: 4108
 FormVersion: 43
 Flags: {}
-PreviousDialog: Null
+PreviousDialog: 068591:SexLab.esm
 FavorLevel: None
 Responses:
 - EmotionValue: 50
   ResponseNumber: 1
-  Unknown2: 0x750601
-  Unknown3: 0x000000
+  Unknown2: 0x2C2041
+  Unknown3: 0x6C6961
   Text:
     TargetLanguage: English
     Value: ' '
@@ -18,5 +19,5 @@ Conditions:
   Unknown2: 8206
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
-    VoiceTypeOrList: 02CBBC:SexLab.esm
+    VoiceTypeOrList: 068ACA:Skyrim.esm
   ComparisonValue: 1
