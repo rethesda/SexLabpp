@@ -1,5 +1,6 @@
-FormKey: 03E3FA:SexLab.esm
-EditorID: SexLabQuestConfiguration
+FormKey: 079840:SexLab.esm
+VersionControl: 4360
+EditorID: SexLabConfigurationMenu
 FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
@@ -21,7 +22,7 @@ VirtualMachineAdapter:
   Aliases:
   - Property:
       Name: ''
-      Object: 03E3FA:SexLab.esm
+      Object: 079840:SexLab.esm
       Alias: 0
     Scripts:
     - Name: SKI_PlayerLoadGameAlias
@@ -30,10 +31,9 @@ Name:
   Value: SexLab MCM
 Flags:
 - StartGameEnabled
-- 0x10
 - RunOnce
 Priority: 90
-QuestFormVersion: 23
+QuestFormVersion: 30
 Filter: SexLab\
 NextAliasID: 1
 Aliases:

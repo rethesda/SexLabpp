@@ -5,5 +5,5 @@ Name:
   TargetLanguage: English
   Value: $SSL_SFXVolume
 Flags: []
-Parent: 0EB803:Skyrim.esm
+Parent: 0876BB:Skyrim.esm
 StaticVolumeMultiplier: 1

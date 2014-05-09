@@ -12,6 +12,6 @@ Name:
   TargetLanguage: English
   Value: Finished Cleaning
 INAM: 0x00000000
-Quest: 03E3FA:SexLab.esm
+Quest: 000D62:SexLab.esm
 Flags:
 - MessageBox

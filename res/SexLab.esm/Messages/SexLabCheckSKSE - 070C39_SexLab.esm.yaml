@@ -6,7 +6,7 @@ Description:
   Value: >-
     Outdated or missing "Skryim Script Extender" (SKSE) install detected.
 
-    This version of SexLab requires SKSE version %f or newer to be properly installed and running. Ensure that you have installed the proper version and are starting the game from the skse_loader.exe file.
+    This version of SexLab requires SKSE version %.2f or newer to be properly installed and running. Ensure that you have installed the proper version and are starting the game from the skse_loader.exe file.
 Name:
   TargetLanguage: English
   Value: 'SexLab Dependency: SKSE'

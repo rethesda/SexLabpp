@@ -6,7 +6,7 @@ Description:
   Value: >-
     Outdated or missing "Fores New Idles in Skyrim" (FNIS) install detected.
 
-    SexLab currently requires FNIS v%f or newer in order to function. To continue using the mod; you must update and enable your FNIS install, followed by running the GenerateFNISforUsers.exe tool.
+    SexLab currently requires FNIS v%.2f or newer in order to function. To continue using the mod; you must update and enable your FNIS install, followed by running the GenerateFNISforUsers.exe tool.
 Name:
   TargetLanguage: English
   Value: 'SexLab Dependency: FNIS'
