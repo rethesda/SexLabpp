@@ -136,6 +136,9 @@ VirtualMachineAdapter:
       Name: SuckingFX
       Object: 065A32:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: TakeThreadControl
+      Object: 07CE1D:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: UseBed
       Object: 065F97:SexLab.esm
   - Name: sslThreadLibrary
