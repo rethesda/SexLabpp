@@ -6,21 +6,119 @@ VirtualMachineAdapter:
   - Name: SexLabFramework
     Properties:
     - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: AnimatingFaction
       Object: 00E50F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Factory
+      Object: 078818:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: PlayerRef
       Object: 000014:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   - Name: sslActorLibrary
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: PlayerRef
+      Object: 000014:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   - Name: sslActorStats
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: PlayerRef
+      Object: 000014:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   - Name: sslSystemConfig
     Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ActorTypeNPC
       Object: 013794:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: AnimatingFaction
       Object: 00E50F:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: AudioSFX
       Object: 061428:SexLab.esm
@@ -60,6 +158,12 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: CleanSystemFinish
       Object: 06CB9E:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: CumAnalKeyword
       Object: 0434D3:SexLab.esm
@@ -112,6 +216,9 @@ VirtualMachineAdapter:
       Name: DummyWeapon
       Object: 0311BF:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: ForbiddenFaction
       Object: 049068:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -151,20 +258,77 @@ VirtualMachineAdapter:
       Name: SquishingFX
       Object: 065A31:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: SuckingFX
       Object: 065A32:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: TakeThreadControl
       Object: 07CE1D:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: UseBed
       Object: 065F97:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   - Name: sslThreadLibrary
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: PlayerRef
+      Object: 000014:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   - Name: sslThreadSlots
-  Versioning:
-  - Break0
-  ExtraBindDataVersion: 0
   FileName: ''
+  Aliases:
+  - Property:
+      Name: ''
+      Object: 000D62:SexLab.esm
+      Alias: 2
+    Scripts:
+    - Name: sslSystemLoad
+      Properties:
+      - MutagenObjectType: ScriptObjectProperty
+        Name: Config
+        Object: 000D62:SexLab.esm
+      - MutagenObjectType: ScriptObjectProperty
+        Name: PlayerRef
+        Object: 000014:Skyrim.esm
+      - MutagenObjectType: ScriptObjectProperty
+        Name: SexLab
+        Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
   Value: SexLab Framework
@@ -172,6 +336,13 @@ Flags:
 - StartGameEnabled
 - 0x10
 Priority: 90
-QuestFormVersion: 36
+QuestFormVersion: 35
 Filter: SexLab\
-NextAliasID: 2
+NextAliasID: 3
+Aliases:
+- ID: 2
+  Name: PlayerAlias
+  Flags:
+  - AllowReuseInQuest
+  ForcedReference: 000014:Skyrim.esm
+  VoiceTypes: Null

@@ -53,7 +53,6 @@ FillColorKey3Scale: 1
 ColorScale: 1
 Flags:
 - NoParticleShader
-- AffectSkinOnly
 FillTextureScaleU: 1
 FillTextureScaleV: 1
 SceneGraphEmitDepthLimit: 660799488

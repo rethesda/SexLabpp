@@ -4,6 +4,22 @@ FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
   - Name: sslThreadController
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
   FileName: ''
   Aliases:
   - Property:
@@ -43,7 +59,7 @@ Flags:
 - StartGameEnabled
 - 0x10
 Priority: 99
-QuestFormVersion: 36
+QuestFormVersion: 35
 Filter: SexLab\
 NextAliasID: 6
 Aliases:

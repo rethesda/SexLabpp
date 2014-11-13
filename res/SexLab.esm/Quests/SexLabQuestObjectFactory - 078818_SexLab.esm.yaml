@@ -4,6 +4,40 @@ FormVersion: 43
 VirtualMachineAdapter:
   Scripts:
   - Name: sslObjectFactory
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ActorLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: AnimSlots
+      Object: 0639DF:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CreatureSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ExpressionSlots
+      Object: 0664FB:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Factory
+      Object: 078818:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: PlayerRef
+      Object: 000014:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Stats
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadLib
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: ThreadSlots
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: VoiceSlots
+      Object: 0664FB:SexLab.esm
   FileName: ''
   Aliases:
   - Property:
@@ -814,7 +848,7 @@ Flags:
 - 0x10
 - RunOnce
 Priority: 80
-QuestFormVersion: 36
+QuestFormVersion: 35
 Filter: SexLab\
 NextAliasID: 191
 Aliases:
