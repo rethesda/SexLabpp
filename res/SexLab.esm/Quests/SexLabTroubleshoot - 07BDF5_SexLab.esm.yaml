@@ -49,12 +49,9 @@ Name:
   TargetLanguage: English
   Value: SexLab Troubleshoot
 Flags:
-- StartGameEnabled
 - AllowRepeatedStages
-- 0x10
-- RunOnce
-Priority: 99
-QuestFormVersion: 35
+Priority: 90
+QuestFormVersion: 33
 Filter: SexLab\
 NextAliasID: 2
 Aliases:

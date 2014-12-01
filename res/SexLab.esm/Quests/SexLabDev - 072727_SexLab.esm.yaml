@@ -42,7 +42,10 @@ VirtualMachineAdapter:
 Name:
   TargetLanguage: English
   Value: SexLab Development Utility
-Priority: 99
-QuestFormVersion: 35
+Flags:
+- StartGameEnabled
+- 0x10
+Priority: 90
+QuestFormVersion: 33
 Filter: SexLab\
 NextAliasID: 0

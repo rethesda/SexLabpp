@@ -776,8 +776,8 @@ Name:
 Flags:
 - StartGameEnabled
 - 0x10
-Priority: 90
-QuestFormVersion: 35
+Priority: 99
+QuestFormVersion: 33
 Filter: SexLab\
 NextAliasID: 126
 Aliases:
@@ -820,7 +820,6 @@ Aliases:
   Name: BaseAnimation119
   Flags:
   - Optional
-  - QuestObject
   - AllowReuseInQuest
   - StoresText
   VoiceTypes: Null
