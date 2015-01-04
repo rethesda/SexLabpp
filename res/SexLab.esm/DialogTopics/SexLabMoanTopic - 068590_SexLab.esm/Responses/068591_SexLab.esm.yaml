@@ -15,7 +15,7 @@ Responses:
   Edits: ''
 Conditions:
 - MutagenObjectType: ConditionFloat
-  Unknown2: 8797
+  Unknown2: 9048
   Data:
     MutagenObjectType: GetIsVoiceTypeConditionData
     VoiceTypeOrList: 02CBBC:SexLab.esm
