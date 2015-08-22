@@ -20,9 +20,6 @@ Data:
   Unused: 0x709400
   Speed: 1.3
   Reach: 0.7
-  Flags:
-  - DontUseFirstPersonIsAnim
-  - DontUseThirdPersonISAnim
   Unused2: 537
   NumProjectiles: 1
   AnimationAttackMult: 1
