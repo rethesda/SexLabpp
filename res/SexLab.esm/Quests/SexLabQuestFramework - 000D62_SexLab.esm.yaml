@@ -259,6 +259,24 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: GenderFaction
       Object: 043A43:SexLab.esm
+    - MutagenObjectType: ScriptObjectListProperty
+      Name: HotkeyDown
+      Objects:
+      - Name: ''
+        Object: 08AAF3:SexLab.esm
+      - Name: ''
+        Object: 08AAF4:SexLab.esm
+      - Name: ''
+        Object: 08AAF5:SexLab.esm
+    - MutagenObjectType: ScriptObjectListProperty
+      Name: HotkeyUp
+      Objects:
+      - Name: ''
+        Object: 08AAF0:SexLab.esm
+      - Name: ''
+        Object: 08AAF1:SexLab.esm
+      - Name: ''
+        Object: 08AAF2:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: IdleReset
       Object: 087FCA:SexLab.esm
@@ -405,7 +423,7 @@ Flags:
 - StartGameEnabled
 - 0x10
 Priority: 99
-QuestFormVersion: 48
+QuestFormVersion: 44
 Filter: SexLab\
 NextAliasID: 4
 Aliases:

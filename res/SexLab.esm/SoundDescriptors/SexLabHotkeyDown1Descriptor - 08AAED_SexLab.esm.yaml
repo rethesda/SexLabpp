@@ -1,0 +1,12 @@
+FormKey: 08AAED:SexLab.esm
+EditorID: SexLabHotkeyDown1Descriptor
+FormVersion: 43
+Type: Standard
+SoundFiles:
+- Data\Sound\FX\ITM\Generic\Down\ITM_Generic_Down_01.wav
+OutputModel: 0B5183:Skyrim.esm
+LoopAndRumble: {}
+PercentFrequencyShift: 30
+PercentFrequencyVariance: 10
+Priority: 128
+Variance: 3

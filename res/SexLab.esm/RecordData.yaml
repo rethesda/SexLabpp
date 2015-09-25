@@ -4,8 +4,6 @@ SpriggitSource:
 ModKey: SexLab.esm
 GameRelease: SkyrimSE
 ModHeader:
-  Flags:
-  - Master
   FormVersion: 43
   Stats:
     Version: 1.7
