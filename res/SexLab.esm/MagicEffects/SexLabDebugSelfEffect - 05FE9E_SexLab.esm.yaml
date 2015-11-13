@@ -31,7 +31,7 @@ Archetype:
   Type: Script
 CastType: FireAndForget
 CastingArt: 02016C:Skyrim.esm
-HitEffectArt: 0ABF12:Skyrim.esm
+HitEffectArt: 0FD7D7:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
 Description:

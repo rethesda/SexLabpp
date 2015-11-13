@@ -296,6 +296,9 @@ VirtualMachineAdapter:
       Name: PlayerRef
       Object: 000014:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: SelectedSpell
+      Object: 08C5F6:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -423,7 +426,7 @@ Flags:
 - StartGameEnabled
 - 0x10
 Priority: 99
-QuestFormVersion: 62
+QuestFormVersion: 44
 Filter: SexLab\
 NextAliasID: 4
 Aliases:
