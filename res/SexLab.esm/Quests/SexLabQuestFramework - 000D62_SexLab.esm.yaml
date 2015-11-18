@@ -120,6 +120,12 @@ VirtualMachineAdapter:
       Name: ActorTypeNPC
       Object: 013794:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: Anal1
+      Object: 08D681:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Anal2
+      Object: 08D683:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: AnimatingFaction
       Object: 00E50F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -200,6 +206,9 @@ VirtualMachineAdapter:
       Name: CumAnalSpell
       Object: 0434D7:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: CumAnalStackedKeyword
+      Object: 08D687:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: CumOralAnalSpell
       Object: 043A41:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -208,6 +217,9 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: CumOralSpell
       Object: 0434D5:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CumOralStackedKeyword
+      Object: 08D686:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: CumVaginalAnalSpell
       Object: 043A3D:SexLab.esm
@@ -223,6 +235,9 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: CumVaginalSpell
       Object: 041478:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CumVaginalStackedKeyword
+      Object: 08D685:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: DebugVar1
       Object: 07DE45:SexLab.esm
@@ -290,6 +305,24 @@ VirtualMachineAdapter:
       Name: NudeSuit
       Object: 018715:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
+      Name: Oral1
+      Object: 08D67D:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Oral1Anal1
+      Object: 08D661:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Oral1Anal2
+      Object: 08D665:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Oral2
+      Object: 08D67F:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Oral2Anal1
+      Object: 08D663:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Oral2Anal2
+      Object: 08D667:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
       Name: OrgasmFX
       Object: 065A34:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
@@ -337,6 +370,60 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: UseBed
       Object: 065F97:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1
+      Object: 08D679:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Anal1
+      Object: 08D671:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Anal2
+      Object: 08D675:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral1
+      Object: 08D669:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral1Anal1
+      Object: 08D651:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral1Anal2
+      Object: 08D65D:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral2
+      Object: 08D66D:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral2Anal1
+      Object: 08D659:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal1Oral2Anal2
+      Object: 08D65B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2
+      Object: 08D67B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Anal1
+      Object: 08D673:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Anal2
+      Object: 08D677:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral1
+      Object: 08D66B:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral1Anal1
+      Object: 08D653:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral1Anal2
+      Object: 08D657:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral2
+      Object: 08D66F:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral2Anal1
+      Object: 08D655:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Vaginal2Oral2Anal2
+      Object: 08D65F:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: VoiceSlots
       Object: 0664FB:SexLab.esm
