@@ -58,7 +58,16 @@ Flags:
 - StartGameEnabled
 - 0x10
 Priority: 100
+QuestFormVersion: 50
+Type: Misc
 Filter: SexLab\
+Objectives:
+- Flags: []
+  DisplayText:
+    TargetLanguage: English
+    Value: SexLab Scene
+  Targets:
+  - AliasID: 6
 NextAliasID: 7
 Aliases:
 - ID: 5

@@ -8,6 +8,7 @@ Flags:
 - NoCombatAlert
 Type: Package
 PreferredSpeed: FastWalk
+Unknown: 32
 ScheduleMonth: -1
 ScheduleDayOfWeek: Any
 ScheduleHour: -1
