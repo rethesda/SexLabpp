@@ -3,10 +3,6 @@ EditorID: SexLabQuestRegistry
 VirtualMachineAdapter:
   Scripts:
   - Name: sslCreatureAnimationDefaults
-    Properties:
-    - MutagenObjectType: ScriptObjectProperty
-      Name: config
-      Object: 000D62:SexLab.esm
   - Name: sslCreatureAnimationSlots
   - Name: sslExpressionDefaults
   - Name: sslExpressionSlots

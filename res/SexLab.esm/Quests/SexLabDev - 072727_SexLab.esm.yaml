@@ -5,17 +5,8 @@ VirtualMachineAdapter:
   - Name: sslBenchmark
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: ActorLib
-      Object: 000D62:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: AnimSlots
-      Object: 0639DF:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
       Name: config
       Object: 000D62:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: CreatureSlots
-      Object: 0664FB:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ExpressionSlots
       Object: 0664FB:SexLab.esm
@@ -24,9 +15,6 @@ VirtualMachineAdapter:
       Object: 000014:Skyrim.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: Stats
-      Object: 000D62:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: ThreadLib
       Object: 000D62:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: ThreadSlots
