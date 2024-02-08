@@ -1,23 +1,18 @@
-FormKey: 0073CB:SexLab.esm
-EditorID: SexLabDebugTargetEffect
+FormKey: 0B3301:SexLab.esm
+EditorID: SexLabDebugEffectSolo
 VirtualMachineAdapter:
   Scripts:
-  - Name: sslEffectDebug
+  - Name: sslEffectDebugSolo
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: config
-      Object: 000D62:SexLab.esm
-    - MutagenObjectType: ScriptObjectProperty
-      Name: PlayerRef
-      Object: 000014:Skyrim.esm
+      Name: DebugMain
+      Object: 0B3302:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
   Value: SexLab Debug
-Keywords:
-- 05FE9D:SexLab.esm
 Flags:
 - DispelWithKeywords
 - NoMagnitude
@@ -29,12 +24,10 @@ Archetype:
   Type: Script
 Projectile: 02F774:Skyrim.esm
 CastType: FireAndForget
-TargetType: Aimed
 CastingArt: 03CDFC:Skyrim.esm
 HitEffectArt: 07024B:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
-Sounds: []
 Description:
   TargetLanguage: English
-  Value: Blah.
+  Value: Starts a scene with just the player.

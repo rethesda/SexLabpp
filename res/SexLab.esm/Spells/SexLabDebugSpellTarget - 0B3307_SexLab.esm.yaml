@@ -1,0 +1,19 @@
+FormKey: 0B3307:SexLab.esm
+EditorID: SexLabDebugSpellTarget
+Name:
+  TargetLanguage: English
+  Value: SexLab Debug (Target)
+Description:
+  TargetLanguage: English
+  Value: ''
+Flags:
+- PCStartSpell
+- IgnoreResistance
+- NoAbsorbOrReflect
+- NoDualCastModification
+CastType: FireAndForget
+TargetType: TargetActor
+Range: 100
+Effects:
+- BaseEffect: 0B330A:SexLab.esm
+  Data: {}

@@ -1,10 +1,8 @@
-FormKey: 0073CC:SexLab.esm
-EditorID: SexLabDebugSpell
+FormKey: 0B3308:SexLab.esm
+EditorID: SexLabDebugSpellOrgy
 Name:
   TargetLanguage: English
-  Value: SexLab Debug (Target)
-MenuDisplayObject: 10AB43:Skyrim.esm
-EquipmentType: 013F44:Skyrim.esm
+  Value: SexLab Debug (Orgy Target)
 Description:
   TargetLanguage: English
   Value: ''
@@ -17,6 +15,5 @@ CastType: FireAndForget
 TargetType: TargetActor
 Range: 100
 Effects:
-- BaseEffect: 0073CB:SexLab.esm
-  Data:
-    Duration: 300
+- BaseEffect: 0B330B:SexLab.esm
+  Data: {}

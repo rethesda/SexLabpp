@@ -1,0 +1,17 @@
+FormKey: 0B3309:SexLab.esm
+EditorID: SexLabDebugSpellOrgySelf
+Name:
+  TargetLanguage: English
+  Value: SexLab Debug (Orgy Self)
+Description:
+  TargetLanguage: English
+  Value: ''
+Flags:
+- PCStartSpell
+- IgnoreResistance
+- NoAbsorbOrReflect
+- NoDualCastModification
+CastType: FireAndForget
+Effects:
+- BaseEffect: 0B330C:SexLab.esm
+  Data: {}

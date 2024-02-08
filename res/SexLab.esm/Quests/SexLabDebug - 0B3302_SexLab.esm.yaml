@@ -1,0 +1,19 @@
+FormKey: 0B3302:SexLab.esm
+EditorID: SexLabDebug
+VirtualMachineAdapter:
+  Scripts:
+  - Name: sslEffectDebugMain
+    Properties:
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Config
+      Object: 000D62:SexLab.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: SexLab
+      Object: 000D62:SexLab.esm
+  ExtraBindDataVersion: 0
+  FileName: ''
+Name:
+  TargetLanguage: English
+  Value: SexLab Debug Menu
+QuestFormVersion: 0
+NextAliasID: 0
