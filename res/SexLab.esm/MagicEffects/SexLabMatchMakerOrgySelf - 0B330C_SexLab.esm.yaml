@@ -1,18 +1,18 @@
-FormKey: 0B330A:SexLab.esm
-EditorID: SexLabDebugEffectTarget
+FormKey: 0B330C:SexLab.esm
+EditorID: SexLabMatchMakerOrgySelf
 VirtualMachineAdapter:
   Scripts:
-  - Name: sslEffectDebugTarget
+  - Name: sslMatchMakerOrgy
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: DebugMain
+      Name: MatchMakerMain
       Object: 0B3302:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab Debug
+  Value: SexLab MatchMaker
 Flags:
 - DispelWithKeywords
 - NoMagnitude
@@ -24,11 +24,10 @@ Archetype:
   Type: Script
 Projectile: 02F774:Skyrim.esm
 CastType: FireAndForget
-TargetType: Aimed
 CastingArt: 03CDFC:Skyrim.esm
 HitEffectArt: 07024B:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
 Description:
   TargetLanguage: English
-  Value: Starts a scene with the player and the actor hit.
+  Value: Adds the player to an array for a future scene. Scene starts automatically after 10 seconds or five actors added.

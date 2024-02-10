@@ -1,18 +1,18 @@
-FormKey: 0B3301:SexLab.esm
-EditorID: SexLabDebugEffectSolo
+FormKey: 0B330A:SexLab.esm
+EditorID: SexLabMatchMakerTarget
 VirtualMachineAdapter:
   Scripts:
-  - Name: sslEffectDebugSolo
+  - Name: sslMatchMakerTarget
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: DebugMain
+      Name: MatchMakerMain
       Object: 0B3302:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab Debug
+  Value: SexLab MatchMaker
 Flags:
 - DispelWithKeywords
 - NoMagnitude
@@ -24,10 +24,11 @@ Archetype:
   Type: Script
 Projectile: 02F774:Skyrim.esm
 CastType: FireAndForget
+TargetType: Aimed
 CastingArt: 03CDFC:Skyrim.esm
 HitEffectArt: 07024B:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
 Description:
   TargetLanguage: English
-  Value: Starts a scene with just the player.
+  Value: Starts a scene with the player and the actor hit.

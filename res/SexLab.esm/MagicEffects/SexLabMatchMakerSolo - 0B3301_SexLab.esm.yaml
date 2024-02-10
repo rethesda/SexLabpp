@@ -1,34 +1,33 @@
-FormKey: 0B330B:SexLab.esm
-EditorID: SexLabDebugEffectOrgy
+FormKey: 0B3301:SexLab.esm
+EditorID: SexLabMatchMakerSolo
 VirtualMachineAdapter:
   Scripts:
-  - Name: sslEffectDebugOrgySelf
+  - Name: sslMatchMakerSolo
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: DebugMain
+      Name: MatchMakerMain
       Object: 0B3302:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab Debug
+  Value: SexLab MatchMaker
 Flags:
 - DispelWithKeywords
 - NoMagnitude
 - NoArea
 - Painless
-MagicSkill: Illusion
+MagicSkill: Restoration
 Archetype:
   MutagenObjectType: MagicEffectArchetype
   Type: Script
 Projectile: 02F774:Skyrim.esm
 CastType: FireAndForget
-TargetType: Aimed
 CastingArt: 03CDFC:Skyrim.esm
 HitEffectArt: 07024B:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
 Description:
   TargetLanguage: English
-  Value: Adds the hit actor to an array for a future scene. Scene starts automatically after 10 seconds or five actors added.
+  Value: Starts a scene with just the player.

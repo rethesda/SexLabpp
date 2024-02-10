@@ -1,8 +1,8 @@
-FormKey: 0B3307:SexLab.esm
-EditorID: SexLabDebugSpellTarget
+FormKey: 0B3306:SexLab.esm
+EditorID: SexLabMatchMakerSpellSolo
 Name:
   TargetLanguage: English
-  Value: SexLab Debug (Target)
+  Value: SexLab Matchmaker (Self)
 Description:
   TargetLanguage: English
   Value: ''
@@ -12,8 +12,6 @@ Flags:
 - NoAbsorbOrReflect
 - NoDualCastModification
 CastType: FireAndForget
-TargetType: TargetActor
-Range: 100
 Effects:
-- BaseEffect: 0B330A:SexLab.esm
+- BaseEffect: 0B3301:SexLab.esm
   Data: {}

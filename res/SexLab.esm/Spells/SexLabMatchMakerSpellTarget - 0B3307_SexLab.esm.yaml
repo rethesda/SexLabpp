@@ -1,8 +1,8 @@
-FormKey: 0B3308:SexLab.esm
-EditorID: SexLabDebugSpellOrgy
+FormKey: 0B3307:SexLab.esm
+EditorID: SexLabMatchMakerSpellTarget
 Name:
   TargetLanguage: English
-  Value: SexLab Debug (Orgy Target)
+  Value: SexLab Matchmaker (Target)
 Description:
   TargetLanguage: English
   Value: ''
@@ -15,5 +15,5 @@ CastType: FireAndForget
 TargetType: TargetActor
 Range: 100
 Effects:
-- BaseEffect: 0B330B:SexLab.esm
+- BaseEffect: 0B330A:SexLab.esm
   Data: {}
