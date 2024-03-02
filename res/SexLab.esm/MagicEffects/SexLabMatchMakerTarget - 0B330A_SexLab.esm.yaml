@@ -29,6 +29,7 @@ CastingArt: 03CDFC:Skyrim.esm
 HitEffectArt: 07024B:Skyrim.esm
 DualCastScale: 1
 CastingSoundLevel: Silent
+Sounds: []
 Description:
   TargetLanguage: English
   Value: Starts a scene with the player and the actor hit.

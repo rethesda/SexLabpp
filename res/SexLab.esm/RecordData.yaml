@@ -6,8 +6,6 @@ GameRelease: SkyrimSE
 ModHeader:
   Flags:
   - Master
-  Stats:
-    Version: 1.7
   Author: Ashal, Scrab
   Description: >+
     Version 2.0 P+ Edited 2023/08/15 
@@ -21,3 +19,4 @@ ModHeader:
   - Master: Dragonborn.esm
     FileSize: 0
   INTV: 1
+  INCC: 0

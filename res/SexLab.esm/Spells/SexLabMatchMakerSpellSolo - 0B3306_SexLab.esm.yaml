@@ -3,6 +3,7 @@ EditorID: SexLabMatchMakerSpellSolo
 Name:
   TargetLanguage: English
   Value: SexLab Matchmaker (Self)
+EquipmentType: 013F44:Skyrim.esm
 Description:
   TargetLanguage: English
   Value: ''

@@ -3,12 +3,12 @@ EditorID: SexLabVoiceMale03HotDescriptor
 Type: Standard
 Category: 061429:SexLab.esm
 SoundFiles:
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_3.wav
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_4.wav
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_5.wav
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_6.wav
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_1.wav
-- data\Sound\fx\SexLab\vMaleMoan03\hot\hot_2.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_3.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_4.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_5.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_6.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_1.wav
+- data\sound\Fx\SexLab\vMaleMoan03\hot\hot_2.wav
 OutputModel: 0D78B4:Skyrim.esm
 LoopAndRumble: {}
 PercentFrequencyVariance: 5

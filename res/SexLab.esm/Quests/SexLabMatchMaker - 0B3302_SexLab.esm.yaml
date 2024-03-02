@@ -5,15 +5,16 @@ VirtualMachineAdapter:
   - Name: sslMatchMakerMain
     Properties:
     - MutagenObjectType: ScriptObjectProperty
-      Name: Config
+      Name: config
       Object: 000D62:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: SexLab
       Object: 000D62:SexLab.esm
+  Versioning:
+  - Break0
   ExtraBindDataVersion: 0
   FileName: ''
 Name:
   TargetLanguage: English
   Value: SexLab Matchmaker Menu
-QuestFormVersion: 0
 NextAliasID: 0

@@ -282,6 +282,17 @@ VirtualMachineAdapter:
     - MutagenObjectType: ScriptObjectProperty
       Name: LipSync
       Object: 068590:SexLab.esm
+    - MutagenObjectType: ScriptObjectListProperty
+      Name: MatchMakerSpells
+      Objects:
+      - Name: ''
+        Object: 0B3306:SexLab.esm
+      - Name: ''
+        Object: 0B3307:SexLab.esm
+      - Name: ''
+        Object: 0B3309:SexLab.esm
+      - Name: ''
+        Object: 0B3308:SexLab.esm
     - MutagenObjectType: ScriptObjectProperty
       Name: OrgasmFX
       Object: 065A34:SexLab.esm
