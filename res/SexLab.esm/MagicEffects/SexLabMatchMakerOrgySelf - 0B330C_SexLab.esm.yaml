@@ -12,11 +12,12 @@ VirtualMachineAdapter:
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab MatchMaker
+  Value: SexLab MatchMaker (OS)
 Flags:
-- DispelWithKeywords
+- NoDuration
 - NoMagnitude
 - NoArea
+- HideInUI
 - Painless
 MagicSkill: Illusion
 Archetype:
@@ -32,3 +33,7 @@ Sounds: []
 Description:
   TargetLanguage: English
   Value: Adds the player to an array for a future scene. Scene starts automatically after 10 seconds or five actors added.
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsChildConditionData

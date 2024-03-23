@@ -12,12 +12,13 @@ VirtualMachineAdapter:
       Object: 000D62:SexLab.esm
 Name:
   TargetLanguage: English
-  Value: SexLab MatchMaker
+  Value: SexLab MatchMaker (T)
 Flags:
-- DispelWithKeywords
+- NoDuration
 - NoMagnitude
 - NoArea
 - Painless
+- NoDeathDispel
 MagicSkill: Illusion
 Archetype:
   MutagenObjectType: MagicEffectArchetype
@@ -33,3 +34,7 @@ Sounds: []
 Description:
   TargetLanguage: English
   Value: Starts a scene with the player and the actor hit.
+Conditions:
+- MutagenObjectType: ConditionFloat
+  Data:
+    MutagenObjectType: IsChildConditionData
