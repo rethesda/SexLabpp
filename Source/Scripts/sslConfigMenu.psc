@@ -134,7 +134,8 @@ Event OnConfigOpen()
 		i += 1
 	EndWhile
 	_voiceCacheIndex = 0
-	_voices = sslVoiceSlots.GetAllVoices()
+	_voiceActiveRaceKey = SexLabRegistry.MapRaceIDToRaceKey(0)
+	_voices = sslVoiceSlots.GetAllVoices(_voiceActiveRaceKey)
 	_voiceCachedActors = sslVoiceSlots.GetAllCachedUniqueActorsSorted(Config.TargetRef)
 	_voiceCachedNames = Utility.CreateStringArray(_voiceCachedActors.Length)
 	int n = 0
@@ -431,6 +432,7 @@ EndState
 ; --- Sound Settings                                  --- ;
 ; ------------------------------------------------------- ;
 
+String _voiceActiveRaceKey
 String[] _voices
 Actor[] _voiceCachedActors
 String[] _voiceCachedNames
@@ -466,7 +468,7 @@ Function SoundSettings()
 	SetCursorPosition(10)
 	SetCursorFillMode(LEFT_TO_RIGHT)
 	AddHeaderOption("$SSL_ToggleVoices")
-	AddHeaderOption("")
+	AddMenuOptionST("activeVoices", "$SSL_ActiveVoices", "$SSL_Race_" + SexLabRegistry.MapRaceKeyToID(_voiceActiveRaceKey))
 	int i = 0
 	While (i < _voices.Length)
 		AddToggleOptionST("Voice_" + i, _voices[i], sslBaseVoice.GetEnabled(_voices[i]))
@@ -827,7 +829,7 @@ Function RebuildClean()
 	AddHeaderOption("Registry Info")
 	; IDEA: Allow clicking on this for more info, custom swf mayhaps?
 	AddTextOption("$SSL_Animations", sslSystemConfig.GetAnimationCount(), OPTION_FLAG_DISABLED)
-	AddTextOption("$SSL_Voices", sslVoiceSlots.GetAllVoices().Length, OPTION_FLAG_DISABLED)
+	AddTextOption("$SSL_Voices", sslVoiceSlots.GetAllVoices("").Length, OPTION_FLAG_DISABLED)
 	AddTextOption("$SSL_Expressions", sslExpressionSlots.GetAllProfileIDs().Length, OPTION_FLAG_DISABLED)
 	AddHeaderOption("$SSL_AvailableStrapons")
 	AddTextOptionST("RebuildStraponList","$SSL_RebuildStraponList", "$SSL_ClickHere")
@@ -1278,6 +1280,10 @@ Event OnMenuOpenST()
 		SetMenuDialogStartIndex(values[i] as int)
 		SetMenuDialogDefaultIndex(0)
 		SetMenuDialogOptions(_moods)
+	ElseIf (s[0] == "activeVoices")
+		SetMenuDialogStartIndex(SexLabRegistry.MapRaceKeyToId(_voiceActiveRaceKey))
+		SetMenuDialogDefaultIndex(0)
+		SetMenuDialogOptions(SexLabRegistry.GetAllRaceKeys(false))
 	EndIf
 EndEvent
 
@@ -1329,6 +1335,10 @@ Event OnMenuAcceptST(int aiIndex)
 		values[i] = aiIndex
 		sslBaseExpression.SetValues(_expression[_expressionIdx], _editFemale, _phaseidx + n, values)
 		SetMenuOptionValueST(_moods[aiIndex])
+	ElseIf (s[0] == "activeVoices")
+		_voiceActiveRaceKey = SexLabRegistry.MapRaceIDToRaceKey(aiIndex)
+		_voices = sslVoiceSlots.GetAllVoices(_voiceActiveRaceKey)
+		ForcePageReset()
 	EndIf
 EndEvent
 
@@ -1477,6 +1487,8 @@ Event OnHighlightST()
 		SetInfoText("$SSL_InfoDebugMode")
 	ElseIf (s[0] == "setexprscaling")
 		SetInfoText("$SSL_ExpressionScalingInfo")
+	ElseIf (s[0] == "activeVoices")
+		SetInfoText("$SSL_ActiveVoicesHighlight")
 	EndIf
 EndEvent
 
