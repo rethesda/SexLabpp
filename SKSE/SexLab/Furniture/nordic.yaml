@@ -1,19 +1,19 @@
 Furniture\nordic\ruins_bench01.nif:
-  - Type: Bench
-    Offset:
-      - [0.0, 0.0, 0.0, 0.0]
+  Type: Bench
+  Offset:
+    - [0.0, 0.0, 0.0, 0.0]
 Furniture\nordic\ruins_benchshadow01.nif:
-  - Type: Bench
-    Offset:
-      - [0.0, 0.0, 0.0, 0.0]
+  Type: Bench
+  Offset:
+    - [0.0, 0.0, 0.0, 0.0]
 Furniture\nordic\ruins_chair01.nif:
-  - Type: Chair
-    Offset:
-      - [51.5, 6.1, -69.9, 0]
+  Type: Chair
+  Offset:
+    - [51.5, 6.1, -69.9, 0]
 Furniture\nordic\ruins_chairshadow01.nif:
-  - Type: Chair
-    Offset:
-      - [51.5, 6.1, -69.9, 0]
+  Type: Chair
+  Offset:
+    - [51.5, 6.1, -69.9, 0]
 Furniture\nordic\ruinsbenchtable1sided.nif:
   - Type: Table
     Offset:

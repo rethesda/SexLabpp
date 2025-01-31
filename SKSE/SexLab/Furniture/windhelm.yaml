@@ -1,4 +1,4 @@
 Furniture\windhelm\windhelmthrone.nif:
-  - Type: ThroneNordic
-    Offset:
-      - [1.1, -6.3, 0.0, 0.0]
+  Type: ThroneNordic
+  Offset:
+    - [1.1, -6.3, 0.0, 0.0]
