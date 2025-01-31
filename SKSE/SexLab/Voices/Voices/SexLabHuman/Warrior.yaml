@@ -1,0 +1,31 @@
+Name: "[SexLab] Warrior"
+
+Actor:
+  Sex: Female
+  Race: Human
+  Pitch: Low
+
+Tags:
+  - female
+  - warrior
+  - rough
+
+Voices:
+  0xCA998|SexLab.esm: 0
+  0xCA997|SexLab.esm: 75
+Orgasm: 0xCA99A|SexLab.esm
+
+Extra:
+  - Voices:
+      0xCA999|SexLab.esm: 0
+    Orgasm: 0xCA9A3|SexLab.esm
+    Conditions:
+      Muffled: true
+  - Voices:
+      - 0xCA99B|SexLab.esm: 0
+    Conditions:
+      Submissive: true
+  - Voices:
+      - 0xCA996|SexLab.esm: 0
+    Conditions:
+      Aggressive: true

@@ -1,0 +1,30 @@
+Name: "[SexLab] Rebellious 2"
+
+Actor:
+  Sex: Female
+  Race: Human
+  Pitch: Normal
+
+Tags:
+  - female
+  - Rebellious
+
+Voices:
+  0xCA967|SexLab.esm: 0
+  0xCA966|SexLab.esm: 75
+Orgasm: 0xCA969|SexLab.esm
+
+Extra:
+  - Voices:
+      0xCA968|SexLab.esm: 0
+    Orgasm: 0xCA99C|SexLab.esm
+    Conditions:
+      Muffled: true
+  - Voices:
+      - 0xCA96A|SexLab.esm: 0
+    Conditions:
+      Submissive: true
+  - Voices:
+      - 0xCA965|SexLab.esm: 0
+    Conditions:
+      Aggressive: true
