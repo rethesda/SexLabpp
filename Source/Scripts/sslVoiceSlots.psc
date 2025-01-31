@@ -23,7 +23,7 @@ Function DeleteVoice(Actor akActor) native global
 ; ----------------------------------------------------------------------------- ;
 ; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
 
-String[] Function GetAllVoices() native global
+String[] Function GetAllVoices(String asRaceKey) native global
 Actor[] Function GetAllCachedUniqueActorsSorted(Actor akSecondPriority) native global
 String Function SelectVoiceByRace(String asRaceKey) native global
 
@@ -71,7 +71,7 @@ endProperty
 
 Function SyncBackend()
 	Alias[] aliases = GetAliases()
-	String[] arr = GetAllVoices()
+	String[] arr = GetAllVoices("")
 	int i = 0
 	int ii = 0
 	While (i < aliases.Length && ii < arr.Length)
