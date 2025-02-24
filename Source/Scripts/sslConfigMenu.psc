@@ -1497,33 +1497,82 @@ EndEvent
 ; ------------------------------------------------------- ;
 
 function PlayerHotkeys()
-	SetCursorFillMode(TOP_TO_BOTTOM)
+	SetCursorFillMode(LEFT_TO_RIGHT)
 
 	AddHeaderOption("$SSL_GlobalHotkeys")
+	AddEmptyOption()
 	AddKeyMapOptionST("TargetActor", "$SSL_TargetActor", Config.TargetActor)
 	AddKeyMapOptionST("ToggleFreeCamera", "$SSL_ToggleFreeCamera", Config.ToggleFreeCamera)
 
 	AddHeaderOption("$SSL_SceneManipulation")
-	AddKeyMapOptionST("RealignActors","$SSL_RealignActors", Config.RealignActors)
-	AddKeyMapOptionST("EndAnimation", "$SSL_EndAnimation", Config.EndAnimation)
-	AddKeyMapOptionST("AdvanceAnimation", "$SSL_AdvanceAnimationStage", Config.AdvanceAnimation)
-	AddKeyMapOptionST("ChangeAnimation", "$SSL_ChangeAnimationSet", Config.ChangeAnimation)
-	AddKeyMapOptionST("ChangePositions", "$SSL_SwapActorPositions", Config.ChangePositions)
-	AddKeyMapOptionST("MoveSceneLocation", "$SSL_MoveSceneLocation", Config.MoveScene)
+	AddEmptyOption()
+	AddKeyMapOptionST("M_S_iKeyUp", "$SSL_KeyUp", sslSystemConfig.GetSettingInt("iKeyUp"))
+	AddKeyMapOptionST("M_S_iKeyDown", "$SSL_KeyDown", sslSystemConfig.GetSettingInt("iKeyDown"))
+	AddKeyMapOptionST("M_S_iKeyLeft", "$SSL_KeyLeft", sslSystemConfig.GetSettingInt("iKeyLeft"))
+	AddKeyMapOptionST("M_S_iKeyRight", "$SSL_KeyRight", sslSystemConfig.GetSettingInt("iKeyRight"))
+	AddKeyMapOptionST("M_S_iKeyAdvance", "$SSL_KeyAdvance", sslSystemConfig.GetSettingInt("iKeyAdvance"))
+	AddKeyMapOptionST("M_S_iKeyEnd", "$SSL_KeyEnd", sslSystemConfig.GetSettingInt("iKeyEnd"))
+	AddKeyMapOptionST("M_S_iKeyExtra1", "$SSL_KeyExtra1", sslSystemConfig.GetSettingInt("iKeyExtra1"))
+	AddKeyMapOptionST("M_S_iKeyExtra2", "$SSL_KeyExtra2", sslSystemConfig.GetSettingInt("iKeyExtra2"))
+	AddKeyMapOptionST("M_S_iKeyMod", "$SSL_KeyMod", sslSystemConfig.GetSettingInt("iKeyMod"))
+	AddKeyMapOptionST("M_S_iKeyReset", "$SSL_KeyReset", sslSystemConfig.GetSettingInt("iKeyReset"))
+	AddKeyMapOptionST("M_S_iKeyMouse", "$SSL_KeyMouse", sslSystemConfig.GetSettingInt("iKeyMouse"))
+	; AddKeyMapOptionST("RealignActors","$SSL_RealignActors", Config.RealignActors)
+	; AddKeyMapOptionST("EndAnimation", "$SSL_EndAnimation", Config.EndAnimation)
+	; AddKeyMapOptionST("AdvanceAnimation", "$SSL_AdvanceAnimationStage", Config.AdvanceAnimation)
+	; AddKeyMapOptionST("ChangeAnimation", "$SSL_ChangeAnimationSet", Config.ChangeAnimation)
+	; AddKeyMapOptionST("ChangePositions", "$SSL_SwapActorPositions", Config.ChangePositions)
+	; AddKeyMapOptionST("MoveSceneLocation", "$SSL_MoveSceneLocation", Config.MoveScene)
 
-	SetCursorPosition(1)
-	AddHeaderOption("$SSL_AlignmentAdjustments")
-	AddTextOptionST("AdjustTargetStage", "$SSL_AdjustTargetStage", SexLabUtil.StringIfElse(Config.AdjustTargetStage, "$SSL_CurrentStage", "$SSL_AllStages"))
-	AddKeyMapOptionST("AdjustStage", SexLabUtil.StringIfElse(Config.AdjustTargetStage, "$SSL_AdjustAllStages", "$SSL_AdjustStage"), Config.AdjustStage)
-	AddKeyMapOptionST("BackwardsModifier", "$SSL_ReverseDirectionModifier", Config.Backwards)
-	AddKeyMapOptionST("AdjustChange","$SSL_ChangeActorBeingMoved", Config.AdjustChange)
-	AddKeyMapOptionST("AdjustForward","$SSL_MoveActorForwardBackward", Config.AdjustForward)
-	AddKeyMapOptionST("AdjustUpward","$SSL_AdjustPositionUpwardDownward", Config.AdjustUpward)
-	AddKeyMapOptionST("AdjustSideways","$SSL_MoveActorLeftRight", Config.AdjustSideways)
-	AddKeyMapOptionST("AdjustSchlong","$SSL_AdjustSchlong", Config.AdjustSchlong)
-	AddKeyMapOptionST("RotateScene", "$SSL_RotateScene", Config.RotateScene)
-	AddKeyMapOptionST("RestoreOffsets","$SSL_DeleteSavedAdjustments", Config.RestoreOffsets)
+	; SetCursorPosition(1)
+	; AddHeaderOption("$SSL_AlignmentAdjustments")
+	; AddTextOptionST("AdjustTargetStage", "$SSL_AdjustTargetStage", SexLabUtil.StringIfElse(Config.AdjustTargetStage, "$SSL_CurrentStage", "$SSL_AllStages"))
+	; AddKeyMapOptionST("AdjustStage", SexLabUtil.StringIfElse(Config.AdjustTargetStage, "$SSL_AdjustAllStages", "$SSL_AdjustStage"), Config.AdjustStage)
+	; AddKeyMapOptionST("BackwardsModifier", "$SSL_ReverseDirectionModifier", Config.Backwards)
+	; AddKeyMapOptionST("AdjustChange","$SSL_ChangeActorBeingMoved", Config.AdjustChange)
+	; AddKeyMapOptionST("AdjustForward","$SSL_MoveActorForwardBackward", Config.AdjustForward)
+	; AddKeyMapOptionST("AdjustUpward","$SSL_AdjustPositionUpwardDownward", Config.AdjustUpward)
+	; AddKeyMapOptionST("AdjustSideways","$SSL_MoveActorLeftRight", Config.AdjustSideways)
+	; AddKeyMapOptionST("AdjustSchlong","$SSL_AdjustSchlong", Config.AdjustSchlong)
+	; AddKeyMapOptionST("RotateScene", "$SSL_RotateScene", Config.RotateScene)
+	; AddKeyMapOptionST("RestoreOffsets","$SSL_DeleteSavedAdjustments", Config.RestoreOffsets)
 endFunction
+
+
+Event OnKeyMapChangeST(int newKeyCode, string conflictControl, string conflictName)
+  String[] s = StringUtil.Split(GetState(), "_")
+	int i = 0
+	bool mandatory = false
+	bool skipConflict = false
+	If (s[i] == "M")
+		i += 1
+		mandatory = true
+	EndIf
+	If (s[i] == "S")
+		i += 1
+		skipConflict = true
+	EndIf
+  If(newKeyCode == 1 || newKeyCode == 277)
+		If (mandatory)
+			ShowMessage("$SSL_KeyCannotBeDisabled", false, "$Ok")
+			return
+		EndIf
+    newKeyCode = -1
+  EndIf
+  If(newKeyCode != -1 && conflictControl != "" && !skipConflict)
+    string msg
+    If(conflictName != "")
+      msg = "$SSL_ConflictControl{" + conflictControl + "}{" + conflictName + "}"
+    Else
+      msg = "$SSL_ConflictControl{" + conflictControl + "}"
+    EndIf
+    If(!ShowMessage(msg, true, "$Yes", "$No"))
+      return
+    EndIf
+  EndIf
+	sslSystemConfig.SetSettingInt(s[i], newKeyCode)
+  SetKeyMapOptionValueST(newKeyCode)
+EndEvent
 
 bool function KeyConflict(int newKeyCode, string conflictControl, string conflictName)
 	bool continue = true

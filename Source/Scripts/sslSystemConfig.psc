@@ -333,6 +333,7 @@ int property LipsSoundTime hidden
 EndProperty
 
 ; Scene Control Keys
+; TODO: Add support for legacy keybinds where possible
 bool property AdjustTargetStage  Hidden
   bool Function Get()
     return GetSettingBool("bAdjustTargetStage")
