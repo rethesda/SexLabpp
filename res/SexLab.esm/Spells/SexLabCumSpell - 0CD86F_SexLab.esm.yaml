@@ -1,5 +1,5 @@
-FormKey: 0434D7:SexLab.esm
-EditorID: SexLabCumAnalSpell
+FormKey: 0CD86F:SexLab.esm
+EditorID: SexLabCumSpell
 Name:
   TargetLanguage: English
   Value: Sexual Encounter
@@ -13,5 +13,5 @@ Flags:
 - NoDualCastModification
 Type: Ability
 Effects:
-- BaseEffect: 0434D1:SexLab.esm
+- BaseEffect: 0CD86D:SexLab.esm
   Data: {}

@@ -11,7 +11,7 @@ Flags:
 - IgnoreResistance
 - NoAbsorbOrReflect
 - NoDualCastModification
+Type: Ability
 Effects:
 - BaseEffect: 0434D0:SexLab.esm
-  Data:
-    Duration: 172800
+  Data: {}

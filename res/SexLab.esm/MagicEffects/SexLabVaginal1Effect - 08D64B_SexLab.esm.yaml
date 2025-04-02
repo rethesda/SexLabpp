@@ -17,7 +17,6 @@ Flags:
 - HideInUI
 - Painless
 - NoDeathDispel
-HitShader: 08D0CF:SexLab.esm
 Archetype:
   MutagenObjectType: MagicEffectArchetype
   Type: Script

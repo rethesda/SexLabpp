@@ -17,8 +17,6 @@ Flags:
 - FXPersist
 - HideInUI
 - Painless
-- NoDeathDispel
-HitShader: 042F68:SexLab.esm
 TaperDuration: 20
 Archetype:
   MutagenObjectType: MagicEffectArchetype
