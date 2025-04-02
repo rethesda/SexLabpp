@@ -311,7 +311,7 @@ Function BeginOverlay(Actor akTarget, int aiType)
 	If (StorageUtil.SetIntValue(akTarget, ACTIVE_LAYER_PREFIX + aiType, layer) == maxLayer)
 		return
 	EndIf
-	String texturePath = "Textures/SexLab/CumFx/" + aiType + "/" + set + "/" + layer + ".dds"
+	String texturePath = "SexLab/CumFx/" + TypeToString(aiType) + "/" + set + "/" + layer + ".dds"
 	StorageUtil.SetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + aiType, texturePath)
 	StorageUtil.SetFloatValue(akTarget, LAST_APPLIED_TIME_PREFIX + aiType, SexLabUtil.GetCurrentGameRealTime())
 	StorageUtil.IntListAdd(akTarget, APPLIED_TEXTURE_LIST, aiType, false)
@@ -319,16 +319,15 @@ Function BeginOverlay(Actor akTarget, int aiType)
 	int i = 0
 	While (i < parts.Length)
 		String part = parts[i]
-		; If (!(Menu.LimitCumAreas && (part == "Hands" || part == "Feet")) && part != "Face" || (part == "Face" && part == "Oral"))
-			; ReadyOverlay(akTarget, isFemale, part, texturePath, set, aiType)
-			
+		; !(Menu.LimitCumAreas && (part == "Hands" || part == "Feet")) && !part == "Face" || part == "Oral" && part == "Face"
+		If (part != "Face" || (part == "Face" && aiType == FX_ORAL))
 			Int slot = GetEmptySlot(akTarget, isFemale, part, aiType)
 			If slot != -1
 				ApplyOverlay(akTarget, isFemale, part, slot, texturePath, set)
 			Else
 				Log(akTarget + ": Error applying overlay to area: " + part)
 			EndIf
-		; EndIf
+		EndIf
 		i += 1
 	EndWhile
 EndFunction

@@ -15,10 +15,10 @@ EndFunction
 	View and manipulate runtime data
 /;
 
-int Property STATUS_UNDEF 	= 0 AutoReadOnly  ; Undefined
-int Property STATUS_IDLE	 	= 1 AutoReadOnly  ; Idling (Inactive)
-int Property STATUS_SETUP 	= 2 AutoReadOnly  ; Preparing an animation. Available data may be incomplete
-int Property STATUS_INSCENE = 3 AutoReadOnly  ; Playing an animation
+int Property STATUS_UNDEF	= 0 AutoReadOnly  ; Undefined
+int Property STATUS_IDLE	= 1 AutoReadOnly  ; Idling (Inactive)
+int Property STATUS_SETUP	= 2 AutoReadOnly  ; Preparing an animation. Available data may be incomplete
+int Property STATUS_INSCENE	= 3 AutoReadOnly  ; Playing an animation
 int Property STATUS_ENDING	= 4 AutoReadOnly  ; Ending. Data is still available but most functionality is disabled
 
 ; Return the current status of the thread. This status divides the threads functionality in sub sections
