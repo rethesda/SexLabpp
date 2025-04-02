@@ -329,46 +329,43 @@ bool function IsForbidden(Actor ActorRef)
   return ActorLib.IsForbidden(ActorRef)
 endFunction
 
-;/* AddCum
-* * Applies the cum effect to an actor for the given locations
-* * 
-* * @param: Actor ActorRef - The actor to apply the cum EffectShader to
-* * @param: bool Vaginal [OPTIONAL] - if set to TRUE, then the cum will be applied (or staked if it was already there) to the Vagina.
-* * @param: bool Oral [OPTIONAL] - if set to TRUE, then the cum will be applied (or staked if it was already there) to the Mouth.
-* * @param: bool Anal [OPTIONAL] - if set to TRUE, then the cum will be applied (or staked if it was already there) to the Anus.
-*/;
-function AddCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
-  ActorLib.AddCum(ActorRef, Vaginal, Oral, Anal)
-endFunction
+; ---------------------------------------------------
+; * CUM FX FUNCTIONS
+; ---------------------------------------------------
+; NOTE: Various functions here include an `int aiType` argument, valid types can be viewed here:
+; https://github.com/Scrabx3/SexLabpp/blob/master/src/Registry/CumFx.h (FxType enum) or sslActorLibrary.psc (in case of mismatch, CumFx.h takes precedence)
+; Additionally, setting aiType to -1 will apply to all types.
 
-;/* ClearCum
-* * Removes existing cum EffectShaders.
-* * 
-* * @param: Actor ActorRef - The actor you want to remove any trace of cum from the skin, it will actually remove the EffectShaders from the actor.
-*/;
-function ClearCum(Actor ActorRef)
-  ActorLib.ClearCum(ActorRef)
-endFunction
+; Apply cum effects to the given actor for the specified interaction type
+Function AddCumFx(Actor akActor, int aiType)
+  ActorLib.AddCumFx(akActor, aiType)
+EndFunction
+Function AddCumFxLayers(Actor akActor, int aiType, int aiLayers)
+  int i = 0
+  While (i < aiLayers)
+    AddCumFx(akActor, aiType)
+    i += 1
+  EndWhile
+EndFunction
 
-;/* CountCum
-* * Checks how many stacks of cum an actor currently has in the given areas
-* * 
-* * @param: Actor ActorRef - The actor to check for cum EffectShader stacks
-* * @param: bool Vaginal/Oral/Anal - Each location set to TRUE contributes to the returned count of cum stacks.
-* * @return: an int with the number of stacked layers
-*/;
-int function CountCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
-  return ActorLib.CountCum(ActorRef, Vaginal, Oral, Anal)
-endFunction
-int function CountCumVaginal(Actor ActorRef)
-  return ActorLib.CountCum(ActorRef, true, false, false)
-endFunction
-int function CountCumOral(Actor ActorRef)
-  return ActorLib.CountCum(ActorRef, false, true, false)
-endFunction
-int function CountCumAnal(Actor ActorRef)
-  return ActorLib.CountCum(ActorRef, false, false, true)
-endFunction
+; Remove cum effects from the given actor for the specified interaction type
+Function RemoveCumFx(Actor akActor, int aiType = -1)
+  ActorLib.RemoveCumFx(akActor, aiType)
+EndFunction
+
+; Count the layers of applied cum fx on the actor
+int Function CountCumFx(Actor ActorRef, int aiType = -1)
+  return ActorLib.CountCumFx(ActorRef, aiType)
+EndFunction
+int Function CountCumVaginal(Actor ActorRef)
+  return ActorLib.CountCumFx(ActorRef, ActorLib.FX_Vaginal)
+EndFunction
+int Function CountCumOral(Actor ActorRef)
+  return ActorLib.CountCumFx(ActorRef, ActorLib.FX_ORAL)
+EndFunction
+int Function CountCumAnal(Actor ActorRef)
+  return ActorLib.CountCumFx(ActorRef, ActorLib.FX_ANAL)
+EndFunction
 
 ;/* StripActor
 * * Strips an actor using SexLab's strip settings as chosen by the user from the SexLab MCM
@@ -1132,6 +1129,15 @@ endFunction
 function UnequipStrapon(Actor ActorRef)
   Config.UnequipStrapon(ActorRef)
 endFunction
+int function CountCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
+  return ActorLib.CountCum(ActorRef, Vaginal, Oral, Anal)
+endFunction
+function AddCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
+  ActorLib.AddCum(ActorRef, Vaginal, Oral, Anal)
+endFunction
+function ClearCum(Actor ActorRef)
+  ActorLib.ClearCum(ActorRef)
+endFunction
 bool function CheckBardAudience(Actor ActorRef, bool RemoveFromAudience = true)
   return Config.CheckBardAudience(ActorRef, RemoveFromAudience)
 endFunction
@@ -1646,7 +1652,6 @@ endFunction
 ;# ^^^                                            END DEPRECATED FUNCTIONS - DO NOT USE THEM                                           ^^^ #
 ;#                                                                                                                                         #
 ;#-----------------------------------------------------------------------------------------------------------------------------------------#
-
 ;/
   NOTE: Following functions are not yet legacy but will likely be in some future update. Do not use them to stay compatible with future versions!
 /;

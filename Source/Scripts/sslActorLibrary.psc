@@ -23,60 +23,69 @@ Spell property CumVaginalSpell Auto
 Spell property CumOralSpell Auto
 Spell property CumAnalSpell Auto
 
-Function AddCumFx(Actor akActor, int asType)
+Function AddCumFx(Actor akActor, int aiType)
 	If (!akActor.HasSpell(abCumFX))
 		akActor.AddSpell(abCumFX)
 	EndIf
-	BeginOverlay(akActor, asType)
-	If (asType == FX_VAGINAL)
+	If (aiType == FX_ALL)
+		BeginOverlay(akActor, FX_VAGINAL)
+		BeginOverlay(akActor, FX_ANAL)
+		BeginOverlay(akActor, FX_ORAL)
 		akActor.AddSpell(CumVaginalSpell)
-	ElseIf (asType == FX_ORAL)
 		akActor.AddSpell(CumOralSpell)
-	ElseIf (asType == FX_ANAL)
 		akActor.AddSpell(CumAnalSpell)
+	Else
+		If (aiType == FX_VAGINAL)
+			akActor.AddSpell(CumVaginalSpell)
+		ElseIf (aiType == FX_ORAL)
+			akActor.AddSpell(CumOralSpell)
+		ElseIf (aiType == FX_ANAL)
+			akActor.AddSpell(CumAnalSpell)
+		EndIf
+		BeginOverlay(akActor, aiType)
 	EndIf
 	int handle = ModEvent.Create("SexLabApplyCum")
 	ModEvent.PushForm(handle, akActor)
-	ModEvent.PushInt(handle, asType)
+	ModEvent.PushInt(handle, aiType)
 	ModEvent.Send(handle)
 EndFunction
 
-Function RemoveCumFx(Actor akTarget, int asType)
-	If (asType == FX_ALL)
+Function RemoveCumFx(Actor akTarget, int aiType)
+	If (aiType == FX_ALL)
 		RemoveCumFx(akTarget, FX_VAGINAL)
 		RemoveCumFx(akTarget, FX_ANAL)
 		RemoveCumFx(akTarget, FX_ORAL)
 		return
 	EndIf
-	int removed = StorageUtil.IntListRemove(akTarget, APPLIED_TEXTURE_LIST, asType)
+	int removed = StorageUtil.IntListRemove(akTarget, APPLIED_TEXTURE_LIST, aiType)
 	If (removed == 0)
 		return
 	EndIf
 	Bool isFemale = akTarget.GetLeveledActorBase().GetSex() == 1
-	String LastEffect = StorageUtil.GetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + asType)
+	String LastEffect = StorageUtil.GetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + aiType)
 	RemovePartOverlay(akTarget, isFemale, LastEffect)
-	If (asType == FX_VAGINAL)
+	If (aiType == FX_VAGINAL)
 		akTarget.RemoveSpell(CumVaginalSpell)
-	ElseIf (asType == FX_ORAL)
+	ElseIf (aiType == FX_ORAL)
 		akTarget.RemoveSpell(CumOralSpell)
-	ElseIf (asType == FX_ANAL)
+	ElseIf (aiType == FX_ANAL)
 		akTarget.RemoveSpell(CumAnalSpell)
 	EndIf
-	StorageUtil.UnsetIntValue(akTarget, ACTIVE_SET_PREFIX + asType)
-	StorageUtil.UnsetIntValue(akTarget, ACTIVE_LAYER_PREFIX + asType)
-	StorageUtil.UnsetFloatValue(akTarget, LAST_APPLIED_TIME_PREFIX + asType)
-	StorageUtil.UnsetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + asType)
+	StorageUtil.UnsetIntValue(akTarget, ACTIVE_SET_PREFIX + aiType)
+	StorageUtil.UnsetIntValue(akTarget, ACTIVE_LAYER_PREFIX + aiType)
+	StorageUtil.UnsetFloatValue(akTarget, LAST_APPLIED_TIME_PREFIX + aiType)
+	StorageUtil.UnsetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + aiType)
 	If (StorageUtil.IntListCount(akTarget, APPLIED_TEXTURE_LIST) == 0)
 		akTarget.RemoveSpell(abCumFX)
 	EndIf
 	int handle = ModEvent.Create("SexLabClearCum")
 	ModEvent.PushForm(handle, akTarget)
-	ModEvent.PushInt(handle, asType)
+	ModEvent.PushInt(handle, aiType)
 	ModEvent.Send(handle)
 EndFunction
 
-int Function CountCumFx(Actor akActor, String asType)
-	return StorageUtil.CountObjIntValuePrefix(akActor, ACTIVE_LAYER_PREFIX + asType)
+int Function CountCumFx(Actor akActor, int aiType)
+	return StorageUtil.CountObjIntValuePrefix(akActor, ACTIVE_LAYER_PREFIX + aiType)
 EndFunction
 
 ; ------------------------------------------------------- ;
