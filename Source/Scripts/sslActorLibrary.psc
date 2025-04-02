@@ -6,179 +6,78 @@ ScriptName sslActorLibrary extends sslSystemLibrary
 ; ------------------------------------------------------- ;
 ; --- Actor Effects Functions                         --- ;
 ; ------------------------------------------------------- ;
-; TODO: overhaul the entire system here and move it into the dll
-; NOTE: CumID system is no longer in use !IMPORTANT
 
-Spell property Vaginal1Oral1Anal1 auto
-Spell property Vaginal2Oral1Anal1 auto
-Spell property Vaginal2Oral2Anal1 auto
-Spell property Vaginal2Oral1Anal2 auto
-Spell property Vaginal1Oral2Anal1 auto
-Spell property Vaginal1Oral2Anal2 auto
-Spell property Vaginal1Oral1Anal2 auto
-Spell property Vaginal2Oral2Anal2 auto
-Spell property Oral1Anal1 auto
-Spell property Oral2Anal1 auto
-Spell property Oral1Anal2 auto
-Spell property Oral2Anal2 auto
-Spell property Vaginal1Oral1 auto
-Spell property Vaginal2Oral1 auto
-Spell property Vaginal1Oral2 auto
-Spell property Vaginal2Oral2 auto
-Spell property Vaginal1Anal1 auto
-Spell property Vaginal2Anal1 auto
-Spell property Vaginal1Anal2 auto
-Spell property Vaginal2Anal2 auto
-Spell property Vaginal1 auto
-Spell property Vaginal2 auto
-Spell property Oral1 auto
-Spell property Oral2 auto
-Spell property Anal1 auto
-Spell property Anal2 auto
+String Property ACTIVE_SET_PREFIX = "SexLabActiveSet" AutoReadOnly Hidden
+String Property ACTIVE_LAYER_PREFIX = "SexLabActiveLayer" AutoReadOnly Hidden
+String Property LAST_APPLIED_TIME_PREFIX = "SexLabLastAppliedTime" AutoReadOnly Hidden
+String Property LAST_APPLIED_TEXTURE_PREFIX = "SexLabLastAppliedTexture" AutoReadOnly Hidden
+String Property APPLIED_TEXTURE_LIST = "SexLabAppliedTextureList" AutoReadOnly Hidden
 
-Keyword property CumOralKeyword auto
-Keyword property CumAnalKeyword auto
-Keyword property CumVaginalKeyword auto
-Keyword property CumOralStackedKeyword auto
-Keyword property CumAnalStackedKeyword auto
-Keyword property CumVaginalStackedKeyword auto
+int Property FX_ALL = -1 AutoReadOnly Hidden
+int Property FX_VAGINAL = 0 AutoReadOnly Hidden
+int Property FX_ANAL = 1 AutoReadOnly Hidden
+int Property FX_ORAL = 2 AutoReadOnly Hidden
 
-function ApplyCum(Actor ActorRef, int CumID)
-	AddCum(ActorRef, (cumID == 1 || cumID == 4 || cumID == 5 || cumID == 7), (cumID == 2 || cumID == 4 || cumID == 6 || cumID == 7), (cumID == 3 || cumID == 5 || cumID == 6 || cumID == 7))
-endFunction
+Spell Property abCumFX Auto
+Spell property CumVaginalSpell Auto
+Spell property CumOralSpell Auto
+Spell property CumAnalSpell Auto
 
-function ClearCum(Actor ActorRef)
-	if !ActorRef
+Function AddCumFx(Actor akActor, int asType)
+	If (!akActor.HasSpell(abCumFX))
+		akActor.AddSpell(abCumFX)
+	EndIf
+	BeginOverlay(akActor, asType)
+	If (asType == FX_VAGINAL)
+		akActor.AddSpell(CumVaginalSpell)
+	ElseIf (asType == FX_ORAL)
+		akActor.AddSpell(CumOralSpell)
+	ElseIf (asType == FX_ANAL)
+		akActor.AddSpell(CumAnalSpell)
+	EndIf
+	int handle = ModEvent.Create("SexLabApplyCum")
+	ModEvent.PushForm(handle, akActor)
+	ModEvent.PushInt(handle, asType)
+	ModEvent.Send(handle)
+EndFunction
+
+Function RemoveCumFx(Actor akTarget, int asType)
+	If (asType == FX_ALL)
+		RemoveCumFx(akTarget, FX_VAGINAL)
+		RemoveCumFx(akTarget, FX_ANAL)
+		RemoveCumFx(akTarget, FX_ORAL)
 		return
-	endIf
+	EndIf
+	int removed = StorageUtil.IntListRemove(akTarget, APPLIED_TEXTURE_LIST, asType)
+	If (removed == 0)
+		return
+	EndIf
+	Bool isFemale = akTarget.GetLeveledActorBase().GetSex() == 1
+	String LastEffect = StorageUtil.GetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + asType)
+	RemovePartOverlay(akTarget, isFemale, LastEffect)
+	If (asType == FX_VAGINAL)
+		akTarget.RemoveSpell(CumVaginalSpell)
+	ElseIf (asType == FX_ORAL)
+		akTarget.RemoveSpell(CumOralSpell)
+	ElseIf (asType == FX_ANAL)
+		akTarget.RemoveSpell(CumAnalSpell)
+	EndIf
+	StorageUtil.UnsetIntValue(akTarget, ACTIVE_SET_PREFIX + asType)
+	StorageUtil.UnsetIntValue(akTarget, ACTIVE_LAYER_PREFIX + asType)
+	StorageUtil.UnsetFloatValue(akTarget, LAST_APPLIED_TIME_PREFIX + asType)
+	StorageUtil.UnsetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + asType)
+	If (StorageUtil.IntListCount(akTarget, APPLIED_TEXTURE_LIST) == 0)
+		akTarget.RemoveSpell(abCumFX)
+	EndIf
+	int handle = ModEvent.Create("SexLabClearCum")
+	ModEvent.PushForm(handle, akTarget)
+	ModEvent.PushInt(handle, asType)
+	ModEvent.Send(handle)
+EndFunction
 
-	int handle = ModEvent.Create("Sexlab_ClearCum")
-	if handle
-		ModEvent.PushForm(handle, ActorRef)
-		ModEvent.Send(handle)
-	endIf
-
-	ActorRef.DispelSpell(Vaginal1Oral1Anal1)
-	ActorRef.DispelSpell(Vaginal2Oral1Anal1)
-	ActorRef.DispelSpell(Vaginal2Oral2Anal1)
-	ActorRef.DispelSpell(Vaginal2Oral1Anal2)
-	ActorRef.DispelSpell(Vaginal1Oral2Anal1)
-	ActorRef.DispelSpell(Vaginal1Oral2Anal2)
-	ActorRef.DispelSpell(Vaginal1Oral1Anal2)
-	ActorRef.DispelSpell(Vaginal2Oral2Anal2)
-	ActorRef.DispelSpell(Oral1Anal1)
-	ActorRef.DispelSpell(Oral2Anal1)
-	ActorRef.DispelSpell(Oral1Anal2)
-	ActorRef.DispelSpell(Oral2Anal2)
-	ActorRef.DispelSpell(Vaginal1Oral1)
-	ActorRef.DispelSpell(Vaginal2Oral1)
-	ActorRef.DispelSpell(Vaginal1Oral2)
-	ActorRef.DispelSpell(Vaginal2Oral2)
-	ActorRef.DispelSpell(Vaginal1Anal1)
-	ActorRef.DispelSpell(Vaginal2Anal1)
-	ActorRef.DispelSpell(Vaginal1Anal2)
-	ActorRef.DispelSpell(Vaginal2Anal2)
-	ActorRef.DispelSpell(Vaginal1)
-	ActorRef.DispelSpell(Vaginal2)
-	ActorRef.DispelSpell(Oral1)
-	ActorRef.DispelSpell(Oral2)
-	ActorRef.DispelSpell(Anal1)
-	ActorRef.DispelSpell(Anal2)
-endFunction
-
-function AddCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
-	if !ActorRef && !Vaginal && !Oral && !Anal
-		return ; Nothing to do
-	endIf
-
-	int handle = ModEvent.Create("Sexlab_AddCum")
-	if handle
-		ModEvent.PushForm(handle, ActorRef)
-		ModEvent.PushBool(handle, Vaginal)
-		ModEvent.PushBool(handle, Oral)
-		ModEvent.PushBool(handle, Anal)
-		ModEvent.Send(handle)
-	endIf
-
-	int kVaginal = ((Vaginal || ActorRef.HasMagicEffectWithKeyword(CumVaginalStackedKeyword)) as int) + (ActorRef.HasMagicEffectWithKeyword(CumVaginalKeyword) as int)
-	int kOral    = ((Oral || ActorRef.HasMagicEffectWithKeyword(CumOralStackedKeyword)) as int)       + (ActorRef.HasMagicEffectWithKeyword(CumOralKeyword) as int)
-	int kAnal    = ((Anal || ActorRef.HasMagicEffectWithKeyword(CumAnalStackedKeyword)) as int)       + (ActorRef.HasMagicEffectWithKeyword(CumAnalKeyword) as int)
-	Log("Vaginal:"+Vaginal+"-"+kVaginal+" Oral:"+Oral+"-"+kOral+" Anal:"+Anal+"-"+kAnal)
-
-	if kVaginal == 1 && kOral == 1 && kAnal == 1
-		Vaginal1Oral1Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 1 && kAnal == 1
-		Vaginal2Oral1Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 2 && kAnal == 1
-		Vaginal2Oral2Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 1 && kAnal == 2
-		Vaginal2Oral1Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 2 && kAnal == 1
-		Vaginal1Oral2Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 2 && kAnal == 2
-		Vaginal1Oral2Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 1 && kAnal == 2
-		Vaginal1Oral1Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 2 && kAnal == 2
-		Vaginal2Oral2Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 1 && kAnal == 1
-		Oral1Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 2 && kAnal == 1
-		Oral2Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 1 && kAnal == 2
-		Oral1Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 2 && kAnal == 2
-		Oral2Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 1 && kAnal == 0
-		Vaginal1Oral1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 1 && kAnal == 0
-		Vaginal2Oral1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 2 && kAnal == 0
-		Vaginal1Oral2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 2 && kAnal == 0
-		Vaginal2Oral2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 0 && kAnal == 1
-		Vaginal1Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 0 && kAnal == 1
-		Vaginal2Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 0 && kAnal == 2
-		Vaginal1Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 0 && kAnal == 2
-		Vaginal2Anal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 1 && kOral == 0 && kAnal == 0
-		Vaginal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 2 && kOral == 0 && kAnal == 0
-		Vaginal2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 1 && kAnal == 0
-		Oral1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 2 && kAnal == 0
-		Oral2.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 0 && kAnal == 1
-		Anal1.Cast(ActorRef, ActorRef)
-	elseif kVaginal == 0 && kOral == 0 && kAnal == 2
-		Anal2.Cast(ActorRef, ActorRef)
-	endIf
-endFunction
-
-int function CountCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
-	if !ActorRef && !Vaginal && !Oral && !Anal
-		return -1; Nothing to do
-	endIf
-	int Amount
-	if Vaginal
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumVaginalKeyword) as int
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumVaginalStackedKeyword) as int
-	endIf
-	if Oral
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumOralKeyword) as int
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumOralStackedKeyword) as int
-	endIf
-	if Anal
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumAnalKeyword) as int
-		Amount += ActorRef.HasMagicEffectWithKeyword(CumAnalStackedKeyword) as int
-	endIf
-	return Amount
-endFunction
+int Function CountCumFx(Actor akActor, String asType)
+	return StorageUtil.CountObjIntValuePrefix(akActor, ACTIVE_LAYER_PREFIX + asType)
+EndFunction
 
 ; ------------------------------------------------------- ;
 ; --- Equipment Functions                             --- ;
@@ -354,6 +253,9 @@ EndFunction
 bool Function HasVehicle(Actor akActor) native global
 Form[] Function UnequipSlots(Actor akActor, int aiSlots) native global
 
+String Function PickRandomFxSet(int asType) native global
+int Function GetFxSetCount(int asType, String asSet) native global
+
 Form[] Function StripActorImpl(Actor akActor, int aiSlots, bool abStripWeapons = true, bool abAnimate = false)
 	abAnimate = abAnimate && akActor.GetWornForm(0x4)	; Body armor slot
 	If(abAnimate)
@@ -382,6 +284,135 @@ Form[] Function StripActorImpl(Actor akActor, int aiSlots, bool abStripWeapons =
 	return ret
 EndFunction
 
+Function BeginOverlay(Actor akTarget, int aiType)
+	bool isFemale = akTarget.GetLeveledActorBase().GetSex() as Bool
+	String set = StorageUtil.GetStringValue(akTarget, ACTIVE_SET_PREFIX + aiType, "")
+	If (set == "")
+		set = PickRandomFxSet(aiType)
+		StorageUtil.SetStringValue(akTarget, ACTIVE_SET_PREFIX + aiType, set)
+		Log(akTarget + ": Selecting cum fx set; Random " + aiType + " set " + set + " selected for " + akTarget.GetBaseObject().GetName())
+	Else
+		Log(akTarget + ": Selecting cum fx set; Using " + aiType + " set " + set + " for " + akTarget.GetBaseObject().GetName())
+	EndIf
+	int layer = StorageUtil.GetIntValue(akTarget, ACTIVE_LAYER_PREFIX + aiType, 0) + 1
+	int maxLayer = GetFxSetCount(aiType, set)
+	If (layer > maxLayer)
+		layer = maxLayer
+	EndIf
+	If (StorageUtil.SetIntValue(akTarget, ACTIVE_LAYER_PREFIX + aiType, layer) == maxLayer)
+		return
+	EndIf
+	String texturePath = "Textures/SexLab/CumFx/" + aiType + "/" + set + "/" + layer + ".dds"
+	StorageUtil.SetStringValue(akTarget, LAST_APPLIED_TEXTURE_PREFIX + aiType, texturePath)
+	StorageUtil.SetFloatValue(akTarget, LAST_APPLIED_TIME_PREFIX + aiType, SexLabUtil.GetCurrentGameRealTime())
+	StorageUtil.IntListAdd(akTarget, APPLIED_TEXTURE_LIST, aiType, false)
+	String[] parts = GetAreas()
+	int i = 0
+	While (i < parts.Length)
+		String part = parts[i]
+		; If (!(Menu.LimitCumAreas && (part == "Hands" || part == "Feet")) && part != "Face" || (part == "Face" && part == "Oral"))
+			; ReadyOverlay(akTarget, isFemale, part, texturePath, set, aiType)
+			
+			Int slot = GetEmptySlot(akTarget, isFemale, part, aiType)
+			If slot != -1
+				ApplyOverlay(akTarget, isFemale, part, slot, texturePath, set)
+			Else
+				Log(akTarget + ": Error applying overlay to area: " + part)
+			EndIf
+		; EndIf
+		i += 1
+	EndWhile
+EndFunction
+
+Function ApplyOverlay(Actor akTarget, bool isFemale, String asArea, String asOverlaySlot, String asTexture, String asSet)
+	;note on args:
+	;Function AddNodeOverrideInt(ObjectReference ref, bool isFemale, string node, int key, int index, int value, bool persist)
+	;key 0=Color, 1=??, 2=Gloss,3=specStr, 4/5=Lighting, 6=TextureSet, 7=tintColor, 8=alpha, 9=texture
+	NiOverride.AddOverlays(akTarget)
+	float alpha = sslSystemConfig.GetSettingFlt("fCumAlpha")
+	String node = asArea + " [ovl" + asOverlaySlot + "]"
+	NiOverride.AddNodeOverrideString(akTarget, isFemale, node, 9, 0, asTexture, true)
+	NiOverride.AddNodeOverrideInt(akTarget, isFemale, node, 7, -1, 0, true)	;tint color
+    NiOverride.AddNodeOverrideInt(akTarget, isFemale, node, 0, -1, 0, true)	;color
+	NiOverride.AddNodeOverrideFloat(akTarget, isFemale, node, 8, -1, alpha, true)
+	NiOverride.AddNodeOverrideFloat(akTarget, isFemale, node, 2, -1, 0.0, true)	;gloss
+	NiOverride.AddNodeOverrideFloat(akTarget, isFemale, node, 3, -1, 0.0, true)	;SpecStr
+	NiOverride.ApplyNodeOverrides(akTarget)
+EndFunction
+
+Function RemovePartOverlay(Actor akTarget, bool isFemale, String LastEffect)
+	Log("RemovePartOverlay:" + LastEffect + " started on " + akTarget.GetLeveledActorBase().GetName())
+	String[] parts = GetAreas()
+	Int i = 0
+	While (i < parts.Length)
+		Int j = GetNumSlots(parts[i])
+		While (j > 0)
+			j -= 1
+			String Node = parts[i] + " [ovl" + j + "]"
+			String TexPath = NiOverride.GetNodeOverrideString(akTarget, isFemale, Node, 9, 0)
+			If (TexPath == LastEffect)
+				NiOverride.AddNodeOverrideString(akTarget, isFemale, Node, 9, 0, "actors\\character\\overlays\\default.dds", true)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 9, 0)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 7, -1)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 0, -1)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 8, -1)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 2, -1)
+				NiOverride.RemoveNodeOverride(akTarget, isFemale, Node, 3, -1)
+			EndIf
+		EndWhile
+		i += 1
+	EndWhile
+EndFunction
+
+int Function GetEmptySlot(Actor akTarget, bool isFemale, String asArea, int aiType)
+	String typeStr = TypeToString(aiType)
+	int i = GetNumSlots(asArea)
+	While (i > 0)
+		i -= 1
+		String TexPath = NiOverride.GetNodeOverrideString(akTarget, isFemale, asArea + " [ovl" + i + "]", 9, 0)
+		Log("GetEmptySlot(): akTarget: " + akTarget.GetBaseObject().GetName() + ". Slot: " + i + ". TexPath: " + TexPath)
+		If (TexPath == "" || (StringUtil.Find(TexPath, "SexLab") != -1 && StringUtil.Find(TexPath, typeStr) != -1) || TexPath == "actors\\character\\overlays\\default.dds") 
+			Log("GetEmptySlot(): Slot " + i + " chosen for area: " + asArea + " on " + akTarget.GetLeveledActorBase().GetName())
+			Return i
+		EndIf
+	EndWhile
+	Log("GetEmptySlot(): Error: Could not find a free slot in area: " + asArea)
+	Return -1
+EndFunction
+
+String[] Function GetAreas()
+	String[] retVal = new String[4]
+	retVal[0] = "Face"
+	retVal[1] = "Body"
+	retVal[2] = "Hands"
+	retVal[3] = "Feet"
+	return retVal
+EndFunction
+
+int Function GetNumSlots(String Area)
+	If Area == "Body"
+		return NiOverride.GetNumBodyOverlays()
+	ElseIf Area == "Face"
+		return NiOverride.GetNumFaceOverlays()
+	ElseIf Area == "Hands"
+		return NiOverride.GetNumHandOverlays()
+	Else
+		return NiOverride.GetNumFeetOverlays()
+	EndIf
+EndFunction
+
+String Function TypeToString(int aiType)
+	If (aiType == FX_VAGINAL)
+		return "Vaginal"
+	ElseIf (aiType == FX_ANAL)
+		return "Anal"
+	ElseIf (aiType == FX_ORAL)
+		return "Oral"
+	Else
+		return "Unknown"
+	EndIf
+EndFunction
+
 ; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
 ; ----------------------------------------------------------------------------- ;
 ;               ██╗     ███████╗ ██████╗  █████╗  ██████╗██╗   ██╗              ;
@@ -393,8 +424,219 @@ EndFunction
 ; ----------------------------------------------------------------------------- ;
 ; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
 
-Faction property AnimatingFaction auto
-Keyword property ActorTypeNPC auto
+Faction property AnimatingFaction hidden
+	Faction Function Get()
+		return Config.AnimatingFaction
+	EndFunction
+EndProperty
+Weapon property DummyWeapon hidden
+	Weapon Function Get()
+		return Config.DummyWeapon
+	EndFunction
+EndProperty
+Armor property NudeSuit hidden
+	Armor Function Get()
+		return Config.NudeSuit
+	EndFunction
+EndProperty
+
+Spell property CumVaginalOralAnalSpell Hidden
+  Spell Function Get()
+    return Config.CumVaginalOralAnalSpell
+  EndFunction
+EndProperty
+Spell property CumOralAnalSpell Hidden
+  Spell Function Get()
+    return Config.CumOralAnalSpell
+  EndFunction
+EndProperty
+Spell property CumVaginalOralSpell Hidden
+  Spell Function Get()
+    return Config.CumVaginalOralSpell
+  EndFunction
+EndProperty
+Spell property CumVaginalAnalSpell Hidden
+  Spell Function Get()
+    return Config.CumVaginalAnalSpell
+  EndFunction
+EndProperty
+Spell property Vaginal1Oral1Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral1Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral1Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral1Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral2Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral2Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral1Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral1Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal1Oral2Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral2Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal1Oral2Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral2Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal1Oral1Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral1Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral2Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral2Anal2
+	EndFunction
+EndProperty
+Spell property Oral1Anal1 Hidden
+	Spell Function Get()
+		return Config.Oral1Anal1
+	EndFunction
+EndProperty
+Spell property Oral2Anal1 Hidden
+	Spell Function Get()
+		return Config.Oral2Anal1
+	EndFunction
+EndProperty
+Spell property Oral1Anal2 Hidden
+	Spell Function Get()
+		return Config.Oral1Anal2
+	EndFunction
+EndProperty
+Spell property Oral2Anal2 Hidden
+	Spell Function Get()
+		return Config.Oral2Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal1Oral1 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral1
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral1 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral1
+	EndFunction
+EndProperty
+Spell property Vaginal1Oral2 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Oral2
+	EndFunction
+EndProperty
+Spell property Vaginal2Oral2 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Oral2
+	EndFunction
+EndProperty
+Spell property Vaginal1Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal2Anal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Anal1
+	EndFunction
+EndProperty
+Spell property Vaginal1Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal1Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal2Anal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal2Anal2
+	EndFunction
+EndProperty
+Spell property Vaginal1 Hidden
+	Spell Function Get()
+		return Config.Vaginal1
+	EndFunction
+EndProperty
+Spell property Vaginal2 Hidden
+	Spell Function Get()
+		return Config.Vaginal2
+	EndFunction
+EndProperty
+Spell property Oral1 Hidden
+	Spell Function Get()
+		return Config.Oral1
+	EndFunction
+EndProperty
+Spell property Oral2 Hidden
+	Spell Function Get()
+		return Config.Oral2
+	EndFunction
+EndProperty
+Spell property Anal1 Hidden
+	Spell Function Get()
+		return Config.Anal1
+	EndFunction
+EndProperty
+Spell property Anal2 Hidden
+	Spell Function Get()
+		return Config.Anal2
+	EndFunction
+EndProperty
+
+Keyword property CumOralKeyword Hidden
+	Keyword Function Get()
+		return Config.CumOralKeyword
+	EndFunction
+EndProperty
+Keyword property CumAnalKeyword Hidden
+	Keyword Function Get()
+		return Config.CumAnalKeyword
+	EndFunction
+EndProperty
+Keyword property CumVaginalKeyword Hidden
+	Keyword Function Get()
+		return Config.CumVaginalKeyword
+	EndFunction
+EndProperty
+Keyword property CumOralStackedKeyword Hidden
+	Keyword Function Get()
+		return Config.CumOralStackedKeyword
+	EndFunction
+EndProperty
+Keyword property CumAnalStackedKeyword Hidden
+	Keyword Function Get()
+		return Config.CumAnalStackedKeyword
+	EndFunction
+EndProperty
+Keyword property CumVaginalStackedKeyword Hidden
+	Keyword Function Get()
+		return Config.CumVaginalStackedKeyword
+	EndFunction
+EndProperty
+
+Furniture property BaseMarker hidden
+	Furniture Function Get()
+		return Config.BaseMarker
+	EndFunction
+EndProperty
+Package property DoNothing hidden
+	Package Function Get()
+		return Config.DoNothing
+	EndFunction
+EndProperty
+Keyword property ActorTypeNPC hidden
+	Keyword Function Get()
+		return Config.ActorTypeNPC
+	EndFunction
+EndProperty
 
 bool function IsCreature(Actor ActorRef)
 	return SexLabRegistry.GetRaceID(ActorRef) > 0
@@ -536,3 +778,40 @@ bool function CanAnimate(Actor ActorRef)
 	string RaceName = ActorRace.GetName()+MiscUtil.GetRaceEditorID(ActorRace)
 	return !(ActorRace.IsRaceFlagSet(0x00000004) || StringUtil.Find(RaceName, "Moli") != -1 || StringUtil.Find(RaceName, "Child") != -1  || StringUtil.Find(RaceName, "Little") != -1 || StringUtil.Find(RaceName, "117") != -1 || StringUtil.Find(RaceName, "Enfant") != -1 || StringUtil.Find(RaceName, "Teen") != -1 || (StringUtil.Find(RaceName, "Elin") != -1 && ActorRef.GetScale() < 0.92) ||  (StringUtil.Find(RaceName, "Monli") != -1 && ActorRef.GetScale() < 0.92))
 endFunction
+
+function ApplyCum(Actor ActorRef, int CumID)
+	AddCum(ActorRef, (cumID == 1 || cumID == 4 || cumID == 5 || cumID == 7), (cumID == 2 || cumID == 4 || cumID == 6 || cumID == 7), (cumID == 3 || cumID == 5 || cumID == 6 || cumID == 7))
+endFunction
+
+Function AddCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
+	If (!Vaginal && !Oral && !Anal)
+		return	; Nothing to do
+	EndIf
+	If (Vaginal)
+		AddCumFx(ActorRef, FX_VAGINAL)
+	EndIf
+	If (Oral)
+		AddCumFx(ActorRef, FX_ORAL)
+	EndIf
+	If (Anal)
+		AddCumFx(ActorRef, FX_ANAL)
+	EndIf
+EndFunction
+
+int Function CountCum(Actor ActorRef, bool Vaginal = true, bool Oral = true, bool Anal = true)
+	int retVal = 0
+	If Vaginal
+		retVal += CountCumFx(ActorRef, FX_VAGINAL)
+	EndIf
+	If Oral
+		retVal += CountCumFx(ActorRef, FX_ORAL)
+	EndIf
+	If Anal
+		retVal += CountCumFx(ActorRef, FX_ANAL)
+	EndIf
+	return retVal
+EndFunction
+
+Function ClearCum(Actor ActorRef)
+	RemoveCumFx(ActorRef, FX_ALL)
+EndFunction
