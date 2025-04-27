@@ -1926,11 +1926,11 @@ Function Initialize()
 	_ContextTags = Utility.CreateStringArray(0)
 	_Hooks = Utility.CreateStringArray(0)
 	; Enter thread selection pool
-	DestroyThreadInstance()
+	DestroyInstance()
 	GoToState(STATE_IDLE)
 EndFunction
 
-Function DestroyThreadInstance() native
+Function DestroyInstance() native
 
 ; ------------------------------------------------------- ;
 ; --- Logging                                         --- ;
