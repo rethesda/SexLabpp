@@ -691,6 +691,10 @@ State Making
 
 	Function CenterOnObject(ObjectReference CenterOn, bool resync = true)
 		If (CenterOn)
+			If (CenterOn as Actor && _Positions.Find(CenterOn as Actor) == -1)
+				Form xMarker = Game.GetForm(0x3B)
+				CenterOn = CenterOn.PlaceAtMe(xMarker, 1, false)
+			EndIf
 			CenterAlias.ForceRefTo(CenterOn)
 		Else
 			CenterAlias.Clear()
@@ -1082,6 +1086,9 @@ State Animating
 	Function CenterOnObject(ObjectReference CenterOn, bool resync = true)
 		If (!CenterOn)
 			return
+		ElseIf (CenterOn as Actor && _Positions.Find(CenterOn as Actor) == -1)
+			Form xMarker = Game.GetForm(0x3B)
+			CenterOn = CenterOn.PlaceAtMe(xMarker, 1, false)
 		EndIf
 		SetFurnitureIgnored(false)
 		If (!ReassignCenter(CenterOn))

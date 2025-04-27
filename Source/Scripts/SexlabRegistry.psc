@@ -89,6 +89,9 @@ Function SetSceneEnabled(String asID, bool abEnabled) native global
 ; The (human readable) name of the given scene
 String Function GetSceneName(String asID) native global
 
+; Check if the given center can be used to animate this scene
+bool Function IsCompatibleCenter(String asID, ObjectReference akCenter) native global
+
 ; Check if some given tag is part of a given scene
 bool Function IsSceneTag(String asID, String asTag) native global
 bool Function IsSceneTagA(String asID, String[] asTags) native global
@@ -129,15 +132,6 @@ int Function GetNodeType(String asID, String asStage) native global
 String[] Function GetPathMin(String asID, String asStage) native global
 String[] Function GetPathMax(String asID, String asStage) native global
 
-; --- Data
-
-; Return the number of actors animated in this scene, including or excluding optional positions
-int Function GetActorCount(String asID) native global
-
-; Are position n and m similar in the scenes context? That is, can an actor filling position n also fill position m and vice versa?
-bool Function IsSimilarPosition(String asID, int n, int m) native global
-bool Function CanFillPosition(String asID, int n, Actor akActor) native global
-
 ; Obtain all ending stages/sinks
 String[] Function GetEndingStages(String asID) native global
 
@@ -149,6 +143,15 @@ float Function GetFixedLength(String asID, String asStage) native global
 ; Obtain all stages having a climax flag set, if n > -1, only return stages in which the nth actor climaxes
 String[] Function GetClimaxStages(String asID, int n = -1) native global
 int[] Function GetClimaxingActors(String asID, String asStage) native global
+
+; --- Data
+
+; Return the number of actors animated in this scene, including or excluding optional positions
+int Function GetActorCount(String asID) native global
+
+; Are position n and m similar in the scenes context? That is, can an actor filling position n also fill position m and vice versa?
+bool Function IsSimilarPosition(String asID, int n, int m) native global
+bool Function CanFillPosition(String asID, int n, Actor akActor) native global
 
 ; Get compatible sexes of this scenes n'th position. This ignores the "use creature sex" setting
 ; Return a bitflag with following interpretation:
