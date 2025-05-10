@@ -159,6 +159,10 @@ bool Function IsSilent()
 	return IsSilent
 EndFunction
 
+Function SetSilent(bool abSilent)
+	_IsForcedSilent = abSilent
+EndFunction
+
 ; ------------------------------------------------------- ;
 ; --- Expression                                      --- ;
 ; ------------------------------------------------------- ;

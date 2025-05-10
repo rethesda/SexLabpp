@@ -622,7 +622,10 @@ State Making
 			return -1
 		EndIf
 		ActorAlias[i].SetVictim(IsVictim)
-		ActorAlias[i].SetVoice(Voice, ForceSilent)
+		ActorAlias[i].SetSilent(ForceSilent)
+		If (Voice)
+			StoreVoice(ActorRef, Voice.Registry)
+		EndIf
 		_Positions = PapyrusUtil.PushActor(_Positions, ActorRef)
 		return _Positions.Find(ActorRef)
 	EndFunction
