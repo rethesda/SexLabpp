@@ -622,10 +622,7 @@ State Making
 			return -1
 		EndIf
 		ActorAlias[i].SetVictim(IsVictim)
-		ActorAlias[i].SetSilent(ForceSilent)
-		If (Voice)
-			StoreVoice(ActorRef, Voice.Registry)
-		EndIf
+		ActorAlias[i].SetVoice(Voice, ForceSilent)
 		_Positions = PapyrusUtil.PushActor(_Positions, ActorRef)
 		return _Positions.Find(ActorRef)
 	EndFunction
@@ -707,7 +704,7 @@ State Making
   sslThreadController Function StartThread()
 		UnregisterForUpdate()
 		_Positions = PapyrusUtil.RemoveActor(_Positions, none)
-		If(_Positions.Length < 1 || _Positions.Length >= POSITION_COUNT_MAX)
+		If(_Positions.Length <= 0 || _Positions.Length > POSITION_COUNT_MAX)
 			Fatal("Failed to start Thread: Thread has reached actor limit or no actors were added", "StartThread()")
 			return none
 		EndIf
@@ -974,12 +971,12 @@ State Animating
 
 	Function StartStage(String[] asHistory, String asNextStageId)
 		Log("Starting stage " + asNextStageId + " with history: " + asHistory, "StartStage()")
-		StopTranslations()
 		SendThreadEvent("StageStart")
 		RunHook(Config.HOOKID_STAGESTART)
+		StopTranslations()
 		_StageHistory = AdvanceScene(asHistory, asNextStageId)
-		ReStartTimer()
 		StartTranslations()
+		ReStartTimer()
 	EndFunction
 
 	; NOTE: This here counts from 1 instead of 0

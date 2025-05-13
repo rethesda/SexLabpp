@@ -159,10 +159,6 @@ bool Function IsSilent()
 	return IsSilent
 EndFunction
 
-Function SetSilent(bool abSilent)
-	_IsForcedSilent = abSilent
-EndFunction
-
 ; ------------------------------------------------------- ;
 ; --- Expression                                      --- ;
 ; ------------------------------------------------------- ;
@@ -429,6 +425,13 @@ State Ready
 
 	Function SetStrapon(Form ToStrapon)
 		_Strapon = ToStrapon
+	EndFunction
+	
+	Function SetActorVoice(String asNewVoice, bool abForceSilent)
+		_IsForcedSilent = abForceSilent
+		If (asNewVoice)
+			sslVoiceSlots.StoreVoice(ActorRef, asNewVoice)
+		EndIf
 	EndFunction
 
 	Event OnDoPrepare(string asEventName, string asStringArg, float afNumArg, form akPathTo)
