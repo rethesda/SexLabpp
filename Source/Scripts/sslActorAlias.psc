@@ -360,7 +360,9 @@ float _LastOrgasm
 Auto State Empty
 	bool Function SetActor(Actor ProspectRef)
 		If (ProspectRef == _PlayerRef)
-			Game.DisablePlayerControls(false, true, false, false, false, false, true, false, 0)
+			Game.DisablePlayerControls(abMovement = false, abFighting = true, abCamSwitch = false, \
+				abLooking = false, abSneaking = false, abMenu = false, abActivate = true, abJournalTabs = false, \
+				aiDisablePOVType = 0)
 		EndIf
 		ForceRefTo(ProspectRef)
 		_ActorRef = ProspectRef
@@ -599,7 +601,9 @@ State Paused
 			If (Game.GetCameraState() == 0)
 				Game.ForceThirdPerson()
 			EndIf
-			Game.DisablePlayerControls(false, false, true, false, false, false, false, false, 0)
+			Game.DisablePlayerControls(abMovement = false, abFighting = true, abCamSwitch = true, \
+				abLooking = false, abSneaking = false, abMenu = false, abActivate = true, abJournalTabs = false, \
+				aiDisablePOVType = 0)
 			If(_Config.AutoTFC)
 				MiscUtil.SetFreeCameraState(true)
 				MiscUtil.SetFreeCameraSpeed(_Config.AutoSUCSM)
@@ -920,10 +924,8 @@ State Animating
 		_ActorRef.SetAnimationVariableInt("IsNPC", _AnimVarIsNPC)
 		_ActorRef.SetAnimationVariableBool("bHumanoidFootIKDisable", _AnimVarbHumanoidFootIKDisable)
 		If (_ActorRef == _PlayerRef)
+			MiscUtil.SetFreeCameraState(false)
 			Game.EnablePlayerControls(abFighting = false, abActivate = false)
-			If (_Config.AutoTFC)
-				MiscUtil.SetFreeCameraState(false)
-			EndIf
 			If (sslLovense.IsLovenseInstalled())
 				sslLovense.StopAllActions()
 			EndIf
