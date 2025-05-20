@@ -583,6 +583,7 @@ EndFunction
 	Upon completion, this state will switch into the "Aniamting" State
 /;
 
+int _instanceCreationWaitLock
 int _prepareAsyncCount
 String[] _CustomScenes
 String[] _PrimaryScenes
@@ -714,12 +715,22 @@ State Making
 			ClearLeadInScenes()
 		EndIf
 		Actor[] submissives = GetSubmissives()
-		If (!CreateInstance(submissives, _PrimaryScenes, _LeadInScenes, _CustomScenes, _furniStatus))
+		_instanceCreationWaitLock = -1
+		CreateInstance(submissives, _PrimaryScenes, _LeadInScenes, _CustomScenes, _furniStatus)
+		While (_instanceCreationWaitLock < 0)
+			Utility.Wait(0.05)
+		EndWhile
+		If (_instanceCreationWaitLock == 0)
 			Fatal("Failed to start Thread: Unable to create thread instance. See 'Documents/My Games/Skyrim Special Edition/SKSE/SexLabUtil.log' for details", "StartThread()")
 			return none
 		EndIf
 		GoToState(STATE_SETUP_M)
     return self as sslThreadController
+	EndFunction
+	; Called after CreateInstance() terminates (maybe async due to center selection)
+	Function ContinueSetup(bool abContinue)
+		Log("ContinueSetup called with " + abContinue)
+		_instanceCreationWaitLock = abContinue as int
 	EndFunction
 	
 	Function EndAnimation(bool Quickly = false)
@@ -834,8 +845,11 @@ EndFunction
 Function SetFurnitureStatus(int aiStatus)
 	Log("Furniture status can only be set during setup", "SetFurnitureStatus()")
 EndFunction
+Function ContinueSetup(bool abContinue)
+	Log("ContinueSetup() can only be called during setup", "ContinueSetup()")
+EndFunction
 
-bool Function CreateInstance(Actor[] akSubmissives, String[] asPrimaryScenes, String[] asLeadInScenes, String[] asCustomScenes, int aiFurnitureStatus) native
+Function CreateInstance(Actor[] akSubmissives, String[] asPrimaryScenes, String[] asLeadInScenes, String[] asCustomScenes, int aiFurnitureStatus) native
 String[] Function GetLeadInScenes() native
 String[] Function GetPrimaryScenes() native
 String[] Function GetCustomScenes() native
