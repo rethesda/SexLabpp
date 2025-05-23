@@ -109,14 +109,15 @@ Function TriggerSex(Actor[] akPassed)
   While (!SexLab.StartSceneA(akPassed, tags, sub, asHook = "SSLMatchMaker"))
     If (!sub.Length || Config.SubmissivePlayer && plp > -1 && sub.Length == 1)
       Debug.Notification("Failed to start scene")
+      float retTimeA = Utility.GetCurrentRealTime()
       String actorinfo = Parse_Sexes_And_Races(SexLab.GetSexAll(akPassed), akPassed)
-      Config.Log("[SexLab MatchMaker] Unable to start Scene for Actors [" + actorinfo + "] / Tags " + tags + "; Aborting after " + (retTime - _StartCall))
+      Config.Log("[SexLab MatchMaker] Unable to start Scene for Actors [" + actorinfo + "] / Tags " + tags + "; Aborting after " + (retTimeA - _StartCall))
       return
     EndIf
     sub = PapyrusUtil.RemoveActor(sub, sub[sub.Length - 1])
   EndWhile
-  float retTime = Utility.GetCurrentRealTime()
-  Config.Log("[SexLab MatchMaker] Successfully started animation after " + (retTime - _StartCall))
+  float retTimeB = Utility.GetCurrentRealTime()
+  Config.Log("[SexLab MatchMaker] Successfully started animation after " + (retTimeB - _StartCall))
 EndFunction
 
 Event AnimationStarted(int aiThread, bool abHasPlayer)
