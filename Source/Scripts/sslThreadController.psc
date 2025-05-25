@@ -66,6 +66,8 @@ Function DisableHotkeys()
 		UnregisterForModEvent(_MenuEvents[i])
 		i += 1
 	EndWhile
+	; If free cam is active here will glitch out controls?
+	MiscUtil.SetFreeCameraState(false)
 	TryCloseSceneMenu()
 EndFunction
 
