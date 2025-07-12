@@ -1257,7 +1257,7 @@ float _EdgeSpamPenalty
 
 Function ResetEnjoymentVariables()
 	; Defaults
-	_EnjoymentDelay = _Config.EnjoymentUpdateDelay
+	_EnjoymentDelay = 1.5
 	_ContextCheckDelay = 8.0
 	; Base
 	_CrtMaleHugePP = False

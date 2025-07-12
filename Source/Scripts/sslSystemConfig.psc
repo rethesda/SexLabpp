@@ -1101,7 +1101,6 @@ Function CacheEnjJsonValues()
 	StoreEnjJsonValue("bDebugMode3")
 	;main
 	StoreEnjJsonValue("bInternalEnjoymentEnabled")
-	StoreEnjJsonValue("fEnjoymentUpdateDelay")
 	StoreEnjJsonValue("iInterDetectionStrength")
 	StoreEnjJsonValue("fEnjRaiseMultInter")
 	;general
@@ -1186,14 +1185,6 @@ bool Property InternalEnjoymentEnabled hidden
   EndFunction
   Function Set(bool value)
     SetSettingBoolEnj("bInternalEnjoymentEnabled", value)
-  EndFunction
-EndProperty
-float Property EnjoymentUpdateDelay hidden
-  float Function Get()
-    return GetSettingFltEnj("fEnjoymentUpdateDelay")
-  EndFunction
-  Function Set(float afSet)
-    SetSettingFltEnj("fEnjoymentUpdateDelay", afSet)
   EndFunction
 EndProperty
 int Property InterDetectionStrength hidden
