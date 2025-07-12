@@ -1834,7 +1834,7 @@ bool[] Function ListDetectedRimTagsInter(Actor akPosition)
 		ElseIf (tag=="sap" || tag=="fap" || tag=="sdp" || tag=="fdp" || tag=="sac" || tag=="fac")
 			rimActive[pAnal] = true
 		EndIf
-		i + 1 
+		i += 1
 	EndWhile
 	return rimActive
 EndFunction
@@ -1924,7 +1924,6 @@ float Function CalculateInteractionFactor(Actor akPosition, string InteractionSt
 			float value = StorageUtil.GetFloatValue(None, ("EnjFactor_" + InterActive[i]))
 			float velocityMult = CalcInterVelocityMultiplier(akPosition, InterActive[i])
 			factorPhysic += (value / 20) * velocityMult
-			;Debug.MessageBox("value: " + value + " --- velocity: " + velocityMult + " --- factorPhysic: " + factorPhysic)
 		EndIf
 		i += 1
 	EndWhile
@@ -2222,9 +2221,6 @@ float Function CalcInterVelocityMultiplier(Actor akActor, string actType)
 		velocityCur = 0.25
 	EndIf
 	velocityMult = velocityCur/velocityMax
-	;If (velocityMult > 1)
-	;	Debug.MessageBox("[SLPP ENJ]\nExceeding expected max velocity: " + velocityCur)
-	;EndIf
 	return velocityMult
 EndFunction
 
