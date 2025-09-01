@@ -435,7 +435,7 @@ Function SoundSettings()
 		_voiceCacheIndex = 0
 	EndIf
 	; Voices & SFX
-    AddStateOptionSlider("fSFXDelay", "$SSL_VoiceVolume", 1, 0, 1, 0.01, "{2}%")
+    AddStateOptionSlider("fVoiceVolume", "$SSL_VoiceVolume", 1, 0, 1, 0.01, "{2}%")
     AddStateOptionSlider("fSFXVolume", "$SSL_SFXVolume", 1, 0, 1, 0.01, "{2}%")
     AddStateOptionSlider("fMaleVoiceDelay", "$SSL_MaleVoiceDelay", 5, 1, 45, 1, "$SSL_Seconds")
     AddStateOptionSlider("fFemaleVoiceDelay", "$SSL_FemaleVoiceDelay", 4, 1, 45, 1, "$SSL_Seconds")
@@ -1097,9 +1097,9 @@ Event OnSliderOpenST()
     If (s[0] == "StageTimers")
 		int i = s[1] as int
 		SetSliderDialogStartValue(sslSystemConfig.GetSettingFltA("fTimers", i))
+		SetSliderDialogDefaultValue(15)
 		SetSliderDialogRange(3, 180)
 		SetSliderDialogInterval(1)
-		SetSliderDialogDefaultValue(15)
 	ElseIf (s[0] == "expredit")
 		int i = s[1] as int
 		float[] values
@@ -1109,19 +1109,19 @@ Event OnSliderOpenST()
 			values = _high
 		EndIf
 		SetSliderDialogStartValue(values[i])
+		SetSliderDialogDefaultValue(0)
 		SetSliderDialogRange(0, 1)
 		SetSliderDialogInterval(0.05)
-		SetSliderDialogDefaultValue(0)
     ElseIf (StringUtil.GetNthChar(s[0], 0) == "i")
         SetSliderDialogStartValue(sslSystemConfig.GetSettingInt(s[0]))
-        SetSliderDialogRange(s[1] as int, s[2] as int)
-        SetSliderDialogInterval(s[3] as int)
-        SetSliderDialogDefaultValue(s[4] as int)
+        SetSliderDialogDefaultValue(s[1] as int)
+        SetSliderDialogRange(s[2] as int, s[3] as int)
+        SetSliderDialogInterval(s[4] as int)
     ElseIf (StringUtil.GetNthChar(s[0], 0) == "f")
         SetSliderDialogStartValue(sslSystemConfig.GetSettingFlt(s[0]))
-        SetSliderDialogRange(s[1] as float, s[2] as float)
-        SetSliderDialogInterval(s[3] as float)
-        SetSliderDialogDefaultValue(s[4] as float)
+        SetSliderDialogDefaultValue(s[1] as float)
+        SetSliderDialogRange(s[2] as float, s[3] as float)
+        SetSliderDialogInterval(s[4] as float)
     Else
         Log("Unknown slider setting: " + s[0])
 	EndIf
