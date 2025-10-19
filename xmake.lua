@@ -86,8 +86,13 @@ target(PROJECT_NAME)
     end
     -- Post Build 
     after_build(function (target)
-        -- Commented out because it dies on my machine
-        os.exec("python scripts/generate_config.py")
+        import("lib.detect.find_tool")
+        local python = find_tool("python3")
+        if python then
+            os.execv(python.program, {"scripts/generate_config.py"})
+        else
+            print("Warning: Python not found. Skipping config generation.")
+        end
 
         local mod_folder = os.getenv("XSE_TES5_MODS_PATH")
         if not has_config("copy_to_papyrus") then
