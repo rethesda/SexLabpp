@@ -134,6 +134,7 @@ namespace Thread
 		FurnitureMapping GetUniqueFurnituesOfTypeInBound(RE::Actor* a_centerAct, REX::EnumSet<Registry::FurnitureType::Value> a_furnitureTypes);
 
 	private:
+		static inline std::shared_mutex _mInstances{};
 		static inline std::vector<std::unique_ptr<Instance>> instances{};
 	};
 
