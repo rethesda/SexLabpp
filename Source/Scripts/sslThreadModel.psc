@@ -1559,7 +1559,7 @@ Function ApplyCumFX(Actor SourceRef)
 
 		Log("Checking for cum FX: " + i + " " + otherSex)
 
-		if (i != GetPosition(SourceRef)) && (otherSex == 1 || otherSex == 2 || otherSex == 4)
+		if (i != GetPosition(SourceRef)) && (otherSex == 1 || otherSex == 2 || otherSex == 4 || (SameSexThread() && (otherSex == 0 || otherSex == 3)))
 			ActorAlias[i].ApplyCum()
 		endIf
 		i += 1

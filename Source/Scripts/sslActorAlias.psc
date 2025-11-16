@@ -743,7 +743,9 @@ State Animating
 			Sound snd = _Thread.GetAliasSound(Self, GetActorVoice(), strength)
 			sslBaseVoice.PlaySound(_ActorRef, snd, strength, lipsync)
 		EndIf
-		DoOrgasm()
+		If ((_FullEnjoyment > 90) && (_Config.SeparateOrgasms || _Config.InternalEnjoymentEnabled))
+			DoOrgasm()
+		EndIf
 		If (_LoopLovenseDelay <= 0)
 			If (_ActorRef == _PlayerRef && sslLovense.IsLovenseInstalled())
 				int lovenseStrength = sslSystemConfig.GetSettingInt("iLovenseStrength")
@@ -820,22 +822,23 @@ State Animating
 			If (!_CanOrgasm)
 				_hasOrgasm = false
 				return
-			ElseIf (_Config.InternalEnjoymentEnabled)
-				float time = SexLabUtil.GetCurrentGameRealTime()
-				If (_FullEnjoyment > 90) && (_FullEnjoyment < 180) && ((time - _lastHoldBack) < FindEdgingTimeWindow())
+			EndIf
+			float time = SexLabUtil.GetCurrentGameRealTime()
+			int cmp = 10
+			If (_sex == 0 || _sex == 3)
+				cmp = 20
+			EndIf
+			If (time - _LastOrgasm < cmp)
+				_hasOrgasm = false
+				return
+			EndIf
+			If (_Config.SeparateOrgasms || _Config.InternalEnjoymentEnabled)
+				If ((_FullEnjoyment > 90 && _FullEnjoyment < 180) && ((time - _lastHoldBack) < FindEdgingTimeWindow()))
 					GameRewardTimedEdging()
 					_hasOrgasm = false
 					return
 				EndIf
 				If (_FullEnjoyment < 100)
-					_hasOrgasm = false
-					return
-				EndIf
-				int cmp = 10
-				If(_sex == 0 || _sex == 3)
-					cmp = 20
-				EndIf
-				If(time - _LastOrgasm < cmp)
 					_hasOrgasm = false
 					return
 				EndIf
@@ -1278,7 +1281,7 @@ Function ResetEnjoymentVariables()
 EndFunction
 
 Function UpdateBaseEnjoymentCalculations()
-	If (!_Config.InternalEnjoymentEnabled || GetIsDead())
+	If (!_Config.InternalEnjoymentEnabled || !_Config.SeparateOrgasms || GetIsDead())
 		return
 	EndIf
 	ResetEnjoymentVariables()
@@ -1300,7 +1303,7 @@ Function UpdateBaseEnjoymentCalculations()
 EndFunction
 
 Function UpdateEffectiveEnjoymentCalculations()
-	If (!_Config.InternalEnjoymentEnabled || GetIsDead())
+	If (!_Config.InternalEnjoymentEnabled || !_Config.SeparateOrgasms || GetIsDead())
 		return
 	EndIf
 	; Interactions
@@ -1309,7 +1312,7 @@ Function UpdateEffectiveEnjoymentCalculations()
 	; Enjoyment
 	float EnjEffective = CalcEffectiveEnjoyment()
 	_FullEnjoyment = (EnjEffective - _EdgeSpamPenalty) as int
-	UpdateEnjoyment(_FullEnjoyment)
+	UpdateEnjoyment(_FullEnjoyment as float)
 	UpdateArousalStat()
 	; Debug
 	If _Config.DebugMode
@@ -1544,6 +1547,7 @@ Function GameRegisterEdgeAttempt()
 EndFunction
 
 Function GameRewardTimedEdging()
+	;TODO: Reassess
 	If (_ActorRef != _PlayerRef)
 		return
 	EndIf
