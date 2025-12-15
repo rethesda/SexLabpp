@@ -159,6 +159,14 @@ Function SetActorExpression(Actor akActor, String asExpression)
 	ref.SetActorExpression(asExpression)
 EndFunction
 
+Function SetActorMouthForcedOpen(Actor akActor, bool abForceOpen)
+	sslActorAlias ref = ActorAlias(akActor)
+	If (!ref)
+		return
+	EndIf
+	ref.SetMouthForcedOpen(abForceOpen)
+EndFunction
+
 ; Enjoyment
 int Function GetEnjoyment(Actor ActorRef)
 	sslActorAlias ref = ActorAlias(ActorRef)
@@ -1920,7 +1928,7 @@ float Function CalculateInteractionFactor(Actor akPosition, string InteractionSt
 	int len = InterActive.Length
 	While (i < len)
 		If InterActive[i]
-			float value = StorageUtil.GetFloatValue(None, ("EnjFactor_" + InterActive[i]))
+			float value = sslSystemConfig.GetEnjoymentFactor(InterActive[i])
 			float velocityMult = CalcInterVelocityMultiplier(akPosition, InterActive[i])
 			factorPhysic += (value / 20) * velocityMult
 		EndIf
@@ -2246,7 +2254,8 @@ Function GameAdjustEnj(Actor akActor, Actor akPartner = None, int AdjustBy = 0)
 EndFunction
 
 Function GameRaiseEnjoyment(Actor akActor, Actor akPartner, float VarMod, float EnjoymentMod)
-	akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod+EnjoymentMod))
+	;akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod+EnjoymentMod))
+	akActor.DamageActorValue("Stamina", Config.GameStaminaCost)
 	If (Config.GameEnjReductionChance == 1) && (VarMod < 3) && (Utility.RandomInt(0,100) < ((3-VarMod)*10))
 		GameAdjustEnj(akActor, akPartner, -1) ;with skills 3- upto 30 chance to decrease enjoyment
 	Else
@@ -2407,14 +2416,16 @@ Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, floa
 			If (_Positions.Length == 1 || Input.IsKeyPressed(Config.GameUtilityKey))
 				VarMod = GameModSelfMag
 				If (akActor.GetActorValuePercentage("Magicka") > 0.10)
-					akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-VarMod)*0.5)
+					;akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-VarMod)*0.5)
+					akActor.DamageActorValue("Magicka", Config.GameMagickaCost)
 					PartnerRef = akActor
 					GameHoldback(akActor, PartnerRef)
 				EndIf
 			ElseIf (_Positions.Length > 1)
 				VarMod = GameModSelfSta
 				If (akActor.GetActorValuePercentage("Stamina") > 0.10)
-					akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod)*0.5)
+					;akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod)*0.5)
+					akActor.DamageActorValue("Stamina", Config.GameStaminaCost)
 					PartnerRef = akPartner
 					GameHoldback(akActor, PartnerRef) 
 				EndIf
@@ -2453,7 +2464,8 @@ Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, floa
 			EndIf
 			If (withLover && Config.GameHoldbackWithPartner && (akActor.GetActorValuePercentage("Magicka") > 0.10))
 				If (GetEnjoyment(akActor) > 90)
-					akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-GameModSelfMag))
+					;akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-GameModSelfMag))
+					akActor.DamageActorValue("Magicka", Config.GameMagickaCost)
 					PartnerRef = akActor
 					GameHoldback(akActor, PartnerRef)
 				EndIf
@@ -2461,7 +2473,7 @@ Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, floa
 		EndIf
 	EndIf
 	
-	GameDamageMagicka(PartnerRef, GameModSelfSta)
+	;GameDamageMagicka(PartnerRef, GameModSelfSta)
 	;for solo/duo scenes, skip to last scene stage if any actor has ran out of stamina or male has orgasmed
 	bool NoStaminaScenario = (Config.NoStaminaEndsScene == 1) && (akActor.GetActorValuePercentage("Stamina") < 0.10) && (GetSubmissives().Length == 0)
 	bool MaleOrgasmEndScenario = (Config.MaleOrgasmEndsScene == 1) && (GetActorSex(akActor) == 1) && (GetOrgasmCount(akActor) > 0)
