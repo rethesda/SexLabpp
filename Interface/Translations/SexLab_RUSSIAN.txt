@@ -316,6 +316,10 @@ $SSL_iTargetActor	Выбрать персонажа
 $SSL_iTargetActorHighlight	Направьте перекрестие прицела на персонажа и нажмите эту клавишу, после чего дождитесь сообщения о том, что персонаж выбран. После этого вам станут доступны новые возможности в меню SexLab - к примеру, вы сможете просмотреть сведения о статистике выбранного персонажа, изменить тип его голоса и т.д.
 $SSL_iToggleFreeCamera	Режим "свободная камера"
 $SSL_iToggleFreeCameraHighlight	Включает/отключает режим свободной камеры, что равносильно использованию консольной команды "TFC". Эта клавиша может быть использована в любых сценах, вне зависимости от их типа.
+# TODO: $SSL_bHideHUD
+$SSL_bHideHUD	Hide Game HUD
+# TODO: $SSL_bHideHUDHighlight
+$SSL_bHideHUDHighlight	Hides the elements from game's HUD, not the scene HUD.
 
 # ------ Scene Manipulation
 $SSL_SceneManipulation	Управление сценой
@@ -329,6 +333,8 @@ $SSL_iKeyExtra1	Открыть меню / Переключить цель для
 $SSL_iKeyExtra2	Экстра / Повернуть сцену
 $SSL_iKeyMod	Модификатор
 $SSL_iKeyReset	Инвертирование действия
+# TODO: $SSL_iChangeAnimation
+$SSL_iChangeAnimation	Change Animation
 
 # ------------------- Timers & Stripping -------------------------------------------------
 $SSL_TimersStripping	Таймеры/Раздевание
@@ -417,7 +423,6 @@ $SSL_bSubmissivePlayer	Игрок будет покорным
 $SSL_bSubmissiveTarget	Цель будет покорной
 
 # ------------------ Enjoyment --------------------------------------------------
-# TODO: $SSL_EnjoymentSettings
 $SSL_EnjoymentSettings	Enjoyment Settings
 
 # ------ Primary Settings
@@ -453,6 +458,24 @@ $SSL_iGameHoldbackKey	Reduce Enj Key
 $SSL_iGameHoldbackKeyHighlight	Hotkey to manually holdback/reduce enjoyment.
 $SSL_iGameSelectNextPos	Next Actor Key
 $SSL_iGameSelectNextPosHighlight	Hotkey to cycle/select the next position or actor.\nDirection of cycle will be reversed when combined with utility key.
+
+# ------ Game Hotkeys
+# TODO: $SSL_iEnjGameStaminaCost
+$SSL_iEnjGameStaminaCost	Game Stamina Cost
+# TODO: $SSL_iEnjGameStaminaCostHighlight
+$SSL_iEnjGameStaminaCostHighlight	The amount of stamina to be depleted upon a relevant minigame action.
+# TODO: $SSL_iEnjGameMagickaCost
+$SSL_iEnjGameMagickaCost	Game Magicka Cost
+# TODO: $SSL_iEnjGameMagickaCostHighlight
+$SSL_iEnjGameMagickaCostHighlight	The amount of magicka to be depleted upon a relevant minigame action.
+# TODO: $SSL_iEdgingRewardType
+$SSL_iEdgingRewardType	Edging State Reward Type
+# TODO: $SSL_iEdgingRewardTypeHighlight
+$SSL_iEdgingRewardTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
+# TODO: $SSL_iEdgeSpamPunishType
+$SSL_iEdgeSpamPunishType	Edge Spam Penalty Type
+# TODO: $SSL_iEdgingRewardTypeHighlight
+$SSL_iEdgingRewardTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
 
 # ------ General Configs
 $SSL_iEnjGainOnStageSkip	Stage Skip Enj Gain

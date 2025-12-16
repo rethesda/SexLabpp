@@ -316,6 +316,8 @@ $SSL_iTargetActor	Target Actor For Edit
 $SSL_iTargetActorHighlight	After pressing this hotkey, place your crosshairs in game over an actor until your receive a notification that the actor is targeted, afterwards the actor will be available for editing purposes in various menu pages.
 $SSL_iToggleFreeCamera	Toggle Free Camera Mode
 $SSL_iToggleFreeCameraHighlight	Toggles the camera mode into a free flying camera state, same as entering TFC into console, this hotkey it enabled at all times regardless of animation.
+$SSL_bHideHUD	Hide Game HUD
+$SSL_bHideHUDHighlight	Hides the elements from game's HUD, not the scene HUD.
 
 # ------ Scene Manipulation
 $SSL_SceneManipulation	Scene Manipulation
@@ -329,6 +331,7 @@ $SSL_iKeyExtra1	Open Menu / Swap Menu Tab
 $SSL_iKeyExtra2	Open Menu / Swap Menu Tab
 $SSL_iKeyMod	Modifier
 $SSL_iKeyReset	Inverse Action
+$SSL_iChangeAnimation	Change Animation
 
 # ------------------- Timers & Stripping -------------------------------------------------
 $SSL_TimersStripping	Timers & Stripping
@@ -452,6 +455,16 @@ $SSL_iGameHoldbackKey	ReduceEnj/Holdback Key
 $SSL_iGameHoldbackKeyHighlight	Hotkey to manually holdback/reduce enjoyment at the cost of magicka. To reduce self/player enjoyment, combine with utility key.
 $SSL_iGameSelectNextPos	Next Actor Key
 $SSL_iGameSelectNextPosHighlight	Hotkey to cycle/select the next position or actor.\nDirection of cycle will be reversed when combined with utility key.
+
+# ------ Game Hotkeys
+$SSL_iEnjGameStaminaCost	Game Stamina Cost
+$SSL_iEnjGameStaminaCostHighlight	The amount of stamina to be depleted upon a relevant minigame action.
+$SSL_iEnjGameMagickaCost	Game Magicka Cost
+$SSL_iEnjGameMagickaCostHighlight	The amount of magicka to be depleted upon a relevant minigame action.
+$SSL_iEdgingRewardType	Edging State Reward Type
+$SSL_iEdgingRewardTypeHighlight	Reward for successfully maintaining edging state (enjoyment beyond 100).\n0: Only Enjoyment Boost\n1: Additional Stamina Restoration\n2: Additional Magicka Restoration\n3: Additional Health Restoration
+$SSL_iEdgeSpamPunishType	Edge Spam Penalty Type
+$SSL_iEdgingRewardTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
 
 # ------ General Configs
 $SSL_iEnjGainOnStageSkip	Stage Skip Enj Gain

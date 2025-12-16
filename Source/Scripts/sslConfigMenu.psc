@@ -797,7 +797,6 @@ EndFunction
 ; ------------------------------------------------------- ;
 
 Function EnjoymentSettings()
-	Config.CacheInterFactorValues()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	
 	AddHeaderOption("Primary Settings")
@@ -819,7 +818,14 @@ Function EnjoymentSettings()
 	AddStateOptionKey("iGameRaiseEnjKey", "$SSL_iGameRaiseEnjKey")
 	AddStateOptionKey("iGameHoldbackKey", "$SSL_iGameHoldbackKey")
 	AddStateOptionKey("iGameSelectNextPos", "$SSL_iGameSelectNextPos")
+
+	AddHeaderOption("Game Modifiers")
+	AddStateOptionSlider("iEnjGameStaminaCost", "$SSL_iEnjGameStaminaCost", 10, 0, 50, 1, "{0}")
+	AddStateOptionSlider("iEnjGameMagickaCost", "$SSL_iEnjGameMagickaCost", 10, 0, 50, 1, "{0}")
 	SetCursorPosition(1)
+	AddEmptyOption()
+	AddStateOptionSlider("iEdgingRewardType", "$SSL_iEdgingRewardType", 0, 0, 3, 1, "{0}")
+	AddStateOptionSlider("iEdgeSpamPunishType", "$SSL_iEdgeSpamPunishType", 0, 0, 3, 1, "{0}")
 
 	AddHeaderOption("General Configs")
 	AddStateOptionSlider("iEnjGainOnStageSkip", "$SSL_iEnjGainOnStageSkip", 15, 0, 30, 1, "{0}")
@@ -855,7 +861,6 @@ Function RebuildClean()
 	AddTextOptionST("ForceRegisterVoices", "$SSL_ForceRegisterVoices", "$SSL_ClickHere")
 	AddHeaderOption("System Requirements")
 	SystemCheckOptions()
-	Config.CacheInterFactorValues()
 
 	SetCursorPosition(1)
 	AddHeaderOption("Registry Info")
@@ -1436,6 +1441,7 @@ function PlayerHotkeys()
 	AddEmptyOption()
 	AddStateOptionKey("iTargetActor", "$SSL_iTargetActor", needsRegister = true)
 	AddStateOptionKey("iToggleFreeCamera", "$SSL_iToggleFreeCamera", needsRegister = true)
+	;AddStateOptionBool("bHideHUD", "$SSL_bHideHUD")
 
 	AddHeaderOption("$SSL_SceneManipulation")
 	AddEmptyOption()
@@ -1448,6 +1454,7 @@ function PlayerHotkeys()
 	AddStateOptionKey("iKeyRight", "$SSL_iKeyRight", true, true)
 	AddStateOptionKey("iKeyEnd", "$SSL_iKeyEnd", true, true)
 	AddStateOptionKey("iKeyAdvance", "$SSL_iKeyAdvance", true, true)
+	;AddStateOptionKey("iChangeAnimation", "$SSL_iChangeAnimation", true, true)
 endFunction
 
 State ForceRegisterVoices

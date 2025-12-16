@@ -1541,22 +1541,41 @@ Function GameRegisterEdgeAttempt()
 			If (_EnjFactor < 0.0)
 				_FullEnjoyment -= 50 ; penalty for excessive edging spam
 			EndIf
+			int PenaltyType = _Config.EdgeSpamPunishType
+			If PenaltyType == 1
+				_ActorRef.DamageActorValue("Stamina", _Config.GameStaminaCost)
+			ElseIf PenaltyType == 2
+				_ActorRef.DamageActorValue("Magicka", _Config.GameMagickaCost)
+			ElseIf PenaltyType == 3	
+				_ActorRef.DamageActorValue("Health", _Config.GameStaminaCost)
+			EndIf	
 		EndIf
 	EndIf
 	_lastHoldBack = SexLabUtil.GetCurrentGameRealTime()
 EndFunction
 
 Function GameRewardTimedEdging()
-	;TODO: Reassess
 	If (_ActorRef != _PlayerRef)
 		return
 	EndIf
 	;_EnjoymentDelay/UPDATE_INTERVAL==6); boost in 3s == 0.24
 	_EnjFactor += 0.02
-	_ActorRef.RestoreActorValue("Stamina", 10)
+	int RewardType = _Config.EdgingRewardType
+	If RewardType == 1
+		_ActorRef.RestoreActorValue("Stamina", _Config.GameStaminaCost)
+	ElseIf RewardType == 2
+		_ActorRef.RestoreActorValue("Magicka", _Config.GameMagickaCost)
+	ElseIf RewardType == 3
+		_ActorRef.RestoreActorValue("Health", _Config.GameStaminaCost)
+	EndIf
 	If (_FullEnjoyment > 175)
-		_ActorRef.ModActorValue("Health", 10)
-		_ActorRef.ModActorValue("Stamina", 10)
+		If RewardType == 1
+			_ActorRef.ModActorValue("Stamina", 5)
+		ElseIf RewardType == 2
+			_ActorRef.ModActorValue("Magicka", 5)
+		ElseIf RewardType == 3
+			_ActorRef.ModActorValue("Health", 5)
+		EndIf
 	EndIf
 EndFunction
 

@@ -38,9 +38,8 @@ SoundCategory property AudioVoice auto
 float Function GetMinSetupTime() native global
 
 int Function GetAnimationCount() native global
-;float[] Function GetEnjoymentFactors() native global
-;int Function GetEnjoymentSettingInt(String asSetting) native global
-;float Function GetEnjoymentSettingFlt(String asSetting) native global
+float[] Function GetEnjoymentFactors() native global
+float Function GetEnjoymentFactor(String asString) native global
 Form[] Function GetStrippableItems(Actor akActor, bool abWornOnly) native global
 
 bool Function GetSettingBool(String asSetting) native global
@@ -260,7 +259,7 @@ bool property SubmissiveTarget hidden
 	Function Set(bool aSet)
 	  SetSettingBool("bSubmissiveTarget", aSet)
 	EndFunction
-  EndProperty
+EndProperty
 
 ; Integers
 int property AskBed hidden
@@ -479,6 +478,14 @@ int property TargetActor hidden
   Function Set(int aiSet)
     SetSettingInt("iTargetActor", aiSet)
   EndFunction
+EndProperty
+bool property HideHUD hidden
+	bool Function Get()
+	  return GetSettingBool("bHideHUD")
+	EndFunction
+	Function Set(bool aSet)
+	  SetSettingBool("bHideHUD", aSet)
+	EndFunction
 EndProperty
 
 ; Floats
@@ -1005,6 +1012,7 @@ Function Reload()
   RegisterForKey(ToggleFreeCamera)
   RegisterForKey(TargetActor)
   RegisterForKey(EndAnimation)
+  ;RegisterForKey(ChangeAnimation)
 
   AddRemoveMatchmakerSpells()
   DisableThreadControl(_ActiveControl)
@@ -1059,24 +1067,6 @@ endFunction
 ; --------------------------------------------------------------------------------------- ;
 ; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
 
-string EnjConfigFile = "/SexLabEnjoyment.json"
-
-Function CacheInterFactorValues()
-	If !JsonUtil.IsGood(EnjConfigFile)
-		Debug.MessageBox("[EnjGame Error]\nSexLabEnjoyment.Json has parsing errors or is missing.")
-		return
-	EndIf
-	string[] interTypes = sslThreadModel.NameAllInteractions()
-    int i = 0
-	int len = interTypes.Length
-    While (i < len)
-		string interType = interTypes[i]
-		float typeValue = JsonUtil.GetPathFloatValue(EnjConfigFile, interType)
-		StorageUtil.SetFloatValue(None, ("EnjFactor_" + interType), typeValue)
-		i += 1
-    EndWhile
-EndFunction
-
 ; ----------------------------------------------- ;
 ; --- MAIN CONFIG                             --- ;
 ; ----------------------------------------------- ;
@@ -1108,7 +1098,7 @@ EndProperty
 
 ; ----------------------------------------------- ;
 ; --- GENERAL CONFIG                          --- ;
-; ----------------------------------- ----------- ;
+; ----------------------------------------------- ;
 
 int Property EnjGainOnStageSkip hidden
   int Function Get()
@@ -1193,7 +1183,7 @@ EndProperty
 
 ; ----------------------------------------------- ;
 ; --- ACTOR MULT                              --- ;
-; ----------------------------------- ----------- ;
+; ----------------------------------------------- ;
 float Property EnjMultVictim hidden
   float Function Get()
     return GetSettingFlt("fEnjMultVictim")
@@ -1237,7 +1227,7 @@ EndProperty
 
 ; ----------------------------------------------- ;
 ; --- GAME CONFIG                             --- ;
-; ----------------------------------- ----------- ;
+; ----------------------------------------------- ;
 bool Property GameEnabled hidden
   bool Function Get()
     return GetSettingBool("bGameEnabled")
@@ -1324,6 +1314,38 @@ int Property GameSelectNextPos hidden
   EndFunction
   Function Set(int aiSet)
     SetSettingInt("iGameSelectNextPos", aiSet)
+  EndFunction
+EndProperty
+int Property GameStaminaCost hidden
+  int Function Get()
+    return GetSettingInt("iEnjGameStaminaCost")
+  EndFunction
+  Function Set(int aiSet)
+    SetSettingInt("iEnjGameStaminaCost", aiSet)
+  EndFunction
+EndProperty
+int Property GameMagickaCost hidden
+  int Function Get()
+    return GetSettingInt("iEnjGameMagickaCost")
+  EndFunction
+  Function Set(int aiSet)
+    SetSettingInt("iEnjGameMagickaCost", aiSet)
+  EndFunction
+EndProperty
+int Property EdgingRewardType hidden
+  int Function Get()
+    return GetSettingInt("iEdgingRewardType")
+  EndFunction
+  Function Set(int aiSet)
+    SetSettingInt("iEdgingRewardType", aiSet)
+  EndFunction
+EndProperty
+int Property EdgeSpamPunishType hidden
+  int Function Get()
+    return GetSettingInt("iEdgeSpamPunishType")
+  EndFunction
+  Function Set(int aiSet)
+    SetSettingInt("iEdgeSpamPunishType", aiSet)
   EndFunction
 EndProperty
 
