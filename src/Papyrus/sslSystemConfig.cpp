@@ -140,50 +140,54 @@ namespace Papyrus::SystemConfig
 		return static_cast<int32_t>(Registry::Library::GetSingleton()->GetSceneCount());
 	}
 
+	static const std::unordered_map<std::string, float*> EnjoymentFactorsMap = {
+		{"pStimulation",	&Settings::f_pStimulation},
+		{"aAnimObjFace",	&Settings::f_aAnimObjFace},
+		{"pAnimObjFace",	&Settings::f_pAnimObjFace},
+		{"pSuckingToes",	&Settings::f_pSuckingToes},
+		{"pGrinding",		&Settings::f_pGrinding},
+		{"pSkullfuck",		&Settings::f_pSkullfuck},
+		{"aHandJob",		&Settings::f_aHandJob},
+		{"aFootJob",		&Settings::f_aFootJob},
+		{"aBoobJob",		&Settings::f_aBoobJob},
+		{"bKissing",		&Settings::f_bKissing},
+		{"aSuckingToes",	&Settings::f_aSuckingToes},
+		{"pFacial",			&Settings::f_pFacial},
+		{"aOral",			&Settings::f_aOral},
+		{"aLickingShaft",	&Settings::f_aLickingShaft},
+		{"aDeepthroat",		&Settings::f_aDeepthroat},
+		{"pVaginal",		&Settings::f_pVaginal},
+		{"pAnal",			&Settings::f_pAnal},
+		{"aFacial",			&Settings::f_aFacial},
+		{"aGrinding",		&Settings::f_aGrinding},
+		{"pHandJob",		&Settings::f_pHandJob},
+		{"pFootJob",		&Settings::f_pFootJob},
+		{"pBoobJob",		&Settings::f_pBoobJob},
+		{"pLickingShaft",	&Settings::f_pLickingShaft},
+		{"pOral",			&Settings::f_pOral},
+		{"pDeepthroat",		&Settings::f_pDeepthroat},
+		{"aSkullfuck",		&Settings::f_aSkullfuck},
+		{"aVaginal",		&Settings::f_aVaginal},
+		{"aAnal",			&Settings::f_aAnal}
+	};
+
 	std::vector<float> GetEnjoymentFactors(RE::StaticFunctionTag*)
 	{
-		return {
-			Settings::fEnjGrinding,
-			Settings::fEnjHandActive,
-			Settings::fEnjHandPassive,
-			Settings::fEnjFootActive,
-			Settings::fEnjFootPassive,
-			Settings::fEnjOralActive,
-			Settings::fEnjOralPassive,
-			Settings::fEnjVaginalActive,
-			Settings::fEnjVaginalPassive,
-			Settings::fEnjAnalActive,
-			Settings::fEnjAnalPassive
-		};
+		std::vector<float> values;
+		values.reserve(EnjoymentFactorsMap.size());
+		for (const auto& [name, ptr] : EnjoymentFactorsMap) {
+			values.push_back(*ptr);
+		}
+		return values;
 	}
 
-	int GetEnjoymentSettingInt(VM* a_vm, StackID a_stackID, RE::StaticFunctionTag*, RE::BSFixedString a_setting)
+	float GetEnjoymentFactor(RE::StaticFunctionTag*, RE::BSFixedString interType)
 	{
-		if (a_setting == "iMaxNoPainOrgasmsM")
-			return Settings::iMaxNoPainOrgasmsM;
-		else if (a_setting == "iMaxNoPainOrgasmsF")
-			return Settings::iMaxNoPainOrgasmsF;
-		const auto err = std::format("Invalid Setting {}", a_setting.c_str());
-		a_vm->TraceStack(err.c_str(), a_stackID);
-		return 0;
-	}
-
-	float GetEnjoymentSettingFlt(VM* a_vm, StackID a_stackID, RE::StaticFunctionTag*, RE::BSFixedString a_setting)
-	{
-		if (a_setting == "fFactorNonInterEnjRaise")
-			return Settings::fFactorNonInterEnjRaise;
-		else if (a_setting == "fFactorInterEnjRaise")
-			return Settings::fFactorInterEnjRaise;
-		else if (a_setting == "fTimeMax")
-			return Settings::fTimeMax;
-		else if (a_setting == "fRequiredXP")
-			return Settings::fRequiredXP;
-		else if (a_setting == "fBoostTime")
-			return Settings::fBoostTime;
-		else if (a_setting == "fPenaltyTime")
-			return Settings::fPenaltyTime;
-		const auto err = std::format("Invalid Setting {}", a_setting.c_str());
-		a_vm->TraceStack(err.c_str(), a_stackID);
+		std::string key = interType.c_str();
+		auto it = EnjoymentFactorsMap.find(key);
+		if (it != EnjoymentFactorsMap.end() && it->second != nullptr) {
+			return *(it->second);
+		}
 		return 0.0f;
 	}
 

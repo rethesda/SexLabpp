@@ -5,11 +5,11 @@ MCM_SETTING(bCreatureGender, false)
 MCM_SETTING(bAllowCreatures, false)
 MCM_SETTING(bRedressVictim, true)
 MCM_SETTING(bUseLipSync, false)
-MCM_SETTING(bUseExpressions, false)
+MCM_SETTING(bUseExpressions, true)
 MCM_SETTING(bDisablePlayer, false)
 MCM_SETTING(bAutoTFC, false)
 MCM_SETTING(bAutoAdvance, true)
-MCM_SETTING(bOrgasmEffects, false)
+MCM_SETTING(bOrgasmEffects, true)
 MCM_SETTING(bShowInMap, false)
 MCM_SETTING(bSetAnimSpeedByEnjoyment, false)
 MCM_SETTING(bDisableTeleport, true)
@@ -23,7 +23,7 @@ MCM_SETTING(bLipsFixedValue, true)
 MCM_SETTING(iAskBed, 1)
 MCM_SETTING(iNPCBed, 1)
 MCM_SETTING(iUseFade, 1)
-MCM_SETTING(iClimaxType, 0)
+MCM_SETTING(iClimaxType, 2)
 MCM_SETTING(iLipsSoundTime, 1)
 
 MCM_SETTING(iLovenseStrength, 10)
@@ -31,10 +31,10 @@ MCM_SETTING(iLovenseStrengthOrgasm, 20)
 MCM_SETTING(fLovenseDurationOrgasm, 8)
 
 // KeyBinds/Scene Control Related
-MCM_SETTING(iKeyUp, 0x11)		// W
-MCM_SETTING(iKeyDown, 0x1F)		// S
-MCM_SETTING(iKeyLeft, 0x1E)		// A
-MCM_SETTING(iKeyRight, 0x20)	// D
+MCM_SETTING(iKeyUp, 0xC8)		// Up Arrow
+MCM_SETTING(iKeyDown, 0xD0)		// Down Arrow
+MCM_SETTING(iKeyLeft, 0xCB)		// Left Arrow
+MCM_SETTING(iKeyRight, 0xCD)	// Right Arrow
 MCM_SETTING(iKeyAdvance, 0x39)	// Space
 MCM_SETTING(iKeyEnd, 0xCF)		// End
 MCM_SETTING(iKeyExtra2, 0x12)	// E
@@ -52,7 +52,7 @@ MCM_SETTING(bHideHUD, false)
 
 // MCM_SETTING(iAdjustStage, 157)
 // MCM_SETTING(iBackwards, 54)
-// MCM_SETTING(iChangeAnimation, 24)
+MCM_SETTING(iChangeAnimation, 24)
 // MCM_SETTING(iChangePositions, 13)
 // MCM_SETTING(iAdjustChange, 37)
 // MCM_SETTING(iAdjustForward, 38)
@@ -90,6 +90,24 @@ MCM_SETTING(bInternalEnjoymentEnabled, true)
 MCM_SETTING(iInterDetectionStrength, 3)
 MCM_SETTING(fEnjRaiseMultInter, 0.8f)
 
+MCM_SETTING(bGameEnabled, true)
+MCM_SETTING(bGamePlayerAutoplay, false)
+MCM_SETTING(bGamePlayerVictimAutoplay, true)
+MCM_SETTING(bGameNPCAutoplay, true)
+MCM_SETTING(bGameEnjReductionChance, false)
+MCM_SETTING(bGameHoldbackWithPartner, true)
+
+MCM_SETTING(iGameUtilityKey, 42)
+MCM_SETTING(iGamePauseKey, 48)
+MCM_SETTING(iGameRaiseEnjKey, 256)
+MCM_SETTING(iGameHoldbackKey, 257)
+MCM_SETTING(iGameSelectNextPos, 34)
+
+MCM_SETTING(iEnjGameStaminaCost, 10)
+MCM_SETTING(iEnjGameMagickaCost, 10)
+MCM_SETTING(iEdgingRewardType, 0)
+MCM_SETTING(iEdgeSpamPunishType, 0)
+
 MCM_SETTING(iEnjGainOnStageSkip, 15)
 MCM_SETTING(bNoStaminaEndsScene, false)
 MCM_SETTING(bMaleOrgasmEndsScene, false)
@@ -106,16 +124,3 @@ MCM_SETTING(fEnjMultAggressor, 1.2f)
 MCM_SETTING(fEnjMultSub, 0.8f)
 MCM_SETTING(fEnjMultDom, 1.2f)
 MCM_SETTING(fPainHugePPMult, 0.5f)
-
-MCM_SETTING(bGameEnabled, true)
-MCM_SETTING(bGamePlayerAutoplay, false)
-MCM_SETTING(bGamePlayerVictimAutoplay, true)
-MCM_SETTING(bGameNPCAutoplay, true)
-MCM_SETTING(bGameEnjReductionChance, false)
-MCM_SETTING(bGameHoldbackWithPartner, true)
-
-MCM_SETTING(iGameUtilityKey, 42)
-MCM_SETTING(iGamePauseKey, 48)
-MCM_SETTING(iGameRaiseEnjKey, 256)
-MCM_SETTING(iGameHoldbackKey, 257)
-MCM_SETTING(iGameSelectNextPos, 34)

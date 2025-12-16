@@ -257,14 +257,18 @@ namespace Thread::Interface
 		auto enumName = magic_enum::enum_name(navType);
 		if (enumName.empty())
 			return EventResult::kContinue;
-		std::string navEq{ enumName };
-		Util::ToLower(navEq);
-		std::vector<RE::GFxValue> args{
-			RE::GFxValue(navEq.c_str()),
-			RE::GFxValue(mode),
-			RE::GFxValue(reset)
-		};
-		this->uiMovie->InvokeNoReturn("_root.main.handleInputEx", args.data(), static_cast<uint32_t>(args.size()));
+		SKSE::GetTaskInterface()->AddUITask([=]() {
+			std::string navEq{ enumName };
+			Util::ToLower(navEq);
+			std::vector<RE::GFxValue> args{
+				RE::GFxValue(navEq.c_str()),
+				RE::GFxValue(mode),
+				RE::GFxValue(reset)
+			};
+			if (this->uiMovie) {
+				this->uiMovie->InvokeNoReturn("_root.main.handleInputEx", args.data(), static_cast<uint32_t>(args.size()));
+			}
+		});
 		return EventResult::kContinue;
 	}
 
