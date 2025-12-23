@@ -53,8 +53,11 @@ namespace Papyrus::SexLabRegistry
 	bool IsSceneTagA(STATICARGS, RE::BSFixedString a_id, std::vector<std::string_view> a_tags);
 	bool IsStageTag(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stageid, RE::BSFixedString a_tag);
 	bool IsStageTagA(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stageid, std::vector<std::string_view> a_tags);
+	bool IsPositionTag(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n, RE::BSFixedString a_tag);
+	bool IsPositionTagA(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n, std::vector<std::string_view> a_tags);
 	std::vector<RE::BSFixedString> GetSceneTags(STATICARGS, RE::BSFixedString a_id);
 	std::vector<RE::BSFixedString> GetStageTags(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage);
+	std::vector<RE::BSFixedString> GetPositionTags(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n);
 	std::vector<RE::BSFixedString> GetCommonTags(STATICARGS, std::vector<RE::BSFixedString> a_ids);
 
 	RE::BSFixedString GetAnimationEvent(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n);
@@ -153,8 +156,11 @@ namespace Papyrus::SexLabRegistry
 		REGISTERFUNC(IsSceneTagA, "SexLabRegistry", true);
 		REGISTERFUNC(IsStageTag, "SexLabRegistry", true);
 		REGISTERFUNC(IsStageTagA, "SexLabRegistry", true);
+		REGISTERFUNC(IsPositionTag, "SexLabRegistry", true);
+		REGISTERFUNC(IsPositionTagA, "SexLabRegistry", true);		
 		REGISTERFUNC(GetSceneTags, "SexLabRegistry", true);
 		REGISTERFUNC(GetStageTags, "SexLabRegistry", true);
+		REGISTERFUNC(GetPositionTags, "SexLabRegistry", true);
 		REGISTERFUNC(GetCommonTags, "SexLabRegistry", true);
 
 		REGISTERFUNC(GetAnimationEvent, "SexLabRegistry", true);

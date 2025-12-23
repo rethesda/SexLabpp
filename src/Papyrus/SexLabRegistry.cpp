@@ -497,6 +497,24 @@ namespace Papyrus::SexLabRegistry
 		return details.MatchTags(stage->tags);
 	}
 
+	bool IsPositionTag(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n, RE::BSFixedString a_tag)
+	{
+		SCENE(false);
+		STAGE(false);
+		POSITION(false);
+		const auto& tags = stage->positions[n].tags;
+		return std::find(tags.begin(), tags.end(), a_tag) != tags.end();
+	}
+
+	bool IsPositionTagA(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n, std::vector<std::string_view> a_tags)
+	{
+		SCENE(false);
+		STAGE(false);
+		POSITION(false);
+		const auto details = Registry::TagDetails{ a_tags };
+		return details.MatchTags(stage->positions[n].tags);
+	}
+
 	std::vector<RE::BSFixedString> GetSceneTags(STATICARGS, RE::BSFixedString a_id)
 	{
 		SCENE({});
@@ -509,6 +527,14 @@ namespace Papyrus::SexLabRegistry
 		STAGE({});
 		return stage->tags.AsVector();
 	}
+
+	std::vector<RE::BSFixedString> GetPositionTags(STATICARGS, RE::BSFixedString a_id, RE::BSFixedString a_stage, int n)
+	{
+		SCENE({});
+		STAGE({});
+		POSITION({});
+		return stage->positions[n].tags;
+	}	
 
 	std::vector<RE::BSFixedString> GetCommonTags(STATICARGS, std::vector<RE::BSFixedString> a_ids)
 	{
