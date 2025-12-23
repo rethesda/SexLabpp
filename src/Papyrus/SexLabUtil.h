@@ -97,6 +97,9 @@ namespace Papyrus::SexLabUtil
 	{
 		std::string ret;
 		if (SKSE::Translation::Translate(a_str, ret)) {
+			if (ret.empty() || ret == a_str) {
+				return "";
+			}
 			return ret;
 		}
 		return "";
