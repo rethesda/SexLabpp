@@ -40,6 +40,7 @@ namespace Registry
 	Scene::Scene(std::ifstream& a_stream, std::string_view a_hash, uint8_t a_version) :
 		hash(a_hash), enabled(true)
 	{
+		start_animation=nullptr;	// initialize start_animation to avoid crash
 		id.resize(Decode::ID_SIZE);
 		a_stream.read(id.data(), Decode::ID_SIZE);
 		Decode::Read(a_stream, name);
@@ -157,7 +158,7 @@ namespace Registry
 		enum Extra : uint8_t
 		{
 			Submissive = 1 << 0,
-			Vamprie = 1 << 1,
+			Vampire = 1 << 1,
 			Unconscious = 1 << 2
 		};
 		float scale;
@@ -169,7 +170,7 @@ namespace Registry
 		Decode::Read(a_stream, scale);
 		a_stream.read(reinterpret_cast<char*>(&extra), 1);
 
-		data = ActorFragment(sex, race, scale, extra.all(Extra::Vamprie), extra.all(Extra::Submissive), extra.all(Extra::Unconscious));
+		data = ActorFragment(sex, race, scale, extra.all(Extra::Vampire), extra.all(Extra::Submissive), extra.all(Extra::Unconscious));
 
 		if (a_version > 1 && a_version < 4) {
 			uint64_t extra_custom;
