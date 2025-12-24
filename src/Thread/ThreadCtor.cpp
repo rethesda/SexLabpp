@@ -294,8 +294,9 @@ namespace Thread
 			const auto endPoint = glm::vec4(box->GetCenterWorld(), 0.0f);
 			const auto isReachable = std::ranges::any_of(raycastStart, [&](auto&& it) {
 				auto [startRef, startPoint] = it;
+				std::vector<RE::NiAVObject*> filterList{ a_ref->Get3D(), startRef->Get3D() };
 				do {
-					auto res = Raycast::hkpCastRay(startPoint, endPoint, { a_ref, startRef });
+					auto res = Raycast::hkpCastRay(startPoint, endPoint, filterList);
 					if (!res.hit) {
 						return true;
 					}
@@ -307,7 +308,7 @@ namespace Thread
 					if (base->Is(RE::FormType::Door) && hitRef->IsLocked()) {
 						break;
 					}
-					startRef = hitRef;
+					filterList.push_back(res.hitObject);
 					startPoint = res.hitPos;
 				} while (true);
 				return false;
