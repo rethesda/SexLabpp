@@ -175,6 +175,9 @@ namespace Papyrus::ThreadModel
 				a_vm->TraceStack("ReferenceAlias must be filled with an actor reference", a_stackID);
 				return a_mergewith;
 			}
+			if (!actor->IsHumanoid()) {
+				return a_mergewith;
+			}
 			if (a_mergewith.size() < 3) {
 				a_mergewith.resize(3, nullptr);
 			}
