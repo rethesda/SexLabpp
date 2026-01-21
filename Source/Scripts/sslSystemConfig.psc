@@ -35,8 +35,6 @@ SoundCategory property AudioVoice auto
 ; --- Config Properties                               --- ;
 ; ------------------------------------------------------- ;
 
-float Function GetMinSetupTime() native global
-
 int Function GetAnimationCount() native global
 float[] Function GetEnjoymentFactors() native global
 float Function GetEnjoymentFactor(String asString) native global

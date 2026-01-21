@@ -415,7 +415,6 @@ State Ready
 	EndFunction
 
 	Event OnDoPrepare(string asEventName, string asStringArg, float afNumArg, form akPathTo)
-		float min_delay = sslSystemConfig.GetMinSetupTime()
 		_ActorRef.SetActorValue("Paralysis", 0.0)
 		float interval = 0.05
 		If(_ActorRef == _PlayerRef)
@@ -423,7 +422,6 @@ State Ready
 			If (UI.IsMenuOpen("Dialogue Menu"))
 				UI.InvokeString("Dialogue Menu", "_global.skse.CloseMenu", "Dialogue Menu")
 				While (UI.IsMenuOpen("Dialogue Menu"))
-					min_delay -= interval
 					Utility.Wait(interval)
 				EndWhile
 			EndIf
@@ -441,7 +439,6 @@ State Ready
 					Utility.Wait(2.0)
 					While (distance > target_distance && Math.abs(prev_dist - distance) > 0.5 && fallback_timer > 0)
 						fallback_timer -= interval
-						min_delay -= interval
 						Utility.Wait(interval)
 						prev_dist = distance
 						distance = _ActorRef.GetDistance(target)
@@ -478,9 +475,6 @@ State Ready
 		EndIf
 		_VoiceDelay = _BaseDelay
 		_ExpressionDelay = _BaseDelay * 2
-		If (min_delay > 0.0)
-			Utility.Wait(min_delay)
-		EndIf
 		__SETUP_DONE = true
 		; Post Delayed Initialization
 		UpdateBaseEnjoymentCalculations()
