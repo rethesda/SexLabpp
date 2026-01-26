@@ -921,7 +921,7 @@ State Animating
 	Function AnimationStart()
 		If (_animationSyncCount < _Positions.Length)
 			_animationSyncCount += 1
-			Log("AnimationStart called " + _animationSyncCount + "/" + (_Positions.Length + 1) + " times")
+			Log("AnimationStart called " + _animationSyncCount + "/" + (_Positions.Length) + " times")
 			return
 		EndIf
 		Log("AnimationStart fully setup, begin animating")
@@ -1086,7 +1086,10 @@ State Animating
 	Endfunction
 	
 	Event OnUpdate()
-		If (AutoAdvance || _ForceAdvance)
+		If (_ForceAdvance)
+			GoToStage(_StageHistory.Length + 1)
+			return
+		ElseIf (AutoAdvance)
 			_StageTimer -= ANIMATING_UPDATE_INTERVAL
 			If (_StageTimer <= 0)
 				If !ThreadWaitsForOrgasm()
@@ -2343,7 +2346,7 @@ Function EnjBasedSkipToLastStage(bool abSkip)
 	bool SoloDuoScenario = (_Positions.Length == 1 || _Positions.Length == 2) 
 	If (abSkip && NotEndStageScenario && SoloDuoScenario)
 		SkipTo(SexLabRegistry.GetEndingStages(GetActiveScene())[0])
-		_StageTimer -= (GetTimer() / 1.25)
+		_StageTimer -= (GetTimer() / 2)
 		UpdateBaseSpeed(0.8)
 	EndIf
 EndFunction
