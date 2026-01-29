@@ -479,7 +479,6 @@ State Ready
 		_VoiceDelay = _BaseDelay
 		_ExpressionDelay = _BaseDelay * 2
 		; Post Delayed Initialization
-		UpdateBaseEnjoymentCalculations()
 		If (!_Config.DebugMode)
 			return
 		EndIf
@@ -666,6 +665,7 @@ bool _LovenseAnal
 State Animating
 	Event OnBeginState()
 		RegisterForModEvent("SSL_ORGASM_Thread" + _Thread.tid, "OnOrgasm")
+		UpdateBaseEnjoymentCalculations()
 		_LoopLovenseDelay = 0
 		_LovenseGenital = false
 		_LovenseAnal = false
@@ -716,7 +716,9 @@ State Animating
 			DoOrgasm()
 		EndIf
 		bool NoStaminaEndScenario = (_Config.NoStaminaEndsScene && !_victim && _ActorRef.GetActorValuePercentage("Stamina") < 0.10)
-		_Thread.EnjBasedSkipToLastStage(NoStaminaEndScenario)
+		If NoStaminaEndScenario
+			_Thread.EnjBasedSkipToLastStage(true)
+		EndIf
 		If (_LoopLovenseDelay <= 0)
 			If (_ActorRef == _PlayerRef && sslLovense.IsLovenseInstalled())
 				int lovenseStrength = sslSystemConfig.GetSettingInt("iLovenseStrength")
@@ -888,8 +890,8 @@ State Animating
 			_ActorRef.EvaluatePackage()
 		EndIf
 		UnlockActorImpl()
-		GoToState(STATE_PAUSED)
 		_ActorLocked = False
+		GoToState(STATE_PAUSED)
 	EndFunction
 	
 	Function ResetPosition(int aiStripData, int aiPositionGenders)

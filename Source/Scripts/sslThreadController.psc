@@ -78,7 +78,7 @@ Event MenuEvent(string asEventName, string asStringArg, float afNumArg, form akS
 	ElseIf (asEventName == "SL_AdvanceScene")
 		If (afNumArg)
 			GoToStage(Stage - 1)
-		Else
+		ElseIf (GetTimeTotal() > 0.75)
 			PlayNextImpl(asStringArg)
 		EndIf
 	ElseIf (asEventName == "SL_SetSpeed")
@@ -97,7 +97,9 @@ Event MenuEvent(string asEventName, string asStringArg, float afNumArg, form akS
 	ElseIf (asEventName == "SL_MoveScene")
 		MoveScene()
 	ElseIf (asEventName == "SL_EndScene")
-		EndAnimation()
+		If (GetTimeTotal() > 0.75)
+			EndAnimation()
+		EndIf
 	ElseIf (asEventName == "SL_SetAnnotations")
 		UpdateAnnotations(asStringArg)
 	ElseIf (asEventName == "SL_SetOffset")

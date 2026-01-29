@@ -87,7 +87,7 @@ Function TriggerSex(Actor[] akPassed)
     Config.Log("[SexLab Matchmaker] Cannot start animation; invalid actor count")
     return
   Else
-    Config.Log("[SexLab MatchMaker] Starting Scene with Actors: " + akPassed)
+    Config.Log("[SexLab MatchMaker] Starting Scene with Actors: " + SexLabUtil.ActorNames(akPassed))
   EndIf
 
   Actor[] sub = new Actor[2]

@@ -1050,7 +1050,6 @@ State Animating
 
 	Function UpdateTimer(float AddSeconds = 0.0)
 		_StageTimer += AddSeconds
-		_ForceAdvance = true
 		TryUpdateMenuTimer(_StageTimer)
 	EndFunction
 
@@ -2341,10 +2340,12 @@ Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, floa
 EndFunction
 
 Function EnjBasedSkipToLastStage(bool abSkip)
-	;for solo/duo scenes, skip to last scene stage if any actor has ran out of stamina or male has orgasmed
+	if !abSkip
+		return
+	EndIf
 	bool NotEndStageScenario = (GetLegacyStageNum() < GetLegacyStagesCount())
 	bool SoloDuoScenario = (_Positions.Length == 1 || _Positions.Length == 2) 
-	If (abSkip && NotEndStageScenario && SoloDuoScenario)
+	If (NotEndStageScenario && SoloDuoScenario)
 		SkipTo(SexLabRegistry.GetEndingStages(GetActiveScene())[0])
 		_StageTimer -= (GetTimer() / 2)
 		UpdateBaseSpeed(0.8)
