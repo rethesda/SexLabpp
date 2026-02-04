@@ -910,12 +910,6 @@ State Animating
 			return
 		EndIf
 		Log("AnimationStart fully setup, begin animating")
-		StartedAt = SexLabUtil.GetCurrentGameRealTime()
-		StartStage(Utility.CreateStringArray(0), "")
-		SendThreadEvent("AnimationStart")
-		If(LeadIn)
-			SendThreadEvent("LeadInStart")
-		EndIf
 		If (HasPlayer)
 			If(IsVictim(PlayerRef) && Config.DisablePlayer)
 				AutoAdvance = true
@@ -925,6 +919,12 @@ State Animating
 			EndIf
 		Else
 			AutoAdvance = true
+		EndIf
+		StartedAt = SexLabUtil.GetCurrentGameRealTime()
+		StartStage(Utility.CreateStringArray(0), "")
+		SendThreadEvent("AnimationStart")
+		If(LeadIn)
+			SendThreadEvent("LeadInStart")
 		EndIf
 	EndFunction
 

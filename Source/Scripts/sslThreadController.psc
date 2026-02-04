@@ -148,24 +148,22 @@ Function MoveScene()
 			StorageUtil.SetIntValue(none, "SEXLAB_REPOSITIONMSG_INFO", 1)
 		EndIf
 	EndIf
-	; Make sure the player cannot activate anything, change worldspaces or start combat on their own
-	Game.DisablePlayerControls(false, true, false, false, true)
 	sslActorAlias PlayerSlot = ActorAlias(PlayerRef)
 	int n = 0
 	While(n < Positions.Length)
-		If(ActorAlias[n] == PlayerSlot)
-			ActorAlias[n].GoToState(ActorAlias[n].STATE_PAUSED)
-			ActorAlias[n].TryUnlock()
-		Else
-			ActorAlias[n].SendDefaultAnimEvent(true)
-		EndIf
+		ActorAlias[n].GoToState(ActorAlias[n].STATE_PAUSED)
 		n += 1
 	EndWhile
+	If (HasPlayer)
+		PlayerSlot.TryUnlock()
+	Else
+		Game.DisablePlayerControls(false, true, false, false, true)
+	EndIf
 	Utility.Wait(1)
-	int i = 0
-	While(i < 60 && !Input.IsKeyPressed(Hotkeys[kMoveScene]))
+	int t = 0
+	While(t < 60 && !Input.IsKeyPressed(Hotkeys[kMoveScene]))
 		Utility.Wait(0.5)
-		i += 1
+		t += 1
 	EndWhile
 	Game.DisablePlayerControls()	; make sure player isnt moving before resync
 	float x = PlayerRef.X
@@ -178,11 +176,16 @@ Function MoveScene()
 		z = PlayerRef.Z
 		Utility.Wait(0.5)
 	EndWhile
-	If(PlayerSlot)
+	If (HasPlayer)
 		PlayerSlot.TryLock()
-		PlayerSlot.GoToState(PlayerSlot.STATE_PLAYING)
+	Else
+		Game.EnablePlayerControls()
 	EndIf
-	Game.EnablePlayerControls()
+	int j = 0
+	While(j < Positions.Length)
+		ActorAlias[j].GoToState(ActorAlias[j].STATE_PLAYING)
+		j += 1
+	EndWhile
 	CenterOnObject(PlayerRef)
 EndFunction
 

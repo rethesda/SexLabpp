@@ -340,9 +340,8 @@ float _LastOrgasm
 Auto State Empty
 	bool Function SetActor(Actor ProspectRef)
 		If (ProspectRef == _PlayerRef)
-			Game.DisablePlayerControls(abMovement = false, abFighting = true, abCamSwitch = false, \
-				abLooking = false, abSneaking = false, abMenu = false, abActivate = true, abJournalTabs = false, \
-				aiDisablePOVType = 0)
+			Game.DisablePlayerControls(abMovement=false, abFighting=true, abCamSwitch=false, abLooking=false, \
+				abSneaking=false, abMenu=false, abActivate=true, abJournalTabs=false, aiDisablePOVType=0)
 		EndIf
 		ForceRefTo(ProspectRef)
 		_ActorRef = ProspectRef
@@ -401,25 +400,6 @@ EndFunction
 State Ready
 	Event OnBeginState()
 		RegisterForModEvent("SSL_PREPARE_Thread" + _Thread.tid, "OnDoPrepare")
-		If (_sex <= 2)	; NPC: Strapon, Expression
-			If (_sex == 0)
-				_BaseDelay = _Config.MaleVoiceDelay
-			Else
-				_BaseDelay = _Config.FemaleVoiceDelay
-				If (_sex == 1)
-					_HadStrapon = _Config.WornStrapon(_ActorRef)
-					If (!_HadStrapon)
-						_Strapon = _Config.GetStrapon()
-					ElseIf (!_Strapon)
-						_Strapon = _HadStrapon
-					EndIf
-				EndIf
-			EndIf
-		Else	; Creature
-			_BaseDelay = 3.0
-		EndIf
-		_VoiceDelay = _BaseDelay
-		_ExpressionDelay = _BaseDelay * 2
 	EndEvent
 
 	Function SetStrapon(Form ToStrapon)
@@ -488,6 +468,26 @@ State Ready
 		If (asStringArg != "skip")
 			_Thread.PrepareDone()
 		EndIf
+		; Delayed Initialization
+		If (_sex <= 2)
+			If (_sex == 0) 	
+				_BaseDelay = _Config.MaleVoiceDelay
+			Else
+				_BaseDelay = _Config.FemaleVoiceDelay
+				If (_sex == 1)
+					_HadStrapon = _Config.WornStrapon(_ActorRef)
+					If (!_HadStrapon)
+						_Strapon = _Config.GetStrapon()
+					ElseIf (!_Strapon)
+						_Strapon = _HadStrapon
+					EndIf
+				EndIf
+			EndIf
+		Else	; Creature
+			_BaseDelay = 3.0
+		EndIf
+		_VoiceDelay = _BaseDelay
+		_ExpressionDelay = _BaseDelay * 2
 		If (_Config.DebugMode)
 			Log("Strapon[" + _Strapon + "] Voice[" + GetActorVoice() + "] Expression[" + GetActorExpression() + "]")
 		EndIf
@@ -564,9 +564,8 @@ State Paused
 			If (Game.GetCameraState() == 0)
 				Game.ForceThirdPerson()
 			EndIf
-			Game.DisablePlayerControls(abMovement = false, abFighting = true, abCamSwitch = true, \
-				abLooking = false, abSneaking = false, abMenu = false, abActivate = true, abJournalTabs = false, \
-				aiDisablePOVType = 0)
+			Game.DisablePlayerControls(abMovement=true, abFighting=true, abCamSwitch=true, abLooking=false, \
+				abSneaking=true, abMenu=false, abActivate=true, abJournalTabs=false, aiDisablePOVType=0)
 			If(_Config.AutoTFC)
 				MiscUtil.SetFreeCameraState(true)
 				MiscUtil.SetFreeCameraSpeed(_Config.AutoSUCSM)
@@ -594,7 +593,8 @@ State Paused
 		_ActorRef.SetAnimationVariableBool("bHumanoidFootIKDisable", _AnimVarbHumanoidFootIKDisable)
 		If (_ActorRef == _PlayerRef)
 			MiscUtil.SetFreeCameraState(false)
-			Game.EnablePlayerControls(abFighting = false, abActivate = false)
+			Game.EnablePlayerControls(abMovement=true, abFighting=false, abCamSwitch=true, abLooking=true, \
+				abSneaking=true, abMenu=true, abActivate=false, abJournalTabs=true, aiDisablePOVType=0)
 		Else
 			ActorUtil.RemovePackageOverride(_ActorRef, _Thread.DoNothingPackage)
 			_ActorRef.EvaluatePackage()
