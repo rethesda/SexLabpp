@@ -361,7 +361,6 @@ Auto State Empty
 	EndFunction
 
 	Function Clear()
-		_ActorRef.StopTranslation()
 		If (GetIsDead())
 			If (_ActorRef.IsEssential())
 				_ActorRef.GetActorBase().SetEssential(false)

@@ -1005,9 +1005,7 @@ State Animating
 		Log("Starting stage " + asNextStageId + " with history: " + asHistory, "StartStage()")
 		SendThreadEvent("StageStart")
 		RunHook(Config.HOOKID_STAGESTART)
-		StopTranslations()
 		_StageHistory = AdvanceScene(asHistory, asNextStageId)
-		StartTranslations()
 		ReStartTimer()
 	EndFunction
 
@@ -1148,9 +1146,7 @@ State Animating
 	EndFunction
 
 	Function RealignActors()
-		StopTranslations()
 		AdvanceScene(_StageHistory, GetActiveStage())
-		StartTranslations()
 	EndFunction
 	
 	Function ChangeActors(Actor[] NewPositions)
@@ -1395,33 +1391,6 @@ Function SetFurnitureIgnored(bool disabling = true)
 	CenterRef.SetDestroyed(disabling)
 	CenterRef.BlockActivation(disabling)
 	CenterRef.SetNoFavorAllowed(disabling)
-EndFunction
-
-Function StopTranslations()
-	int i = 0
-	While (i < _Positions.Length)
-		_Positions[i].StopTranslation()
-		i += 1
-	EndWhile
-EndFunction
-
-Function StartTranslations()
-	int i = 0
-	While (i < _Positions.Length)
-		; Some creatures (such as horses or spiders) may tilt unnaturaly during scenes, 
-		; forcing them in translation ensures they are angled correctly
-		; translating only Y axis, as it does not have any visual effect on the actor
-		If (ActorAlias[i].GetSex() > 2)
-			float x = _Positions[i].X
-			float y = _Positions[i].Y
-			float z = _Positions[i].Z
-			float ax = _Positions[i].GetAngleX()
-			float ay = _Positions[i].GetAngleY() + 0.001
-			float az = _Positions[i].GetAngleZ()
-			_Positions[i].TranslateTo(x, y, z, ax, ay, az, 1.0, 0.0001)
-		EndIf
-		i += 1
-	EndWhile
 EndFunction
 
 ; ------------------------------------------------------- ;
@@ -3146,6 +3115,33 @@ Function ForcePathToCenter(Actor ActorRef = none, bool forced = true)
 		ActorAlias[3].ForcePathToCenter(forced)
 		ActorAlias[4].ForcePathToCenter(forced)
 	endIf
+EndFunction
+
+Function StopTranslations()
+	int i = 0
+	While (i < _Positions.Length)
+		_Positions[i].StopTranslation()
+		i += 1
+	EndWhile
+EndFunction
+
+Function StartTranslations()
+	int i = 0
+	While (i < _Positions.Length)
+		; Some creatures (such as horses or spiders) may tilt unnaturaly during scenes, 
+		; forcing them in translation ensures they are angled correctly
+		; translating only Y axis, as it does not have any visual effect on the actor
+		If (ActorAlias[i].GetSex() > 2)
+			float x = _Positions[i].X
+			float y = _Positions[i].Y
+			float z = _Positions[i].Z
+			float ax = _Positions[i].GetAngleX()
+			float ay = _Positions[i].GetAngleY() + 0.001
+			float az = _Positions[i].GetAngleZ()
+			_Positions[i].TranslateTo(x, y, z, ax, ay, az, 1.0, 0.0001)
+		EndIf
+		i += 1
+	EndWhile
 EndFunction
 
 Function SetAnimations(sslBaseAnimation[] AnimationList)
