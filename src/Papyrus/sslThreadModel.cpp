@@ -473,21 +473,16 @@ namespace Papyrus::ThreadModel
 	std::vector<int> GetCollisionActions(QUESTARGS, RE::Actor* a_position, RE::Actor* a_partner)
 	{
 		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
+		auto instance = instance->GetNiInstance();
+		if (!instance) {
 			a_vm->TraceStack("Not registered", a_stackID);
 			return {};
 		}
-		std::vector<int> ret{};
-		process->VisitPositions([&](auto& p) {
-			if (a_position && p.actor->formID != a_position->formID)
-				return false;
-			for (auto&& type : p.interactions) {
-				if (a_partner && type.partner->formID != a_partner->formID)
-					continue;
-				ret.push_back(static_cast<int>(type.action));
-			}
-			return false;
+		const auto idxA = a_position ? a_position->formID : 0;
+		const auto idxB = a_partner ? a_partner->formID : 0;
+		const auto interactions = instance->GetInteractions(idxA, idxB, NiInteraction::Type(a_type));
+		const auto ret = std::ranges::fold_left(interactions, std::vector<int>{}, [](auto&& acc, const auto& it) {
+			return (acc.push_back(static_cast<int>(it.action)), acc);
 		});
 		return ret;
 	}
@@ -495,23 +490,15 @@ namespace Papyrus::ThreadModel
 	bool HasCollisionAction(QUESTARGS, int a_type, RE::Actor* a_position, RE::Actor* a_partner)
 	{
 		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
+		auto instance = instance->GetNiInstance();
+		if (!instance) {
 			a_vm->TraceStack("Not registered", a_stackID);
 			return false;
 		}
-		return process->VisitPositions([&](auto& p) {
-			if (a_position && p.actor->formID != a_position->formID)
-				return false;
-			for (auto&& type : p.interactions) {
-				if (a_partner && type.partner->formID != a_partner->formID)
-					continue;
-				if (a_type != -1 && a_type != static_cast<int>(type.action))
-					continue;
-				return true;
-			}
-			return false;
-		});
+		const auto idxA = a_position ? a_position->formID : 0;
+		const auto idxB = a_partner ? a_partner->formID : 0;
+		const auto interactions = instance->GetInteractions(idxA, idxB, NiInteraction::Type(a_type));
+		return !interactions.empty();
 	}
 
 	RE::Actor* GetPartnerByAction(QUESTARGS, RE::Actor* a_position, int a_type)
@@ -520,97 +507,42 @@ namespace Papyrus::ThreadModel
 			a_vm->TraceStack("Actor is none", a_stackID);
 			return nullptr;
 		}
-		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
-			a_vm->TraceStack("Not registered", a_stackID);
-			return nullptr;
-		}
-		RE::Actor* ret = nullptr;
-		process->VisitPositions([&](auto& p) {
-			if (p.actor->formID != a_position->formID)
-				return false;
-			for (auto&& type : p.interactions) {
-				if (a_type != -1 && a_type != static_cast<int>(type.action))
-					continue;
-				ret = type.partner.get();
-				return true;
-			}
-			return false;
-		});
-		return ret;
+		const auto ret = GetPartnersByAction(a_vm, a_stackID, a_qst, a_position, a_type);
+		return ret.empty() ? nullptr : ret.front();
 	}
 
 	std::vector<RE::Actor*> GetPartnersByAction(QUESTARGS, RE::Actor* a_position, int a_type)
 	{
 		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
+		auto instance = instance->GetNiInstance();
+		if (!instance) {
 			a_vm->TraceStack("Not registered", a_stackID);
 			return {};
 		}
-		std::vector<RE::Actor*> ret{};
-		process->VisitPositions([&](auto& p) {
-			if (a_position && p.actor->formID != a_position->formID)
-				return false;
-			for (auto&& type : p.interactions) {
-				if (a_type != -1 && a_type != static_cast<int>(type.action))
-					continue;
-				ret.push_back(type.partner.get());
-			}
-			return false;
-		});
-		return ret;
+		const auto idxA = a_position ? a_position->formID : 0;
+		return instance->GetInteractionPartners(idxA, NiInteraction::Type(a_type));
 	}
 
 	RE::Actor* GetPartnerByTypeRev(QUESTARGS, RE::Actor* a_position, int a_type)
 	{
 		if (!a_position) {
 			a_vm->TraceStack("Actor is none", a_stackID);
-			return {};
+			return nullptr;
 		}
-		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
-			a_vm->TraceStack("Not registered", a_stackID);
-			return {};
-		}
-		RE::Actor* ret = nullptr;
-		process->VisitPositions([&](auto& p) {
-			for (auto&& type : p.interactions) {
-				if (a_position->formID == type.partner->formID) {
-					if (a_type == -1 || a_type == static_cast<int>(type.action)) {
-						ret = p.actor.get();
-						return true;
-					}
-					break;
-				}
-			}
-			return false;
-		});
-		return ret;
+		const auto ret = GetPartnersByTypeRev(a_vm, a_stackID, a_qst, a_position, a_type);
+		return ret.empty() ? nullptr : ret.front();
 	}
 
 	std::vector<RE::Actor*> GetPartnersByTypeRev(QUESTARGS, RE::Actor* a_position, int a_type)
 	{
 		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
+		auto instance = instance->GetNiInstance();
+		if (!instance) {
 			a_vm->TraceStack("Not registered", a_stackID);
 			return {};
 		}
-		std::vector<RE::Actor*> ret{};
-		process->VisitPositions([&](auto& p) {
-			for (auto&& type : p.interactions) {
-				if (!a_position || a_position->formID == type.partner->formID) {
-					if (a_type == -1 || a_type == static_cast<int>(type.action))
-						ret.push_back(p.actor.get());
-					break;
-				}
-			}
-			return false;
-		});
-		return ret;
+		const auto idxB = a_position ? a_position->formID : 0;
+		return instance->GetInteractionPartnersRev(idxB, NiInteraction::Type(a_type));
 	}
 
 	float GetActionVelocity(QUESTARGS, RE::Actor* a_position, RE::Actor* a_partner, int a_type)
@@ -619,30 +551,25 @@ namespace Papyrus::ThreadModel
 			a_vm->TraceStack("Actor is none", a_stackID);
 			return 0.0f;
 		}
-		if (a_type == -1) {
+		if (a_type == 0) {
 			a_vm->TraceStack("Type cant be 'any'", a_stackID);
 			return 0.0f;
 		}
 		GET_INSTANCE({});
-		auto process = instance->GetNiInstance();
-		if (!process) {
+		auto instance = instance->GetNiInstance();
+		if (!instance) {
 			a_vm->TraceStack("Not registered", a_stackID);
 			return 0.0f;
 		}
 		float ret = 0.0f;
-		process->VisitPositions([&](auto& p) {
-			if (p.actor->formID != a_position->formID)
-				return false;
-			for (auto&& type : p.interactions) {
-				if (a_partner && a_partner->formID != type.partner->formID)
-					continue;
-				if (a_type != static_cast<int>(type.action))
-					continue;
-				ret = type.velocity;
-				return true;
-			}
-			return false;
-		});
+		const auto idxA = a_position->formID;
+		const auto idxB = a_partner ? a_partner->formID : 0;
+		const auto interactions = instance->GetInteractions(idxA, idxB, NiInteraction::Type(a_type));
+		if (!interactions.empty()) {
+			ret = interactions.front().velocity;
+		} else {
+			a_vm->TraceStack("No such interaction found", a_stackID);
+		}
 		return ret;
 	}
 
