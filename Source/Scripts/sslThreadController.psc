@@ -241,11 +241,6 @@ Event OnKeyDown(int KeyCode)
 			AdvanceStage(true)
 		Else
 			AdvanceStage(false)
-			int i = 0
-			While (i < Positions.Length)
-				ActorAlias[i].InternalCompensateStageSkip()
-				i += 1
-			EndWhile
 		EndIf
 	ElseIf(hotkey == kChangeAnimation)
 		ChangeAnimation(Config.BackwardsPressed())

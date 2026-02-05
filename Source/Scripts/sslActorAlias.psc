@@ -468,7 +468,7 @@ State Ready
 		EndIf
 		; Delayed Initialization
 		If (_sex <= 2)
-			If (_sex == 0) 	
+			If (_sex == 0)
 				_BaseDelay = _Config.MaleVoiceDelay
 			Else
 				_BaseDelay = _Config.FemaleVoiceDelay
@@ -533,8 +533,8 @@ State Paused
 			ResolveStrapon()
 			_ActorRef.QueueNiNodeUpdate()
 		EndIf
-		Debug.SendAnimationEvent(_ActorRef, "SOSBend0")
 		;Utility.Wait(0.5)	; Wait for schlong to update
+		Debug.SendAnimationEvent(_ActorRef, "SOSBend0")
 		RegisterForModEvent("SSL_READY_Thread" + _Thread.tid, "OnStartPlaying")
 	EndFunction
 
@@ -876,7 +876,6 @@ State Animating
 		_OrgasmCount += 1
 		; Enjoyment
 		_FullEnjoyment = 0
-		_EdgeSpamPenalty = 0
 		_arousalBase = 0
 		SexlabStatistics.SetStatistic(_ActorRef, 17, _arousalBase)
 		_EnjFactor = _BaseFactor
@@ -919,7 +918,7 @@ State Animating
 		EndIf
 		If (KeyCode == _Config.GamePauseKey) && Input.IsKeyPressed(_Config.GameUtilityKey)
 			_bGamePaused = !_bGamePaused
-			MiscUtil.PrintConsole("[EnjGame] Game paused: " + _bGamePaused)
+			Log("[EnjGame] Game paused: " + _bGamePaused)
 		EndIf
 		If !_bGamePaused
 			If (KeyCode == _Config.GameRaiseEnjKey)
@@ -1174,10 +1173,7 @@ int _FullEnjoyment
 ; Game
 bool _bGamePaused
 Actor _EnjGamePartner
-float _GameModSelfSta
-float _GameModSelfMag
 float _lastHoldBack
-float _EdgeSpamPenalty
 
 Function ResetEnjoymentVariables()
 	; Defaults
@@ -1203,10 +1199,7 @@ Function ResetEnjoymentVariables()
 	; Game
 	_bGamePaused = False
 	_EnjGamePartner = None
-	_GameModSelfSta = 0.0
-	_GameModSelfMag = 0.0
 	_lastHoldBack = 0.0
-	_EdgeSpamPenalty = 0.0
 EndFunction
 
 Function UpdateBaseEnjoymentCalculations()
@@ -1237,9 +1230,8 @@ Function UpdateEffectiveEnjoymentCalculations()
 	; Interactions
 	_TypeInterStr = _Thread.CreateInteractionString(_ActorRef)
 	_InterFactor = _Thread.CalculateInteractionFactor(_ActorRef, _TypeInterStr)
-	; Enjoyment
-	float EnjEffective = CalcEffectiveEnjoyment()
-	_FullEnjoyment = (EnjEffective - _EdgeSpamPenalty) as int
+	; Enjoyment 
+	_FullEnjoyment = CalcEffectiveEnjoyment() as int
 	UpdateEnjoyment(_FullEnjoyment as float)
 	UpdateArousalStat()
 	; Debug
@@ -1376,10 +1368,6 @@ float Function EnjFindConSubStatusMult()
 	EndIf
 	return ret
 EndFunction
-	
-Function InternalCompensateStageSkip()
-	_FullEnjoyment += _Config.EnjGainOnStageSkip
-EndFunction
 
 int function CalcReaction()
 	int ret = Math.Abs(_FullEnjoyment) as int
@@ -1444,66 +1432,45 @@ Function RunEnjoymentGame(String arg = "")
 	EndIf
 	If (arg == "Initiate")
 		_EnjGamePartner = _Thread.GameChangePartner(_ActorRef)
-		_GameModSelfSta = _Thread.CalcEnjVarMod("Stamina", _ActorRef)
-		_GameModSelfMag = _Thread.CalcEnjVarMod("Magicka", _ActorRef) 
-		_Thread.ProcessEnjGameArg("", _ActorRef, _EnjGamePartner, _GameModSelfSta, _GameModSelfMag)
+		_Thread.ProcessEnjGameArg("", _ActorRef, _EnjGamePartner)
 	ElseIf (arg == "Auto")
-		_Thread.ProcessEnjGameArg("Auto", _ActorRef, _EnjGamePartner, _GameModSelfSta, _GameModSelfMag)
+		_Thread.ProcessEnjGameArg("Auto", _ActorRef, _EnjGamePartner)
 	ElseIf (arg == "Stamina")
-		_Thread.ProcessEnjGameArg("Stamina", _ActorRef, _EnjGamePartner, _GameModSelfSta, _GameModSelfMag)
+		_Thread.ProcessEnjGameArg("Stamina", _ActorRef, _EnjGamePartner)
 	ElseIf (arg == "Magicka")
-		_Thread.ProcessEnjGameArg("Magicka", _ActorRef, _EnjGamePartner, _GameModSelfSta, _GameModSelfMag)
+		_Thread.ProcessEnjGameArg("Magicka", _ActorRef, _EnjGamePartner)
 	EndIf
 EndFunction
 
 Function GameRegisterEdgeAttempt()
 	; IDEA: expose fWindow as some UI bar when making custom widget; can be a cool minigame feature
-	If (_ActorRef != _PlayerRef)
-		return
-	EndIf
 	If (_lastHoldBack > 0.0)
 		float window = FindEdgingTimeWindow()
 		If (SexLabUtil.GetCurrentGameRealTime() - _lastHoldBack) < (window / 2)
-			_EdgeSpamPenalty = 2 * (window * 2)
-			_EnjFactor -= 0.03
-			If (_EnjFactor < 0.0)
-				_FullEnjoyment -= 50 ; penalty for excessive edging spam
-				_EnjFactor = _BaseFactor/2
+			If (_Config.AllowEdgeSpamPenalty)
+				If (_EnjFactor > (_BaseFactor/2))
+					_FullEnjoyment -= (2 * (window * 2)) as int
+					_EnjFactor -= 0.03
+				Else
+					_FullEnjoyment -= 50 ; penalty for excessive edging spam
+					_EnjFactor = (_BaseFactor/2)
+				EndIf
+				If (_ActorRef == _PlayerRef)
+					_ActorRef.DamageActorValue("Stamina", _Config.GameStaminaCost)
+					_ActorRef.DamageActorValue("Magicka", _Config.GameMagickaCost)	
+				EndIf
 			EndIf
-			int PenaltyType = _Config.EdgeSpamPunishType
-			If PenaltyType == 1
-				_ActorRef.DamageActorValue("Stamina", _Config.GameStaminaCost)
-			ElseIf PenaltyType == 2
-				_ActorRef.DamageActorValue("Magicka", _Config.GameMagickaCost)
-			ElseIf PenaltyType == 3	
-				_ActorRef.DamageActorValue("Health", _Config.GameStaminaCost)
-			EndIf	
 		EndIf
 	EndIf
 	_lastHoldBack = SexLabUtil.GetCurrentGameRealTime()
 EndFunction
 
 Function GameRewardTimedEdging()
-	If (_ActorRef != _PlayerRef)
-		return
-	EndIf
-	;_EnjoymentDelay/UPDATE_INTERVAL==6); boost in 3s == 0.24
-	_EnjFactor += 0.02
-	int RewardType = _Config.EdgingRewardType
-	If RewardType == 1
-		_ActorRef.RestoreActorValue("Stamina", _Config.GameStaminaCost)
-	ElseIf RewardType == 2
-		_ActorRef.RestoreActorValue("Magicka", _Config.GameMagickaCost)
-	ElseIf RewardType == 3
-		_ActorRef.RestoreActorValue("Health", _Config.GameStaminaCost)
-	EndIf
-	If (_FullEnjoyment > 175)
-		If RewardType == 1
-			_ActorRef.ModActorValue("Stamina", 5)
-		ElseIf RewardType == 2
-			_ActorRef.ModActorValue("Magicka", 5)
-		ElseIf RewardType == 3
-			_ActorRef.ModActorValue("Health", 5)
+	If (_Config.AllowEdgingReward)
+		_EnjFactor += 0.02 ;_EnjoymentDelay/UPDATE_INTERVAL==6); boost in 3s == 0.24
+		If (_ActorRef == _PlayerRef)
+			_ActorRef.RestoreActorValue("Stamina", _Config.GameStaminaCost)
+			_ActorRef.RestoreActorValue("Magicka", _Config.GameMagickaCost)
 		EndIf
 	EndIf
 EndFunction

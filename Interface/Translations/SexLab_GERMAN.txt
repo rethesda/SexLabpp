@@ -333,6 +333,7 @@ $SSL_iKeyExtra2	Open Menu / Swap Menu Tab
 $SSL_iKeyMod	Modifier
 $SSL_iKeyReset	Inverse Action
 $SSL_iChangeAnimation	Change Animation
+$SSL_iMoveScene	Move Scene
 
 # ------------------- Timers & Stripping -------------------------------------------------
 $SSL_TimersStripping	Timers & Stripping
@@ -438,7 +439,7 @@ $SSL_EnjoymentSettings	Enjoyment Settings
 $SSL_bInternalEnjoymentEnabled	Enable Internal Enjoyment
 $SSL_bInternalEnjoymentEnabledHighlight	Toggles the internal enjoyment system. Should stay enabled unless an external mod desires to take full control of the enjoyment calculus.
 $SSL_bUsePhysicBasedDetection	Enable Collision Detections
-$SSL_bUsePhysicBasedDetectionHighlight	Toggles the use of advanced collision type-guessing based on relative bone positions and movements.\nCollision typing offers real-time info on the interactions an actor is involved in at any given moment.\nIf disabled, the system will instead rely upon position tags (from HentaiRim).
+$SSL_bUsePhysicBasedDetectionHighlight	Toggles the use of advanced collision type-guessing based on relative bone positions and movements.\nCollision typing offers real-time info on the interactions an actor is involved in at any given moment.\nIf disabled, the system will instead rely upon position tags (less accurate).
 $SSL_fEnjRaiseMultInter	EnjRaise Mult: Interactions
 $SSL_fEnjRaiseMultInterHighlight	The main multiplier/factor determining the rate at which enjoyment increases for an actor based on detected interactions. Higher values mean faster enjoyment raise and vice versa.\n Can be reduced to zero if user desires enjoyment raise to depend solely on the enjoyment minigame.
 
@@ -473,14 +474,11 @@ $SSL_iEnjGameStaminaCost	Game Stamina Cost
 $SSL_iEnjGameStaminaCostHighlight	The amount of STAMINA to be depleted upon a relevant minigame action.
 $SSL_iEnjGameMagickaCost	Game Magicka Cost
 $SSL_iEnjGameMagickaCostHighlight	The amount of MAGICKA to be depleted upon a relevant minigame action.
-$SSL_iEdgingRewardType	Edging State Reward Type
-$SSL_iEdgingRewardTypeHighlight	Reward for successfully maintaining edging state (enjoyment beyond 100).\n0: Only Enjoyment Boost\n1: Additional Stamina Restoration\n2: Additional Magicka Restoration\n3: Additional Health Restoration
-$SSL_iEdgeSpamPunishType	Edge Spam Penalty Type
-$SSL_iEdgeSpamPunishTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
-
+$SSL_bAllowEdgingReward	Enable Edging State Reward
+$SSL_bAllowEdgingRewardHighlight	Toggles successive enjoyment rate increase and restoration of player's stamina and magicka upon maintaining edging state (enjoyment beyond 100).
+$SSL_bAllowEdgeSpamPenalty	Enable Edge Spam Penalty
+$SSL_bAllowEdgeSpamPenaltyHighlight	Toggles successive enjoyment penalties along with stamina and magicka depletion for the player upon spamming the edge hotkey before the edging time window.
 # ------ General Configs
-$SSL_iEnjGainOnStageSkip	Stage Skip Enj Gain
-$SSL_iEnjGainOnStageSkipHighlight	Amount of enjoyment gained when skipping stages manually (through the stage skip hotkey).
 $SSL_bNoStaminaEndsScene	No Stamina Ends Scene
 $SSL_bNoStaminaEndsSceneHighlight	Ends the scene automatically when the actor's stamina is depleted.
 $SSL_bMaleOrgasmEndsScene	Male Orgasm Ends Scene

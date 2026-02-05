@@ -333,6 +333,7 @@ $SSL_iKeyExtra2	Экстра / Повернуть сцену
 $SSL_iKeyMod	Модификатор
 $SSL_iKeyReset	Инвертирование действия
 $SSL_iChangeAnimation	Change Animation
+$SSL_iMoveScene Move Scene
 
 # ------------------- Timers & Stripping -------------------------------------------------
 $SSL_TimersStripping	Таймеры/Раздевание
@@ -473,14 +474,11 @@ $SSL_iEnjGameStaminaCost	Game Stamina Cost
 $SSL_iEnjGameStaminaCostHighlight	The amount of stamina to be depleted upon a relevant minigame action.
 $SSL_iEnjGameMagickaCost	Game Magicka Cost
 $SSL_iEnjGameMagickaCostHighlight	The amount of magicka to be depleted upon a relevant minigame action.
-$SSL_iEdgingRewardType	Edging State Reward Type
-$SSL_iEdgingRewardTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
-$SSL_iEdgeSpamPunishType	Edge Spam Penalty Type
-$SSL_iEdgeSpamPunishTypeHighlight	Penalty for spamming clicks before the edging time window.\n0: Only Enjoyment Penalties\n1: Additional Stamina Depletion\n2: Additional Magicka Depletion\n3: Additional Health Depletion
-
+$SSL_bAllowEdgingReward Enable Edging State Reward
+$SSL_bAllowEdgingRewardHighlight	Toggles successive enjoyment rate increase and restoration of player's stamina and magicka upon maintaining edging state (enjoyment beyond 100).
+$SSL_bAllowEdgeSpamPenalty  Enable Edge Spam Penalty
+$SSL_bAllowEdgeSpamPenaltyHighlight Toggles successive enjoyment penalties along with stamina and magicka depletion for the player upon spamming the edge hotkey before the edging time window.
 # ------ General Configs
-$SSL_iEnjGainOnStageSkip	Stage Skip Enj Gain
-$SSL_iEnjGainOnStageSkipHighlight	Amount of enjoyment gained when skipping stages manually (through the stage skip hotkey).
 $SSL_bNoStaminaEndsScene	No Stamina Ends Scene
 $SSL_bNoStaminaEndsSceneHighlight	Ends the scene automatically when the actor's stamina is depleted.
 $SSL_bMaleOrgasmEndsScene	Male Orgasm Ends Scene

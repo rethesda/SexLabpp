@@ -1315,9 +1315,9 @@ State Ending
 				Utility.Wait(0.05)
 			EndIf
 		EndWhile
-		RunHook(Config.HOOKID_END)
 		SendThreadEvent("AnimationEnding")
 		SendThreadEvent("AnimationEnd")
+		RunHook(Config.HOOKID_END)
 		; Cant use default OnUpdate() event as the previous state could leak a registration into this one here
 		; any attempt to prevent this leak without artificially slowing down the code have failed
 		; 0.1 gametime = 6ig minutes = 360 ig seconds = 360 / 20 rt seconds = 18 rt seconds with default timescale
@@ -1737,12 +1737,6 @@ int Property aAnal					= 27  AutoReadOnly Hidden	;pos_pp is penetrating partner'
 AssociationType Property SpouseAssocation Auto
 Faction Property PlayerMarriedFaction Auto
 
-sslActorStats Property Stats Hidden
-  sslActorStats Function Get()
-	  return Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats
-  EndFunction
-EndProperty
-
 ; -------------------------------------------------- ;
 ; --- Interactions Detections                    --- ;
 ; -------------------------------------------------- ;
@@ -2113,74 +2107,18 @@ Function GameAdjustEnj(Actor akActor, Actor akPartner = None, int AdjustBy = 0)
 	EndIf
 EndFunction
 
-Function GameRaiseEnjoyment(Actor akActor, Actor akPartner, float VarMod, float EnjoymentMod)
-	;akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod+EnjoymentMod))
-	akActor.DamageActorValue("Stamina", Config.GameStaminaCost)
-	If (Config.GameEnjReductionChance == 1) && (VarMod < 3) && (Utility.RandomInt(0,100) < ((3-VarMod)*10))
-		GameAdjustEnj(akActor, akPartner, -1) ;with skills 3- upto 30 chance to decrease enjoyment
-	Else
+Function GameRaiseEnjoyment(Actor akActor, Actor akPartner)
+	If (akActor.GetActorValuePercentage("Stamina") > 0.10)
+		akActor.DamageActorValue("Stamina", Config.GameStaminaCost)
 		GameAdjustEnj(akActor, akPartner)
 	EndIf
 EndFunction
 
-Function GameHoldback(Actor akActor, Actor akPartner = None)
-	If (akPartner == None)
-		akPartner = akActor
-	EndIf
-	float[] OwnSkills = Stats.GetSkillLevels(akPartner)
-	If (GetPositionIdx(akPartner) == 0)
-		int basesex = GetActorSex(akPartner)
-		If (basesex == 1 || basesex == 4)
-			If (IsVaginalComplex(akPartner) || HasSceneTag("Fisting") || HasSceneTag("SixtyNine"))
-				GameAdjustEnj(akActor, akPartner, (-1 - OwnSkills[Stats.kVaginal]) as int)
-			ElseIf IsAnalComplex(akPartner)
-				GameAdjustEnj(akActor, akPartner, (-1 - OwnSkills[Stats.kAnal]) as int)
-			Else
-				GameAdjustEnj(akActor, akPartner, -1)
-			EndIf
-		ElseIf (basesex == 0 || basesex == 2)
-			If (IsAnalComplex(akPartner) || HasSceneTag("Fisting"))
-				GameAdjustEnj(akActor, akPartner, (-1 - OwnSkills[Stats.kAnal]) as int)
-			Else
-				GameAdjustEnj(akActor, akPartner, -1)
-			EndIf
-		EndIf
-	Else
+Function GameHoldback(Actor akActor, Actor akPartner)
+	If (akActor.GetActorValuePercentage("Magicka") > 0.10)
+		akActor.DamageActorValue("Magicka", Config.GameMagickaCost)
 		GameAdjustEnj(akActor, akPartner, -1)
 	EndIf
-EndFunction
-
-Function GameDamageMagicka(Actor akPartner, float GameModSelfSta)
-	If (akPartner == None)
-		return
-	EndIf
-	float GameModPartMag = CalcEnjVarMod("Magicka", akPartner)
-	akPartner.DamageActorValue("Magicka", \ 
-		akPartner.GetBaseActorValue("Magicka")/100\
-		*(10-GameModSelfSta+GameModPartMag/100)\
-		*((GetEnjoyment(akPartner) as float)/100\
-		*(1+GetOrgasmCount(akPartner)))*0.5)
-EndFunction
-
-float Function CalcEnjVarMod(String var = "", Actor akActor, Actor akPartner = None)
-	If (akPartner == None)
-		akPartner = akActor
-	EndIf
-	float VarMod = 0.0
-	If (var == "Stamina")
-		If IsVaginalComplex(akPartner)
-			VarMod = Stats.GetSkillLevel(akPartner, "Vaginal")
-		ElseIf IsAnalComplex(akPartner)
-			VarMod = Stats.GetSkillLevel(akPartner, "Anal")
-		ElseIf IsOralComplex(akPartner)
-			VarMod = Stats.GetSkillLevel(akPartner, "Oral")
-		Else
-			VarMod = Stats.GetSkillLevel(akPartner, "Foreplay")
-		EndIf
-	ElseIf (var == "Magicka")
-		VarMod = Stats.GetSkillLevel(akPartner, "Lewd", 0.3) - Stats.GetSkillLevel(akPartner, "Pure", 0.3)
-	EndIf
-	return PapyrusUtil.ClampFloat(VarMod, -6, 6)
 EndFunction
 
 Actor Function GameChangePartner(Actor akActor, int idx = -1)
@@ -2191,7 +2129,7 @@ Actor Function GameChangePartner(Actor akActor, int idx = -1)
 			int idxPartner = sslUtility.IndexTravel(GetPositionIdx(akActor), _Positions.Length)
 			akPartner = ActorAlias[idxPartner].GetActorRef()
 			If (akActor == PlayerRef)
-				MiscUtil.PrintConsole("[EnjGame] " + akActor.GetDisplayName() + "'s current partner is " + akPartner.GetDisplayName())
+				Log("[EnjGame] " + akActor.GetDisplayName() + "'s current partner is " + akPartner.GetDisplayName())
 			EndIf
 		Else
 			tempRef = ActorAlias[idx].GetActorRef()
@@ -2200,12 +2138,11 @@ Actor Function GameChangePartner(Actor akActor, int idx = -1)
 			EndIf
 			akPartner = tempRef
 			If (akActor == PlayerRef)
-				MiscUtil.PrintConsole("[EnjGame] " + akActor.GetDisplayName() + " changed focus to " + akPartner.GetDisplayName())
-				;Debug.Notification(akActor.GetDisplayName() + " changed focus to " + akPartner.GetDisplayName())
+				Log("[EnjGame] " + akActor.GetDisplayName() + " changed focus to " + akPartner.GetDisplayName())
 			EndIf
+			Config.SelectedSpell.Cast(akPartner, akPartner)
 		EndIf
 	EndIf
-	Config.SelectedSpell.Cast(akPartner, akPartner)
 	return akPartner
 EndFunction
 
@@ -2237,13 +2174,10 @@ int Function GameNextPartnerIdx(Actor akActor, Actor akPartner, bool abReverse)
     return PartnerIdx
 EndFunction
 
-Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, float GameModSelfSta, float GameModSelfMag)
+Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner)
 	Actor PartnerRef = None
-	bool MentallyBroken = False
 	int ActorEnjoyment = GetEnjoyment(akActor)
-	float EnjoymentMod = PapyrusUtil.ClampFloat((ActorEnjoyment as float)/30, 1.0, 3.0)
-	float VarMod = 0.0
-	
+	bool MentallyBroken = False
 	If (akActor == PlayerRef) && (Config.GamePlayerVictimAutoplay == 1) && IsVictim(akActor)
 		MentallyBroken = True
 	ElseIf (akActor.GetActorValuePercentage("Magicka") <= 0.10)
@@ -2251,88 +2185,43 @@ Function ProcessEnjGameArg(String arg = "", Actor akActor, Actor akPartner, floa
 	ElseIf (akActor.GetActorValuePercentage("Magicka") > 0.25 && MentallyBroken == True)
 		MentallyBroken = False
 	EndIf
-	
 	;PC only (RaiseEnjKey)
 	If arg == "Stamina"
 		If MentallyBroken == False
-			VarMod = GameModSelfSta
-			If (akActor.GetActorValuePercentage("Stamina") > 0.10)
-				If (_Positions.Length == 1 || Input.IsKeyPressed(Config.GameUtilityKey))
-					PartnerRef = akActor
-					If (ActorEnjoyment < 85)
-						GameRaiseEnjoyment(akActor, PartnerRef, VarMod, EnjoymentMod)
-					ElseIf (ActorEnjoyment > 90) && (PartnerRef == PlayerRef)
-						ActorAlias[GetPositionIdx(PartnerRef)].GameRegisterEdgeAttempt()
-					EndIf
-				ElseIf (_Positions.Length > 1)
-					PartnerRef = akPartner
-					GameRaiseEnjoyment(akActor, PartnerRef, VarMod, EnjoymentMod)
+			If (_Positions.Length == 1 || Input.IsKeyPressed(Config.GameUtilityKey))
+				PartnerRef = akActor
+				If (ActorEnjoyment < 85)
+					GameRaiseEnjoyment(akActor, PartnerRef)
+				ElseIf (ActorEnjoyment > 90) && (PartnerRef == PlayerRef)
+					ActorAlias[GetPositionIdx(PartnerRef)].GameRegisterEdgeAttempt()
 				EndIf
+			ElseIf (_Positions.Length > 1)
+				PartnerRef = akPartner
+				GameRaiseEnjoyment(akActor, PartnerRef)
 			EndIf
 		EndIf
 	;PC only (HoldbackKey)
 	ElseIf arg == "Magicka"
 		If MentallyBroken == False
 			If (_Positions.Length == 1 || Input.IsKeyPressed(Config.GameUtilityKey))
-				VarMod = GameModSelfMag
-				If (akActor.GetActorValuePercentage("Magicka") > 0.10)
-					;akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-VarMod)*0.5)
-					akActor.DamageActorValue("Magicka", Config.GameMagickaCost)
-					PartnerRef = akActor
-					GameHoldback(akActor, PartnerRef)
-				EndIf
+				PartnerRef = akActor
+				GameHoldback(akActor, PartnerRef)
 			ElseIf (_Positions.Length > 1)
-				VarMod = GameModSelfSta
-				If (akActor.GetActorValuePercentage("Stamina") > 0.10)
-					;akActor.DamageActorValue("Stamina", akActor.GetBaseActorValue("Stamina")/(10+VarMod)*0.5)
-					akActor.DamageActorValue("Stamina", Config.GameStaminaCost)
-					PartnerRef = akPartner
-					GameHoldback(akActor, PartnerRef) 
-				EndIf
+				PartnerRef = akPartner
+				GameHoldback(akActor, PartnerRef) 
 			EndIf
 		EndIf
 	;NPC and PC (auto)
 	ElseIf arg == "Auto"
 		If (!HasPlayer || (MentallyBroken == True) || ((akActor == PlayerRef) && Config.GamePlayerAutoplay) || ((akActor != PlayerRef) && Config.GameNPCAutoplay))
-			bool withLover = (_Positions.Length == 2 && (Utility.RandomInt(0, 100) < (25+GetHighestPresentRelationshipRank(akActor)*10*2)))
-			VarMod = GameModSelfSta
-			If (akActor.GetActorValuePercentage("Stamina") > 0.10)
-				If IsAggressor(akActor) ;aggressor
-					int RelationshipRank = GetLowestPresentRelationshipRank(akActor)
-					If RelationshipRank < 0 ;enemies
-						VarMod = Math.Abs(RelationshipRank)
-						PartnerRef = akActor
-					Else ;neutrals/lovers
-						If (MentallyBroken == False || _Positions.Length > 1)
-							PartnerRef = akActor
-						Else
-							PartnerRef = akPartner
-						EndIf
-					EndIf
-				Else ;not aggressor
-					If (MentallyBroken == False || _Positions.Length > 1)
-						If (Utility.RandomInt(0, 100) < (Stats.GetSkillLevel(akActor, "Lewd", 0.3)*10*1.5))
-							PartnerRef = akActor ;lewdness based check --> pleasure self
-						ElseIf withLover
-							PartnerRef = akPartner ;relationship based check --> pleasure partner
-						EndIf
-					Else
-						PartnerRef = akPartner ;mentally broken, pleasure partner
-					EndIf
-				EndIf
-				GameRaiseEnjoyment(akActor, PartnerRef, VarMod, EnjoymentMod)
+			If IsAggressor(akActor) 
+				PartnerRef = akActor ;aggressor, pleasure self
+			Else
+				PartnerRef = akPartner ;not aggressor, pleasure partner
 			EndIf
-			If (withLover && Config.GameHoldbackWithPartner && (akActor.GetActorValuePercentage("Magicka") > 0.10))
-				If (GetEnjoyment(akActor) > 90)
-					;akActor.DamageActorValue("Magicka", akActor.GetBaseActorValue("Magicka")/(10-GameModSelfMag))
-					akActor.DamageActorValue("Magicka", Config.GameMagickaCost)
-					PartnerRef = akActor
-					GameHoldback(akActor, PartnerRef)
-				EndIf
-			EndIf
+			GameRaiseEnjoyment(akActor, PartnerRef)
 		EndIf
 	EndIf
-	;GameDamageMagicka(PartnerRef, GameModSelfSta)
 EndFunction
 
 Function EnjBasedSkipToLastStage(bool abSkip)

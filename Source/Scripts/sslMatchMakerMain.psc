@@ -130,7 +130,6 @@ Event AnimationStarted(int aiThread, bool abHasPlayer)
   Config.Log("[SexLab MatchMaker] - Current active scene: " + thread.GetActiveScene())
   Config.Log("[SexLab MatchMaker] - Current scene name: " + SexLabRegistry.GetSceneName(thread.GetActiveScene()))
   Config.Log("[SexLab MatchMaker] - Current active stage: " + thread.GetActiveStage())
-  Config.Log("[SexLab MatchMaker] - Current active stage number: " + (thread as sslThreadModel).GetLegacyStageNum() + " / " + (thread as sslThreadModel).GetLegacyStagesCount())
   Config.Log("[SexLab MatchMaker] - Current submissive actor(s): " + thread.GetSubmissives())
   Config.Log("[SexLab MatchMaker] - ###### END LOGGING SCENE DATA #####")
 EndEvent

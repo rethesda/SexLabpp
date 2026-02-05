@@ -1114,14 +1114,6 @@ EndProperty
 ; --- GENERAL CONFIG                          --- ;
 ; ----------------------------------------------- ;
 
-int Property EnjGainOnStageSkip hidden
-  int Function Get()
-    return GetSettingInt("iEnjGainOnStageSkip")
-  EndFunction
-  Function Set(int aiSet)
-    SetSettingInt("iEnjGainOnStageSkip", aiSet)
-  EndFunction
-EndProperty
 bool Property NoStaminaEndsScene hidden
   bool Function Get()
     return GetSettingBool("bNoStaminaEndsScene")
@@ -1274,22 +1266,6 @@ bool Property GameNPCAutoplay hidden
     SetSettingBool("bGameNPCAutoplay", value)
   EndFunction
 EndProperty
-bool Property GameEnjReductionChance hidden
-  bool Function Get()
-    return GetSettingBool("bGameEnjReductionChance")
-  EndFunction
-  Function Set(bool value)
-    SetSettingBool("bGameEnjReductionChance", value)
-  EndFunction
-EndProperty
-bool Property GameHoldbackWithPartner hidden
-  bool Function Get()
-    return GetSettingBool("bGameHoldbackWithPartner")
-  EndFunction
-  Function Set(bool value)
-    SetSettingBool("bGameHoldbackWithPartner", value)
-  EndFunction
-EndProperty
 int Property GameUtilityKey hidden
   int Function Get()
     return GetSettingInt("iGameUtilityKey")
@@ -1346,20 +1322,20 @@ int Property GameMagickaCost hidden
     SetSettingInt("iEnjGameMagickaCost", aiSet)
   EndFunction
 EndProperty
-int Property EdgingRewardType hidden
-  int Function Get()
-    return GetSettingInt("iEdgingRewardType")
+bool Property AllowEdgingReward hidden
+  bool Function Get()
+    return GetSettingBool("bAllowEdgingReward")
   EndFunction
-  Function Set(int aiSet)
-    SetSettingInt("iEdgingRewardType", aiSet)
+  Function Set(bool value)
+    SetSettingBool("bAllowEdgingReward", value)
   EndFunction
 EndProperty
-int Property EdgeSpamPunishType hidden
-  int Function Get()
-    return GetSettingInt("iEdgeSpamPunishType")
+bool Property AllowEdgeSpamPenalty hidden
+  bool Function Get()
+    return GetSettingBool("bAllowEdgeSpamPenalty")
   EndFunction
-  Function Set(int aiSet)
-    SetSettingInt("iEdgeSpamPunishType", aiSet)
+  Function Set(bool value)
+    SetSettingBool("bAllowEdgeSpamPenalty", value)
   EndFunction
 EndProperty
 
