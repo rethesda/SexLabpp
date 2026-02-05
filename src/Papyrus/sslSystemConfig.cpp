@@ -140,7 +140,7 @@ namespace Papyrus::SystemConfig
 		return static_cast<int32_t>(Registry::Library::GetSingleton()->GetSceneCount());
 	}
 
-	static const std::unordered_map<std::string, float*> EnjoymentFactorsMap = {
+	static const std::map<std::string, float*> EnjoymentFactorsMap = {
 		{"pStimulation",	&Settings::f_pStimulation},
 		{"aAnimObjFace",	&Settings::f_aAnimObjFace},
 		{"pAnimObjFace",	&Settings::f_pAnimObjFace},
@@ -213,11 +213,6 @@ namespace Papyrus::SystemConfig
 			ret.push_back(form);
 		}
 		return ret;
-	}
-
-	float GetMinSetupTime(RE::StaticFunctionTag*)
-	{
-		return std::min<float>(Settings::fMinSetupTime, 0.1f);
 	}
 
 }	 // namespace Papyrus

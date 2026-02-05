@@ -25,8 +25,6 @@ namespace Papyrus::SystemConfig
 
 	inline bool Register(VM* a_vm)
 	{
-		REGISTERFUNC(GetMinSetupTime, "sslSystemConfig", true);
-
 		REGISTERFUNC(GetAnimationCount, "sslSystemConfig", true);
 		REGISTERFUNC(GetEnjoymentFactors, "sslSystemConfig", true);
 		REGISTERFUNC(GetEnjoymentFactor, "sslSystemConfig", true);
