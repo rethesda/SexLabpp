@@ -554,9 +554,6 @@ State Paused
 		ResolveStraponImpl()
 	EndFunction
 
-	Function TryLock()
-		LockActor()
-	EndFunction
 	Function LockActor()
 		If (_ActorRef == _PlayerRef)
 			If (Game.GetCameraState() == 0)
@@ -580,9 +577,6 @@ State Paused
 		_ActorLocked = True
 	EndFunction
 
-	Function TryUnlock()
-		UnlockActor()
-	EndFunction
 	Function UnlockActor()
 		_ActorRef.SetAnimationVariableInt("IsNPC", _AnimVarIsNPC)
 		_ActorRef.SetAnimationVariableBool("bHumanoidFootIKDisable", _AnimVarbHumanoidFootIKDisable)
@@ -595,7 +589,15 @@ State Paused
 		Log("Unlocked Actor: " + GetActorName())
 		_ActorLocked = False
 	EndFunction
-	
+
+	Function TryLockAndUnpause()
+		LockActor()
+		GoToState(STATE_PLAYING)
+	EndFunction
+	Function TryPauseAndUnlock()
+		UnlockActor()
+	EndFunction
+
 	Function RemoveStrapon()
 		If(_Strapon && !_HadStrapon)
 			_ActorRef.RemoveItem(_Strapon, 1, true)
@@ -617,7 +619,6 @@ State Paused
 			sslAnimSpeedHelper.ResetAnimationSpeed(_ActorRef)
 		EndIf
 		UnregisterForModEvent("SSL_ORGASM_Thread" + _Thread.tid)
-		UnregisterEnjGameKeys()
 		StoreExcitementState("Backup")
 		sslBaseExpression.CloseMouth(_ActorRef)
 		_ActorRef.ClearExpressionOverride()
@@ -645,15 +646,16 @@ Function RemoveStrapon()
 EndFunction
 
 ;	Lock/Unlock actor if in idling state, otherwise do nothing
-Function TryLock()
-EndFunction
 Function LockActor()
-	Error("Cannot lock actor outside of idle state", "LockActor()")
-EndFunction
-Function TryUnlock()
+	Error("Cannot lock actor outside of paused state", "LockActor()")
 EndFunction
 Function UnlockActor()
-	Error("Cannot unlock actor outside of playing state", "UnlockActor()")
+	Error("Cannot unlock actor outside of paused state", "UnlockActor()")
+EndFunction
+Function TryLockAndUnpause()
+EndFunction
+; This stays functional in STATE_PLAYING as well
+Function TryPauseAndUnlock()
 EndFunction
 ; Take this actor out of combat and clear all actor states, return true if the actor was the player
 Function LockActorImpl() native
@@ -890,6 +892,11 @@ State Animating
 		_useStrapon = _sex == 1 && Math.LogicalAnd(aiPositionGenders, 0x2) == 0
 		ResolveStrapon()
 		_ActorRef.QueueNiNodeUpdate()
+	EndFunction
+
+	Function TryPauseAndUnlock()
+		GoToState(STATE_PAUSED)
+		UnlockActor()
 	EndFunction
 
 	Function Clear()
@@ -1196,7 +1203,6 @@ Function UpdateBaseEnjoymentCalculations()
 		return
 	EndIf
 	ResetEnjoymentVariables()
-	RegisterEnjGameKeys()
 	StoreExcitementState("Restore")
 	_EnjGamePartner = _Thread.GameChangePartner(_ActorRef)
 	_CrtMaleHugePP = _Thread.CrtMaleHugePP()
@@ -1394,25 +1400,6 @@ Function StoreExcitementState(String arg = "")
 			_FullEnjoyment = (LastEnjoyment as float * (1 - (TimeSinceEnjBackup/60))) as int
 		EndIf
 	EndIf
-EndFunction
-
-Function RegisterEnjGameKeys()
-	If (!_Config.GameEnabled || (_ActorRef != _PlayerRef))
-		return
-	EndIf
-	RegisterForKey(_Config.GameUtilityKey)
-	RegisterForKey(_Config.GamePauseKey)
-	RegisterForKey(_Config.GameRaiseEnjKey)
-	RegisterForKey(_Config.GameHoldbackKey)
-	RegisterForKey(_Config.GameSelectNextPos)
-EndFunction
-
-Function UnregisterEnjGameKeys()
-	UnregisterForKey(_Config.GameUtilityKey)
-	UnregisterForKey(_Config.GamePauseKey)
-	UnregisterForKey(_Config.GameRaiseEnjKey)
-	UnregisterForKey(_Config.GameHoldbackKey)
-	UnregisterForKey(_Config.GameSelectNextPos)
 EndFunction
 
 Function RegisterRaiseEnjAttempt()

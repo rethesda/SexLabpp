@@ -17,27 +17,11 @@ scriptname sslThreadController extends sslThreadModel
 Message Property RepositionInfoMsg Auto
 {[Ok, Cancel, Don't show again]}
 
-sslActorAlias AdjustAlias		; The actor currently selected for position adjustments
+
 bool _SkipHotkeyEvents
 int _AutoAdvanceCache
 
 String[] _MenuEvents
-
-int[] Hotkeys
-int Property kAdvanceAnimation = 0 AutoReadOnly
-int Property kChangeAnimation  = 1 AutoReadOnly
-int Property kChangePositions  = 2 AutoReadOnly
-int Property kAdjustChange     = 3 AutoReadOnly
-int Property kAdjustForward    = 4 AutoReadOnly
-int Property kAdjustSideways   = 5 AutoReadOnly
-int Property kAdjustUpward     = 6 AutoReadOnly
-int Property kRealignActors    = 7 AutoReadOnly
-int Property kRestoreOffsets   = 8 AutoReadOnly
-int Property kMoveScene        = 9 AutoReadOnly
-int Property kRotateScene      = 10 AutoReadOnly
-int Property kEndAnimation     = 11 AutoReadOnly
-int Property kAdjustSchlong    = 12 AutoReadOnly
-
 
 Function EnableHotkeys(bool forced = false)
 	If(!HasPlayer && !forced || !TryOpenSceneMenu())
@@ -58,6 +42,7 @@ Function EnableHotkeys(bool forced = false)
 		RegisterForModEvent(_MenuEvents[i], "MenuEvent")
 		i += 1
 	EndWhile
+	EnableTraditionalHotkeys()
 EndFunction
 
 Function DisableHotkeys()
@@ -69,6 +54,7 @@ Function DisableHotkeys()
 	; If free cam is active here will glitch out controls?
 	MiscUtil.SetFreeCameraState(false)
 	TryCloseSceneMenu()
+	DisableTraditionalHotkeys()
 EndFunction
 
 Event MenuEvent(string asEventName, string asStringArg, float afNumArg, form akSender)
@@ -149,19 +135,19 @@ Function MoveScene()
 		EndIf
 	EndIf
 	sslActorAlias PlayerSlot = ActorAlias(PlayerRef)
+	If (HasPlayer)
+		PlayerSlot.TryPauseAndUnlock()
+	Else
+		Game.DisablePlayerControls(false, true, false, false, true)
+	EndIf
 	int n = 0
 	While(n < Positions.Length)
 		ActorAlias[n].GoToState(ActorAlias[n].STATE_PAUSED)
 		n += 1
 	EndWhile
-	If (HasPlayer)
-		PlayerSlot.TryUnlock()
-	Else
-		Game.DisablePlayerControls(false, true, false, false, true)
-	EndIf
 	Utility.Wait(1)
 	int t = 0
-	While(t < 60 && !Input.IsKeyPressed(Hotkeys[kMoveScene]))
+	While(t < 60 && !Input.IsKeyPressed(Config.MoveScene))
 		Utility.Wait(0.5)
 		t += 1
 	EndWhile
@@ -176,16 +162,14 @@ Function MoveScene()
 		z = PlayerRef.Z
 		Utility.Wait(0.5)
 	EndWhile
-	If (HasPlayer)
-		PlayerSlot.TryLock()
-	Else
-		Game.EnablePlayerControls()
-	EndIf
 	int j = 0
 	While(j < Positions.Length)
-		ActorAlias[j].GoToState(ActorAlias[j].STATE_PLAYING)
+		ActorAlias[j].TryLockAndUnpause()
 		j += 1
 	EndWhile
+	If (!HasPlayer)
+		Game.EnablePlayerControls()
+	EndIf
 	CenterOnObject(PlayerRef)
 EndFunction
 
@@ -227,9 +211,93 @@ Function SetStageOffset(Actor akAffectedActor, float afOffsetValue, String asOff
 	UpdatePlacement(akAffectedActor)
 EndFunction
 
+Function EnableTraditionalHotkeys()
+	RegisterForKey(Config.ChangeAnimation)
+	RegisterForKey(Config.MoveScene)
+	If (!Config.GameEnabled || !HasPlayer)
+		return
+	EndIf
+	RegisterForKey(Config.GameUtilityKey)
+	RegisterForKey(Config.GamePauseKey)
+	RegisterForKey(Config.GameRaiseEnjKey)
+	RegisterForKey(Config.GameHoldbackKey)
+	RegisterForKey(Config.GameSelectNextPos)
+EndFunction
 
+Function DisableTraditionalHotkeys()
+	UnregisterForKey(Config.ChangeAnimation)
+	UnregisterForKey(Config.MoveScene)
+	; Enjoyment Game
+	UnregisterForKey(Config.GameUtilityKey)
+	UnregisterForKey(Config.GamePauseKey)
+	UnregisterForKey(Config.GameRaiseEnjKey)
+	UnregisterForKey(Config.GameHoldbackKey)
+	UnregisterForKey(Config.GameSelectNextPos)
+EndFunction
 
+Event OnKeyDown(int KeyCode)
+	If(Utility.IsInMenuMode() || _SkipHotkeyEvents)
+		return
+	EndIf
+	_SkipHotkeyEvents = true
+	If(KeyCode == Config.ChangeAnimation)
+		ChangeAnimation(Input.IsKeyPressed(Config.GameUtilityKey))
+	ElseIf(KeyCode == Config.MoveScene)
+		MoveScene()
+	EndIf
+	_SkipHotkeyEvents = false
+EndEvent
 
+Function ChangeAnimation(bool backwards = false)
+	string[] Scenes = GetPlayingScenes()
+	If(Scenes.Length < 2)
+		return
+	EndIf
+	UnregisterForUpdate()
+	int current = Scenes.Find(GetActiveScene())
+	String newScene
+	If (!Config.AdjustStagePressed())
+		newScene = Scenes[sslUtility.IndexTravel(current, Scenes.Length, backwards)]
+	Else
+		int r = Utility.RandomInt(0, Scenes.Length - 1)
+		While(r == current)
+			r = Utility.RandomInt(0, Scenes.Length - 1)
+		EndWhile
+		newScene = Scenes[r]
+	EndIf
+	Log("Changing running scene from " + GetActiveScene() + " to " + newScene)
+	SendThreadEvent("AnimationChange")
+	ResetScene(newScene)
+EndFunction
+
+; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
+; ----------------------------------------------------------------------------- ;
+;				██╗     ███████╗ ██████╗  █████╗  ██████╗██╗   ██╗				;
+;				██║     ██╔════╝██╔════╝ ██╔══██╗██╔════╝╚██╗ ██╔╝				;
+;				██║     █████╗  ██║  ███╗███████║██║      ╚████╔╝ 				;
+;				██║     ██╔══╝  ██║   ██║██╔══██║██║       ╚██╔╝  				;
+;				███████╗███████╗╚██████╔╝██║  ██║╚██████╗   ██║   				;
+;				╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝   ╚═╝   				;
+; ----------------------------------------------------------------------------- ;
+; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
+
+sslActorAlias AdjustAlias		; The actor currently selected for position adjustments
+
+int[] Hotkeys
+int Property kAdvanceAnimation = 0 AutoReadOnly
+int Property kChangeAnimation  = 1 AutoReadOnly
+int Property kChangePositions  = 2 AutoReadOnly
+int Property kAdjustChange     = 3 AutoReadOnly
+int Property kAdjustForward    = 4 AutoReadOnly
+int Property kAdjustSideways   = 5 AutoReadOnly
+int Property kAdjustUpward     = 6 AutoReadOnly
+int Property kRealignActors    = 7 AutoReadOnly
+int Property kRestoreOffsets   = 8 AutoReadOnly
+int Property kMoveScene        = 9 AutoReadOnly
+int Property kRotateScene      = 10 AutoReadOnly
+int Property kEndAnimation     = 11 AutoReadOnly
+int Property kAdjustSchlong    = 12 AutoReadOnly
+;/
 Event OnKeyDown(int KeyCode)
 	If(Utility.IsInMenuMode() || _SkipHotkeyEvents)
 		return
@@ -269,7 +337,7 @@ Event OnKeyDown(int KeyCode)
 	EndIf
 	_SkipHotkeyEvents = false
 EndEvent
-
+/;
 int Function GetAdjustPos()
 	int AdjustPos = -1
 	if AdjustAlias && AdjustAlias.ActorRef
@@ -296,28 +364,6 @@ Function AdvanceStage(bool backwards = false)
 	ElseIf(Stage > 1)
 		GoToStage(Stage - 1)
 	EndIf
-EndFunction
-
-Function ChangeAnimation(bool backwards = false)
-	string[] Scenes = GetPlayingScenes()
-	If(Scenes.Length < 2)
-		return
-	EndIf
-	UnregisterForUpdate()
-	int current = Scenes.Find(GetActiveScene())
-	String newScene
-	If (!Config.AdjustStagePressed())
-		newScene = Scenes[sslUtility.IndexTravel(current, Scenes.Length, backwards)]
-	Else
-		int r = Utility.RandomInt(0, Scenes.Length - 1)
-		While(r == current)
-			r = Utility.RandomInt(0, Scenes.Length - 1)
-		EndWhile
-		newScene = Scenes[r]
-	EndIf
-	Log("Changing running scene from " + GetActiveScene() + " to " + newScene)
-	SendThreadEvent("AnimationChange")
-	ResetScene(newScene)
 EndFunction
 
 Function AdjustCoordinate(bool abBackwards, bool abStageOnly, float afValue, int aiKeyIdx, int aiOffsetType)
@@ -448,17 +494,6 @@ Function PlayHotkeyFX(int i, bool backwards)
 		Config.HotkeyUp[i].Play(PlayerRef)
 	endIf
 EndFunction
-
-; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
-; ----------------------------------------------------------------------------- ;
-;								██╗     ███████╗ ██████╗  █████╗  ██████╗██╗   ██╗							;
-;								██║     ██╔════╝██╔════╝ ██╔══██╗██╔════╝╚██╗ ██╔╝							;
-;								██║     █████╗  ██║  ███╗███████║██║      ╚████╔╝ 							;
-;								██║     ██╔══╝  ██║   ██║██╔══██║██║       ╚██╔╝  							;
-;								███████╗███████╗╚██████╔╝██║  ██║╚██████╗   ██║   							;
-;								╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝   ╚═╝   							;
-; ----------------------------------------------------------------------------- ;
-; *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ;
 
 float Function GetAnimationRunTime()
 	return Animation.GetTimersRunTime(Timers)

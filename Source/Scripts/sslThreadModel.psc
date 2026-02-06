@@ -942,7 +942,7 @@ State Animating
 		int[] sex_ = SexLabRegistry.GetPositionSexA(currentScene)
 		int i = 0
 		While (i < _Positions.Length)
-			ActorAlias[i].TryLock()
+			ActorAlias[i].TryLockAndUnpause()
 			ActorAlias[i].ResetPosition(strips_[i], sex_[i])
 			i += 1
 		EndWhile
@@ -987,7 +987,7 @@ State Animating
 		int[] strips = SexLabRegistry.GetStripDataA(GetActiveScene(), "")
 		int i = 0
 		While (i < _Positions.Length)
-			ActorAlias[i].TryLock()
+			ActorAlias[i].TryLockAndUnpause()
 			ActorAlias[i].UpdateNext(strips[i])
 			i += 1
 		EndWhile
@@ -1021,7 +1021,7 @@ State Animating
 		Else	; Skip stripping for already played stages
 			int i = 0
 			While (i < _Positions.Length)
-				ActorAlias[i].TryLock()
+				ActorAlias[i].TryLockAndUnpause()
 				i += 1
 			EndWhile
 			StartStage(Utility.ResizeStringArray(_StageHistory, ToStage - 2), _StageHistory[ToStage - 1])
