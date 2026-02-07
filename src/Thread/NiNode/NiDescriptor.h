@@ -48,7 +48,9 @@ namespace Thread::NiNode
 			std::string row = std::format("{},", Id);
 			const auto allFeatures = magic_enum::enum_values<Feature>();
 			for (const auto& feature : allFeatures) {
-				row += std::to_string(features[static_cast<size_t>(feature)]) + ",";
+				const auto featureValue = features[static_cast<size_t>(feature)];
+				const auto numStr = std::isnan(featureValue) ? "NaN" : std::to_string(featureValue);
+				row += numStr + ",";
 			}
 			row += std::to_string(Predict());
 			return row;
