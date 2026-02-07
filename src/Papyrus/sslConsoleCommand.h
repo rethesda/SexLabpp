@@ -8,10 +8,11 @@ namespace Papyrus::ConsoleCommand
 
 	std::string MLStart(STATICARGS, std::string a_type, bool a_enabled)
 	{
-        if (Thread::NiNode::NiUpdate::GetMLTrainingState().type != Thread::NiNode::NiInteraction::Type::None) {
-            return "ML training already in progress. Use 'MLStop' to stop the current training or 'MLSwitch' to toggle the enabled state.";
-        }
+		const auto activeType = Thread::NiNode::NiUpdate::GetMLTrainingState().type;
 		const auto type = magic_enum::enum_cast<NiType>(a_type, magic_enum::case_insensitive).value_or(NiType::None);
+        if (activeType != type && activeType != NiType::None) {
+            return "ML training already in progress. Use 'MLStop' to stop the current training before starting a new one.";
+        }
 		Thread::NiNode::NiUpdate::UpdateMLTrainingState(type, a_enabled);
 		const auto typeName = magic_enum::enum_name<NiType>(type);
 		const auto enableStr = a_enabled ? "enabled" : "disabled";
@@ -38,6 +39,15 @@ namespace Papyrus::ConsoleCommand
 		return "ML training stopped";
 	}
 
+	std::string MLSetInterval(STATICARGS, int a_frameInterval)
+	{
+		if (a_frameInterval <= 0) {
+			return "Invalid frame interval. Please provide a positive integer.";
+		}
+		Thread::NiNode::NiUpdate::SetMLTrainingFrameInterval(static_cast<size_t>(a_frameInterval));
+		return std::format("ML training frame interval set to {} frames", a_frameInterval);
+	}
+
 	std::string MLDrop(STATICARGS)
 	{
 		Thread::NiNode::NiUpdate::ClearMLTrainingData();
@@ -49,6 +59,7 @@ namespace Papyrus::ConsoleCommand
 		REGISTERFUNC(MLStart, "sslConsoleCommands", true);
 		REGISTERFUNC(MLSwitch, "sslConsoleCommands", true);
 		REGISTERFUNC(MLStop, "sslConsoleCommands", true);
+        REGISTERFUNC(MLSetInterval, "sslConsoleCommands", true);
         REGISTERFUNC(MLDrop, "sslConsoleCommands", true);
 
 		return true;
