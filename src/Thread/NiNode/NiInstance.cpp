@@ -124,22 +124,17 @@ namespace Thread::NiNode
 		if (!mA.HasSufficientData() || !mB.HasSufficientData())
 			return;
 
-		constexpr auto niTypes = magic_enum::enum_values<NiType::Type>();
-		for (auto&& type : niTypes) {
-			switch (type) {
-			case NiType::Type::None:
-				break;
-			case NiType::Type::Kissing:
-				if (a == b) {
-					continue;  // skip self-interaction
-				}
-				state.interactions[static_cast<size_t>(type)] = EvaluateKissing(mA, mB);
-				break;
-			default:
-				logger::warn("NiInstance::EvaluateRuleBased: Unknown interaction type {}", magic_enum::enum_name(type));
-				break;
+		if (b.IsSex(Registry::Sex::Male)) {
+			if (a.IsSex(Registry::Sex::Female)) {
+				state.interactions[NiType::Vaginal] = EvaluateVaginal(mA, mB);
+				state.interactions[NiType::Grinding] = EvaluateGrinding(mA, mB);
 			}
+			state.interactions[NiType::Anal] = EvaluateAnal(mA, mB);
 		}
+		if (a != b) {
+			return;
+		}
+		state.interactions[NiType::Kissing] = EvaluateKissing(mA, mB);
 	}
 
 	void NiInstance::UpdateHysteresis(PairInteractionState& state, float a_timeStamp)

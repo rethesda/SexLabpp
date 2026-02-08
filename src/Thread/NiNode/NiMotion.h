@@ -6,7 +6,7 @@
 
 namespace Thread::NiNode
 {
-	constexpr size_t WINDOW_SIZE = 20;
+	constexpr size_t WINDOW_SIZE = 60;
 	constexpr size_t MIN_MOMENTS = 6;
 
 	struct MotionDescriptor

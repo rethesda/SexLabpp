@@ -53,6 +53,7 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
 		}
 		Registry::Library::GetSingleton()->Initialize();
 		UserData::StripData::GetSingleton()->Load();
+		Thread::NiNode::NiUpdate::Install();
 		Settings::InitializeData();
 		break;
 	case SKSE::MessagingInterface::kSaveGame:
@@ -117,7 +118,6 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 
 	Thread::Interface::SceneMenu::Register();
 	Thread::Interface::SelectionMenu::Register();
-	Thread::NiNode::NiUpdate::Install();
 
 	const auto serialization = SKSE::GetSerializationInterface();
 	serialization->SetUniqueID('slpp');

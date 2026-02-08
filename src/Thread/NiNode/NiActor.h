@@ -16,6 +16,7 @@ namespace Thread::NiNode
 		bool HasSufficientMotionData() const { return motion.HasSufficientData(); }
 
 		RE::Actor* Actor() const { return actor.get(); }
+		bool IsSex(Registry::Sex a_sex) const { return sex.any(a_sex); }
 		const NiMotion& Motion() const { return motion; }
 
 	  public:
