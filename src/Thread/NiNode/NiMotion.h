@@ -41,11 +41,21 @@ namespace Thread::NiNode
 	  public:
 		enum Anchor
 		{
+			pHead,
 			vHeadY,
 			vHeadZ,
 			pMouth,
-			pHead,
 			pThroat,
+
+			pSchlongBase,
+			pSchlongTip,
+			pVaginalStart,
+			pVaginalEnd,
+			pClitoris,
+			pAnalStart,
+			pAnalEnd,
+			pCrotchStart,
+			pCrotchEnd,
 		};
 		constexpr static inline size_t NUM_ANCHORS = magic_enum::enum_count<Anchor>();
 

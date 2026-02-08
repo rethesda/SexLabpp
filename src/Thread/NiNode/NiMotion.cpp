@@ -33,6 +33,29 @@ namespace Thread::NiNode
 			}
 		}
 
+		if (!nodes.schlongs.empty()) {
+			const auto sSchlong = nodes.schlongs.front()->GetReferenceSegment();
+			_moments[Anchor::pSchlongBase][idx] = sSchlong.first;
+			_moments[Anchor::pSchlongTip][idx] = sSchlong.second;
+		}
+
+		if (const auto sVaginal = nodes.GetVaginalSegment()) {
+			_moments[Anchor::pVaginalStart][idx] = sVaginal->first;
+			_moments[Anchor::pVaginalEnd][idx] = sVaginal->second;
+		}
+		if (const auto& niClitoris = nodes.clitoris) {
+			_moments[Anchor::pClitoris][idx] = niClitoris->world.translate;
+		}
+
+		if (const auto sAnal = nodes.GetAnalSegment()) {
+			_moments[Anchor::pAnalStart][idx] = sAnal->first;
+			_moments[Anchor::pAnalEnd][idx] = sAnal->second;
+		}
+
+		const auto sCrotch = nodes.GetCrotchSegment();
+		_moments[Anchor::pCrotchStart][idx] = sCrotch.first;
+		_moments[Anchor::pCrotchEnd][idx] = sCrotch.second;
+		
 		_writeIndex = (_writeIndex + 1) % _capacity;
 		_size = std::min(_size + 1, _capacity);
 	}
