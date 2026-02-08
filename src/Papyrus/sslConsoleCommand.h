@@ -4,7 +4,7 @@
 
 namespace Papyrus::ConsoleCommand
 {
-    using NiType = Thread::NiNode::NiInteraction::Type;
+    using NiType = Thread::NiNode::NiType::Type;
 
 	std::string MLStart(STATICARGS, std::string a_type, bool a_enabled)
 	{

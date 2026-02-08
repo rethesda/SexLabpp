@@ -41,7 +41,7 @@ namespace Thread::NiNode
 		}
 
 		try {
-			KissingDescriptor::Initialize("Kissing", inifile);
+			NiDescriptor<NiType::Kissing>::Initialize(inifile);
 
 			logger::info("Descriptors: Model initialization complete");
 			return true;
@@ -64,7 +64,7 @@ namespace Thread::NiNode
 		lastGameHour = currentGameHour;
 
 		std::scoped_lock mlLk{ _mlMutex };
-		const bool isMLTraining = mlTrainingState.type != NiInteraction::Type::None;
+		const bool isMLTraining = mlTrainingState.type != NiType::Type::None;
 	
 		std::scoped_lock lk{ _m };
 		time += GetDeltaTime();
@@ -77,14 +77,14 @@ namespace Thread::NiNode
 			}
 			mlTrainingState.frameCount = 0;
 			process->ForEachInteraction([&](RE::ActorPtr a, RE::ActorPtr b, const NiInteraction& interaction) {
-				if (interaction.csvRow.empty() || !a->IsPlayerRef() && !b->IsPlayerRef()) {
+				const auto csvRow = interaction.descriptor ? interaction.descriptor->CsvRow() : "";
+				if (csvRow.empty() || !a->IsPlayerRef() && !b->IsPlayerRef()) {
 					return;  // only log interactions involving the player & interaction has likelihood
 				}
-				const auto typeName = magic_enum::enum_name(interaction.type);
 				const auto actorAId = a->GetFormID();
 				const auto actorBId = b->GetFormID();
 				const auto labelStr = mlTrainingState.enabled ? "1" : "0";
-				const auto row = std::format("{},{:X},{:X},{},{}", typeName, actorAId, actorBId, interaction.csvRow, labelStr);
+				const auto row = std::format("{:X},{:X},{},{}", actorAId, actorBId, csvRow, labelStr);
 				mlTrainingState.recordedData.push_back(row);
 			},
 			  0, 0, mlTrainingState.type);
@@ -123,7 +123,7 @@ namespace Thread::NiNode
 		_instances.erase(where);
 	}
 
-	void NiUpdate::UpdateMLTrainingState(NiInteraction::Type a_type, bool enabled)
+	void NiUpdate::UpdateMLTrainingState(NiType::Type a_type, bool enabled)
 	{
 		std::scoped_lock lk{ _mlMutex };
 		if (mlTrainingState.type != a_type && mlTrainingState.recordedData.size() > 0) {
@@ -131,8 +131,8 @@ namespace Thread::NiNode
 			const auto oldStateStr = magic_enum::enum_name(mlTrainingState.type);
 			const auto newStateStr = magic_enum::enum_name(a_type);
 			logger::info("ML Training State changing from {} to {}, clearing recorded data with {} rows", oldStateStr, newStateStr, mlTrainingState.recordedData.size());
-			const auto headerStr = InteractionDescriptor<>::CsvHeader();
-			const auto csvFile = std::ranges::fold_left(mlTrainingState.recordedData, std::format("Type,ActorA,ActorB,{},Label", headerStr), [](std::string&& acc, const std::string& row) {
+			const auto headerStr = INiDescriptor::CsvHeader();
+			const auto csvFile = std::ranges::fold_left(mlTrainingState.recordedData, std::format("ActorA,ActorB,{},Label", headerStr), [](std::string&& acc, const std::string& row) {
 				return std::move(acc) + "\n" + row;
 			});
 			const auto folderPath = std::format("{}\\{}", MODELDATAPATH, oldStateStr);
@@ -182,7 +182,7 @@ namespace Thread::NiNode
 	bool NiUpdate::IsMLTrainingEnabled()
 	{
 		std::scoped_lock lk{ _mlMutex };
-		return mlTrainingState.type != NiInteraction::Type::None;
+		return mlTrainingState.type != NiType::Type::None;
 	}
 
 	NiUpdate::MLTrainingState NiUpdate::GetMLTrainingState()

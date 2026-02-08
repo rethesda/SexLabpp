@@ -9,28 +9,6 @@
 
 namespace Thread::NiNode
 {
-	// struct Interaction
-	// {
-	// 	enum class Action
-	// 	{
-	// 		None = 0,
-	// 		Vaginal,			
-	// 		Anal,					
-	// 		Oral,					
-	// 		Grinding,			
-	// 		Deepthroat,		
-	// 		Skullfuck,		
-	// 		LickingShaft,	
-	// 		FootJob,			
-	// 		HandJob,			
-	// 		Kissing,			
-	// 		Facial,				
-	// 		AnimObjFace,	
-	// 		ToeSucking,	
-
-	// 		Total,
-	// 	};
-
 	// 	Interaction(RE::ActorPtr a_partner, Action a_action, float a_distance) :
 	// 		partner(a_partner), action(a_action), distance(a_distance) {}
 	// 	~Interaction() = default;

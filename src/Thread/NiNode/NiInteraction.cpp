@@ -4,9 +4,23 @@
 
 namespace Thread::NiNode
 {
+	namespace 
+	{
+		template <typename MotionDescriptorType>
+		void AddAngleScores(MotionDescriptorType* descriptor, const RE::NiPoint3& vecA, const RE::NiPoint3& vecB)
+		{
+			const auto scoreXY = NiMath::GetAngleXY(vecA, vecB);
+			const auto scoreXZ = NiMath::GetAngleXZ(vecA, vecB);
+			const auto scoreYZ = NiMath::GetAngleYZ(vecA, vecB);
+
+			descriptor->AddValue(INiDescriptor::Feature::AngleXY, scoreXY);
+			descriptor->AddValue(INiDescriptor::Feature::AngleXZ, scoreXZ);
+			descriptor->AddValue(INiDescriptor::Feature::AngleYZ, scoreYZ);
+		}
+	}
 	NiInteraction EvaluateKissing(const NiMotion& a_motionA, const NiMotion& a_motionB)
 	{
-		NiInteraction result{ NiInteraction::Type::Kissing };
+		NiInteraction result{};
 		assert(a_motionA.HasSufficientData() && a_motionB.HasSufficientData());
 
 		const auto mouthA = a_motionA.DescribeMotion(NiMotion::pMouth);
@@ -17,31 +31,28 @@ namespace Thread::NiNode
 		}
 
 		const float duration = std::min(mouthA.duration, mouthB.duration);
+		const float avgVelocity = 0.5f * (mouthA.avgSpeed + mouthB.avgSpeed);
 		const auto vHeadYA = a_motionA.GetLatestMoment(NiMotion::vHeadY);
 		const auto vHeadYB = a_motionB.GetLatestMoment(NiMotion::vHeadY);
-		const float cosFacingAngle = NiMath::GetCosAngle(vHeadYA, vHeadYB);  // Facing each other <=> cos ~ -1
 
-		const float facingScore = std::clamp(-cosFacingAngle, 0.0f, 1.0f);
-		const float distanceScore = 1.0f - std::clamp(mouthDistance / Settings::fDistanceMouth, 0.0f, 1.0f);
-		const float avgVelocity = 0.5f * (mouthA.avgSpeed + mouthB.avgSpeed);
-		const float velocityScore = 1.0f - std::clamp(avgVelocity / Settings::fMaxKissSpeed, 0.0f, 1.0f);
-		const float oscillationScore = 1.0f - std::clamp(0.5f * (mouthA.oscillation + mouthB.oscillation), 0.0f, 1.0f);
-		const float impulseScore = 1.0f - std::clamp(0.5f * (mouthA.impulse + mouthB.impulse), 0.0f, 1.0f);
-		const float timeScore = std::clamp(duration / Settings::fMinKissDuration, 0.0f, 1.0f);
+		const float distanceScore = mouthDistance / Settings::fDistanceMouth;
+		const float velocityScore = avgVelocity / Settings::fMaxKissSpeed;
+		const float timeScore = duration / Settings::fMinTypeDuration;
+		const float oscillationScore = 0.5f * (mouthA.oscillation + mouthB.oscillation);
+		const float impulseScore = 0.5f * (mouthA.impulse + mouthB.impulse);
+		const float stability = 0.5f * (mouthA.positionalVariance + mouthB.positionalVariance);
 
-		KissingDescriptor descriptor{};
-		descriptor.AddValue(Feature::Distance, distanceScore);
-		descriptor.AddValue(Feature::Facing, facingScore);
-		descriptor.AddValue(Feature::Time, timeScore);
-		descriptor.AddValue(Feature::Velocity, velocityScore);
-		descriptor.AddValue(Feature::Oscillation, oscillationScore);
-		descriptor.AddValue(Feature::Impulse, impulseScore);
+		auto descriptor = NiDescriptor<NiType::Kissing>();
+		AddAngleScores(&descriptor, vHeadYA, vHeadYB);
+		descriptor.AddValue(INiDescriptor::Feature::Distance, distanceScore);
+		descriptor.AddValue(INiDescriptor::Feature::Time, timeScore);
+		descriptor.AddValue(INiDescriptor::Feature::Velocity, velocityScore);
+		descriptor.AddValue(INiDescriptor::Feature::Oscillation, oscillationScore);
+		descriptor.AddValue(INiDescriptor::Feature::Impulse, impulseScore);
+		descriptor.AddValue(INiDescriptor::Feature::Stability, stability);
 
-		result.confidence = descriptor.Predict();
-		result.csvRow = descriptor.ToString();
-		result.duration = duration;
+		result.descriptor = std::make_unique<NiDescriptor<NiType::Kissing>>(std::move(descriptor));
 		result.velocity = avgVelocity;
-		result.active = result.confidence > Settings::fEnterThreshold;
 
 		return result;
 	}

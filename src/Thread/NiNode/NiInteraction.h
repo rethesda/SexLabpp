@@ -7,36 +7,26 @@ namespace Thread::NiNode
 {
 	struct NiInteraction
 	{
-		enum class Type
-		{
-			None = 0,
-			Vaginal,
-			Anal,
-			Oral,
-			Grinding,
-			Deepthroat,
-			Skullfuck,
-			LickingShaft,
-			FootJob,
-			HandJob,
-			Kissing,
-			Facial,
-			AnimObjFace,
-			ToeSucking,
-			Boobjob,
-		} type{ Type::None };
-		float confidence{ 0.0f };  // 0..1
-		float duration{ 0.0f };	   // ms? COMEBACK: check units
-		float velocity{ 0.0f };
-		bool active{ false };	   // whether the interaction is currently active
-		std::string csvRow{ "" };  // to train ML models, contains raw feature values and predictions for each evaluated moment, in CSV format
-
-	  public:
 		NiInteraction() = default;
-		NiInteraction(Type a_type) : type(a_type) {}
+		NiInteraction(std::unique_ptr<INiDescriptor> a_descriptor) :
+		  descriptor(std::move(a_descriptor)) {}
 		~NiInteraction() = default;
 
-		constexpr static inline size_t NUM_TYPES = magic_enum::enum_count<Type>();
+		// Explicitly define move semantics
+		NiInteraction(NiInteraction&&) = default;
+		NiInteraction& operator=(NiInteraction&&) = default;
+
+		// Delete copy semantics (unique_ptr is move-only)
+		NiInteraction(const NiInteraction&) = delete;
+		NiInteraction& operator=(const NiInteraction&) = delete;
+
+		NiType::Type GetType() const { return descriptor ? descriptor->GetType() : NiType::None; }
+
+	public:
+		std::unique_ptr<INiDescriptor> descriptor{ nullptr };
+		float timeActive{ 0.0f };
+		float velocity{ 0.0f };
+		bool active{ false };
 	};
 
 	NiInteraction EvaluateVaginal(const NiMotion& a_motionA, const NiMotion& a_motionB);

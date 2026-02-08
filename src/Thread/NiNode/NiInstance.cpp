@@ -41,7 +41,7 @@ namespace Thread::NiNode
 		}
 	}
 
-	std::vector<const NiInteraction*> NiInstance::GetInteractions(RE::FormID a_idA, RE::FormID a_idB, NiInteraction::Type a_type) const
+	std::vector<const NiInteraction*> NiInstance::GetInteractions(RE::FormID a_idA, RE::FormID a_idB, NiType::Type a_type) const
 	{
 		std::vector<const NiInteraction*> ret{};
 		ForEachInteraction([&](RE::ActorPtr, RE::ActorPtr, const NiInteraction& interaction) {
@@ -51,7 +51,7 @@ namespace Thread::NiNode
 		return ret;
 	}
 
-	std::vector<RE::Actor*> NiInstance::GetInteractionPartners(RE::FormID a_idA, NiInteraction::Type a_type) const
+	std::vector<RE::Actor*> NiInstance::GetInteractionPartners(RE::FormID a_idA, NiType::Type a_type) const
 	{
 		std::vector<RE::Actor*> ret{};
 		ForEachInteraction([&](RE::ActorPtr, RE::ActorPtr b, const NiInteraction& interaction) {
@@ -64,7 +64,7 @@ namespace Thread::NiNode
 		return ret;
 	}
 
-	std::vector<RE::Actor*> NiInstance::GetInteractionPartnersRev(RE::FormID a_idB, NiInteraction::Type a_type) const
+	std::vector<RE::Actor*> NiInstance::GetInteractionPartnersRev(RE::FormID a_idB, NiType::Type a_type) const
 	{
 		std::vector<RE::Actor*> ret{};
 		ForEachInteraction([&](RE::ActorPtr a, RE::ActorPtr, const NiInteraction& interaction) {
@@ -81,7 +81,7 @@ namespace Thread::NiNode
 	  const std::function<void(RE::ActorPtr, RE::ActorPtr, const NiInteraction&)>& callback,
 	  RE::FormID a_idA,
 	  RE::FormID a_idB,
-	  NiInteraction::Type a_type) const
+	  NiType::Type a_type) const
 	{
 		const auto idxA = GetActorIndex(a_idA);
 		const auto idxB = GetActorIndex(a_idB);
@@ -97,7 +97,7 @@ namespace Thread::NiNode
 				continue;
 			if (idxB != second && idxB != IDX_UNSPECIFIED)
 				continue;
-			const auto& interactions = a_type != NiInteraction::Type::None ? std::span(&state.interactions[static_cast<size_t>(a_type)], 1) : std::span(state.interactions);
+			const auto& interactions = a_type != NiType::Type::None ? std::span(&state.interactions[static_cast<size_t>(a_type)], 1) : std::span(state.interactions);
 			for (auto& interaction : interactions) {
 				callback(positions[first].actor, positions[second].actor, interaction);
 			}
@@ -124,12 +124,12 @@ namespace Thread::NiNode
 		if (!mA.HasSufficientData() || !mB.HasSufficientData())
 			return;
 
-		constexpr auto niTypes = magic_enum::enum_values<NiInteraction::Type>();
+		constexpr auto niTypes = magic_enum::enum_values<NiType::Type>();
 		for (auto&& type : niTypes) {
 			switch (type) {
-			case NiInteraction::Type::None:
+			case NiType::Type::None:
 				break;
-			case NiInteraction::Type::Kissing:
+			case NiType::Type::Kissing:
 				if (a == b) {
 					continue;  // skip self-interaction
 				}
@@ -145,18 +145,21 @@ namespace Thread::NiNode
 	void NiInstance::UpdateHysteresis(PairInteractionState& state, float a_timeStamp)
 	{
 		const float delta = a_timeStamp - state.lastUpdateTime;
-
-		const auto types = magic_enum::enum_values<NiInteraction::Type>();
 		for (auto&& interaction : state.interactions) {
-			const float conf = interaction.confidence;
+			if (!interaction.descriptor) {
+				interaction.active = false;
+				interaction.timeActive = 0.0f;
+				continue;
+			}
+			float conf = NiMath::Sigmoid(interaction.descriptor->Predict());
 			assert(conf >= 0.0f && conf <= 1.0f);
 			const auto doActive = !interaction.active && conf >= Settings::fEnterThreshold;
 			const auto doInactive = interaction.active && conf < Settings::fExitThreshold;
 			if (doActive || doInactive) {
 				interaction.active = doActive;
-				interaction.duration = 0.0f;
+				interaction.timeActive = 0.0f;
 			} else {
-				interaction.duration += delta;
+				interaction.timeActive += delta;
 			}
 		}
 	}

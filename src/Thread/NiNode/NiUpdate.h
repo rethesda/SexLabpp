@@ -8,7 +8,7 @@ namespace Thread::NiNode
 	{
 		struct MLTrainingState
 		{
-			NiInteraction::Type type{ NiInteraction::Type::None };
+			NiType::Type type{ NiType::None };
 			std::vector<std::string> recordedData{};
 			bool enabled{ false };
 			size_t frameInterval{ 20 };
@@ -22,7 +22,7 @@ namespace Thread::NiNode
 		static std::shared_ptr<NiInstance> Register(RE::FormID a_id, std::vector<RE::Actor*> a_positions, const Registry::Scene* a_scene) noexcept;
 		static void Unregister(RE::FormID a_id) noexcept;
 
-		static void UpdateMLTrainingState(NiInteraction::Type a_type, bool enabled);
+		static void UpdateMLTrainingState(NiType::Type a_type, bool enabled);
 		static void SetMLTrainingFrameInterval(size_t interval);
 		static void ClearMLTrainingData();
 		static bool IsMLTrainingEnabled();

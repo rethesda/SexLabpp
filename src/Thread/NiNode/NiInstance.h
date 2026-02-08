@@ -14,8 +14,8 @@ namespace Thread::NiNode
 	  public:
 		struct PairInteractionState
 		{
-			std::array<NiInteraction, NiInteraction::NUM_TYPES> interactions{};
-			float lastUpdateTime = 0.0f;
+			std::array<NiInteraction, NiType::NUM_TYPES> interactions{};
+			float lastUpdateTime{ 0.0f };
 		};
 
 	  public:
@@ -27,12 +27,12 @@ namespace Thread::NiNode
 
 		/// @brief Iterate interactions matching criteria, callback receives (actorA, actorB, interaction)
 		void ForEachInteraction(const std::function<void(RE::ActorPtr, RE::ActorPtr, const NiInteraction&)>& callback,
-		  RE::FormID a_idA = 0, RE::FormID a_idB = 0, NiInteraction::Type a_type = NiInteraction::Type::None) const;
+		  RE::FormID a_idA = 0, RE::FormID a_idB = 0, NiType::Type a_type = NiType::None) const;
 
 		/// @brief Wrapper functions for ForEachInteraction
-		std::vector<const NiInteraction*> GetInteractions(RE::FormID a_idA, RE::FormID a_idB, NiInteraction::Type a_type) const;
-		std::vector<RE::Actor*> GetInteractionPartners(RE::FormID a_idA, NiInteraction::Type a_type) const;
-		std::vector<RE::Actor*> GetInteractionPartnersRev(RE::FormID a_idB, NiInteraction::Type a_type) const;
+		std::vector<const NiInteraction*> GetInteractions(RE::FormID a_idA, RE::FormID a_idB, NiType::Type a_type) const;
+		std::vector<RE::Actor*> GetInteractionPartners(RE::FormID a_idA, NiType::Type a_type) const;
+		std::vector<RE::Actor*> GetInteractionPartnersRev(RE::FormID a_idB, NiType::Type a_type) const;
 
 	  private:
 		int8_t GetActorIndex(RE::FormID id) const;

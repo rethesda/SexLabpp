@@ -480,9 +480,9 @@ namespace Papyrus::ThreadModel
 		}
 		const auto idxA = a_position ? a_position->formID : 0;
 		const auto idxB = a_partner ? a_partner->formID : 0;
-		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiInteraction::Type::None);
+		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiType::Type::None);
 		const auto ret = std::ranges::fold_left(interactions, std::vector<int>{}, [](auto&& acc, const auto& it) {
-			return (acc.push_back(static_cast<int>(it->type)), acc);
+			return (acc.push_back(static_cast<int>(it->GetType())), acc);
 		});
 		return ret;
 	}
@@ -497,7 +497,7 @@ namespace Papyrus::ThreadModel
 		}
 		const auto idxA = a_position ? a_position->formID : 0;
 		const auto idxB = a_partner ? a_partner->formID : 0;
-		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiInteraction::Type(a_type));
+		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiType::Type(a_type));
 		return !interactions.empty();
 	}
 
@@ -520,7 +520,7 @@ namespace Papyrus::ThreadModel
 			return {};
 		}
 		const auto idxA = a_position ? a_position->formID : 0;
-		return niInstance->GetInteractionPartners(idxA, Thread::NiNode::NiInteraction::Type(a_type));
+		return niInstance->GetInteractionPartners(idxA, Thread::NiNode::NiType::Type(a_type));
 	}
 
 	RE::Actor* GetPartnerByTypeRev(QUESTARGS, RE::Actor* a_position, int a_type)
@@ -542,7 +542,7 @@ namespace Papyrus::ThreadModel
 			return {};
 		}
 		const auto idxB = a_position ? a_position->formID : 0;
-		return niInstance->GetInteractionPartnersRev(idxB, Thread::NiNode::NiInteraction::Type(a_type));
+		return niInstance->GetInteractionPartnersRev(idxB, Thread::NiNode::NiType::Type(a_type));
 	}
 
 	float GetActionVelocity(QUESTARGS, RE::Actor* a_position, RE::Actor* a_partner, int a_type)
@@ -564,7 +564,7 @@ namespace Papyrus::ThreadModel
 		float ret = 0.0f;
 		const auto idxA = a_position->formID;
 		const auto idxB = a_partner ? a_partner->formID : 0;
-		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiInteraction::Type(a_type));
+		const auto interactions = niInstance->GetInteractions(idxA, idxB, Thread::NiNode::NiType::Type(a_type));
 		if (!interactions.empty()) {
 			ret = interactions.front()->velocity;
 		} else {
