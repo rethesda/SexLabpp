@@ -13,8 +13,7 @@ namespace Thread::NiNode
 			assert(false && "Failed to initialize descriptors");
 			return;
 		}
-	
-		SKSE::AllocTrampoline(static_cast<size_t>(1) << 5);
+
 		auto& trampoline = SKSE::GetTrampoline();
 		REL::Relocation<std::uintptr_t> update{ REL::RelocationID(35565, 36564), REL::VariantOffset(0x53, 0x6E, 0x68) };
 		_OnFrameUpdate = trampoline.write_call<5>(update.address(), OnFrameUpdate);

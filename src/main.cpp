@@ -52,11 +52,11 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
 				std::_Exit(EXIT_FAILURE);
 			return;
 		}
-		SKSE::GetTrampoline().create(14 * 1);  
+		SKSE::AllocTrampoline(static_cast<size_t>(1) << 5);
 		Thread::Collision::CollisionHandler::Install();
+		Thread::NiNode::NiUpdate::Install();
 		Registry::Library::GetSingleton()->Initialize();
 		UserData::StripData::GetSingleton()->Load();
-		Thread::NiNode::NiUpdate::Install();
 		Settings::InitializeData();
 		break;
 	case SKSE::MessagingInterface::kSaveGame:
