@@ -186,4 +186,35 @@ struct std::formatter<YAML::Mark> : std::formatter<std::string>
 	}
 };
 
+template <typename T>
+struct is_std_array : std::false_type {};
+
+template <typename T, std::size_t N>
+struct is_std_array<std::array<T, N>> : std::true_type {};
+
+template <typename T>
+struct is_std_vector : std::false_type {};
+
+template <typename T>
+struct is_std_vector<std::vector<T>> : std::true_type {};
+
+template <typename T>
+	requires (is_std_vector<T>::value || is_std_array<T>::value)
+struct std::formatter<T> : std::formatter<std::string>
+{
+	template <typename FormatContext>
+	auto format(const T& container, FormatContext& ctx) const
+	{
+		std::string result = "[";
+		bool first = true;
+		for (const auto& elem : container) {
+			if (!first) result += ", ";
+			result += std::format("{}", elem);
+			first = false;
+		}
+		result += "]";
+		return std::formatter<std::string>::format(result, ctx);
+	}
+};
+
 #define DLLEXPORT __declspec(dllexport)
