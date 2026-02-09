@@ -200,14 +200,6 @@ Function ModEnjoymentMult(Actor ActorRef, float afSet, bool bAdjust = False)
 	return ref.ModEnjoymentMult(afSet, bAdjust)
 EndFunction
 
-string Function GetInteractionString(Actor ActorRef)
-	sslActorAlias ref = ActorAlias(ActorRef)
-	If (!ref)
-		return 0
-	EndIf
-	return ref.GetInteractionString()
-EndFunction
-
 ; Orgasms
 Function DisableOrgasm(Actor ActorRef, bool OrgasmDisabled = true)
 	sslActorAlias ref = ActorAlias(ActorRef)
@@ -391,7 +383,7 @@ bool Function IsLeadIn()
 EndFunction
 
 ; ------------------------------------------------------- ;
-; --- Physics					                                --- ;
+; --- Physics                                         --- ;
 ; ------------------------------------------------------- ;
 
 bool Function IsInteractionRegistered()
@@ -421,6 +413,125 @@ EndFunction
 
 float Function GetVelocity(Actor akPosition, Actor akPartner, int aiType)
 	return GetActionVelocity(akPosition, akPartner, aiType)
+EndFunction
+
+; ------------------------------------------------------- ;
+; --- Interactions Info                               --- ;
+; ------------------------------------------------------- ;
+
+bool[] Function GetCurrentInteractionFlags(Actor akPosition)
+	sslActorAlias ref = ActorAlias(akPosition)
+	If (!ref)
+		return Utility.CreateBoolArray(SUPPORTED_INTER_COUNT, False)
+	EndIf
+	return ref.GetCurrentInteractionFlags()
+EndFunction
+
+bool Function HasCurrentInteractionFlag(Actor akPosition, int InterType)
+	If (InterType < 0 || InterType > 27)
+		return False
+	EndIf
+	bool[] curFlags = GetCurrentInteractionFlags(akPosition)
+	return (curFlags[InterType])
+EndFunction
+
+bool Function HasCurrentInteractionFlagsAll(Actor akPosition, int[] InterTypes)
+	If (InterTypes.Length == 0)
+		return False
+	EndIf
+	int i = 0
+	While (i < InterTypes.Length)
+		If !(HasCurrentInteractionFlag(akPosition, InterTypes[i]))
+			return False
+		EndIf
+		i += 1
+	EndWhile
+	return True
+EndFunction
+
+bool Function HasCurrentInteractionFlagsAny(Actor akPosition, int[] InterTypes)
+	If (InterTypes.Length == 0)
+		return False
+	EndIf
+	int i = 0
+	While (i < InterTypes.Length)
+		If (HasCurrentInteractionFlag(akPosition, InterTypes[i]))
+			return True
+		EndIf
+		i += 1
+	EndWhile
+	return False
+EndFunction
+
+string Function GetCurrentInteractionString(Actor akPosition)
+	bool[] curFlags = GetCurrentInteractionFlags(akPosition)
+	string[] interTypes = Config.NameAllInteractions
+	int len = interTypes.Length
+	string ret = ""
+	int i = 0
+	While (i < len)
+		If (curFlags[i])
+			If ret != ""
+				ret += ","
+			EndIf
+			ret += interTypes[i]
+		EndIf
+		i += 1
+	EndWhile
+	return ret
+EndFunction
+
+string[] Function GetCurrentInteractionStringA(Actor akPosition)
+	bool[] curFlags = GetCurrentInteractionFlags(akPosition)
+	string[] interTypes = Config.NameAllInteractions
+	int len = interTypes.Length
+	int activeCount = 0
+	int i = 0
+	While (i < len)
+		If (curFlags[i])
+			activeCount += 1
+		EndIf
+		i += 1
+	EndWhile
+	string[] ret = Utility.CreateStringArray(activeCount)
+	int retIdx = 0
+	i = 0
+	While (i < len)
+		If (curFlags[i])
+			ret[retIdx] = interTypes[i]
+			retIdx += 1
+		EndIf
+		i += 1
+	EndWhile
+	return ret
+EndFunction
+
+; ------------------------------------------------------- ;
+; --- Specific Detections                             --- ;
+; ------------------------------------------------------- ;
+
+bool Function IsVaginalComplex(Actor akPosition)
+	sslActorAlias ref = ActorAlias(akPosition)
+	If (!ref)
+		return False
+	EndIf
+	return ref.IsVaginalComplex()
+EndFunction
+
+bool Function IsAnalComplex(Actor akPosition)
+	sslActorAlias ref = ActorAlias(akPosition)
+	If (!ref)
+		return False
+	EndIf
+	return ref.IsAnalComplex()
+EndFunction
+
+bool Function IsOralComplex(Actor akPosition)
+	sslActorAlias ref = ActorAlias(akPosition)
+	If (!ref)
+		return False
+	EndIf
+	return ref.IsOralComplex()
 EndFunction
 
 ; ------------------------------------------------------- ;
@@ -1102,8 +1213,9 @@ State Animating
 		If (_SFXTimer > 0)
 			_SFXTimer -= ANIMATING_UPDATE_INTERVAL
 		Else
-			bool penetration = HasCollisionAction(CTYPE_Vaginal, none, none) || HasCollisionAction(CTYPE_Anal, none, none)
-			bool oral = HasCollisionAction(CTYPE_Oral, none, none)
+			bool[] interFlags = ListDetectedInteractionsInternal(None, None)
+			bool penetration = interFlags[pVaginal] || interFlags[aVaginal] || interFlags[pAnal] || interFlags[aAnal]
+			bool oral = interFlags[pOral] || interFlags[aOral] || interFlags[pDeepthroat] || interFlags[aDeepthroat]
 			If Config.DebugMode
 				Log("SFX Testing; penetration = " + penetration + " / oral = " + oral)
 			EndIf
@@ -1512,74 +1624,120 @@ Function UpdateAllEncounters()
 	EndWhile
 EndFunction
 
+; -------------------------------------------------- ;
+; --- Interactions Info - INTERNAL               --- ;
+; -------------------------------------------------- ;
+
+bool[] Function ListDetectedInteractionsInternal(Actor akPosition, Actor akPartner = None)
+	If (IsInteractionRegistered())
+		return ListDetectedPhysicsInteractionsInternal(akPosition, akPartner)
+	EndIf
+	;COMEBACK: Re-assess the need for the fallback with new typing update
+	If (Config.FallbackToTagsForDetection && HasSceneTag("RimTagged"))
+		return ListDetectedPosTagsInteractionsInternal(akPosition)
+    EndIf
+	;If all else fails, returns pAnal, which has the highest enj factor
+	bool[] better_than_nothing = Utility.CreateBoolArray(SUPPORTED_INTER_COUNT, False)
+	better_than_nothing[pAnal] = True
+	return better_than_nothing 
+EndFunction
+
+bool[] Function ListDetectedPhysicsInteractionsInternal(Actor akPosition, Actor akPartner)
+	bool[] phyActive = Utility.CreateBoolArray(SUPPORTED_INTER_COUNT, False)
+	phyActive[aAnimObjFace] = HasCollisionAction(CTYPE_AnimObjFace, akPartner, akPosition)
+	phyActive[pAnimObjFace] = HasCollisionAction(CTYPE_AnimObjFace, akPosition, akPartner)
+	phyActive[bKissing] = HasCollisionAction(CTYPE_Kissing, akPosition, akPartner)
+	phyActive[aSuckingToes] = HasCollisionAction(CTYPE_SuckingToes, akPosition, akPartner)
+	phyActive[pSuckingToes] = HasCollisionAction(CTYPE_SuckingToes, akPartner, akPosition)
+	phyActive[aFacial] = HasCollisionAction(CTYPE_Facial, akPartner, akPosition)
+	phyActive[pFacial] = HasCollisionAction(CTYPE_Facial, akPosition, akPartner)
+	phyActive[aGrinding] = HasCollisionAction(CTYPE_Grinding, akPartner, akPosition)
+	phyActive[pGrinding] = HasCollisionAction(CTYPE_Grinding, akPosition, akPartner)
+	phyActive[aHandJob] = HasCollisionAction(CTYPE_HandJob, akPosition, akPartner)
+	phyActive[pHandJob] = HasCollisionAction(CTYPE_HandJob, akPartner, akPosition)
+	phyActive[aFootJob] = HasCollisionAction(CTYPE_FootJob, akPosition, akPartner)
+	phyActive[pFootJob] = HasCollisionAction(CTYPE_FootJob, akPartner, akPosition)
+	;phyActive[aBoobJob] = False 	; awaiting support
+	;phyActive[pBoobJob] = False	; awaiting support
+	phyActive[aLickingShaft] = HasCollisionAction(CTYPE_LickingShaft, akPosition, akPartner)
+	phyActive[pLickingShaft] = HasCollisionAction(CTYPE_LickingShaft, akPartner, akPosition)
+	phyActive[aOral] = HasCollisionAction(CTYPE_Oral, akPosition, akPartner)
+	phyActive[pOral] = HasCollisionAction(CTYPE_Oral, akPartner, akPosition)
+	phyActive[aDeepthroat] = HasCollisionAction(CTYPE_Deepthroat, akPosition, akPartner)
+	phyActive[pDeepthroat] = HasCollisionAction(CTYPE_Deepthroat, akPartner, akPosition)
+	phyActive[aSkullfuck] = HasCollisionAction(CTYPE_Skullfuck, akPartner, akPosition)
+	phyActive[pSkullfuck] = HasCollisionAction(CTYPE_Skullfuck, akPosition, akPartner)
+	phyActive[aVaginal] = HasCollisionAction(CTYPE_Vaginal, akPartner, akPosition)
+	phyActive[pVaginal] = HasCollisionAction(CTYPE_Vaginal, akPosition, akPartner)
+	phyActive[aAnal] = HasCollisionAction(CTYPE_Anal, akPartner, akPosition)
+	phyActive[pAnal] = HasCollisionAction(CTYPE_Anal, akPosition, akPartner)
+	return phyActive
+EndFunction
+
+; --- Tags Fallback 
+bool[] Function ListDetectedPosTagsInteractionsInternal(Actor akPosition)
+	string[] posTags = SexLabRegistry.GetPositionTags(GetActiveScene(), GetActiveStage(), GetPositionIdx(akPosition))
+	bool[] tagActive = Utility.CreateBoolArray(SUPPORTED_INTER_COUNT, False)
+	string[] interTypes = Config.NameAllInteractions
+	int i = 0
+	int len = posTags.Length
+	While (i < len)
+		int tagIdx = interTypes.Find(posTags[i])
+		If (tagIdx != -1)
+            tagActive[tagIdx] = true
+        EndIf
+		i += 1
+	EndWhile
+	return tagActive
+EndFunction
+
 ; ------------------------------------------------------- ;
 ; --- ORGASM FX                                       --- ;
 ; ------------------------------------------------------- ;
 
-bool Function IsVaginalComplex(Actor ActorRef)
-	If (StringUtil.Find(GetInteractionString(ActorRef), "Vaginal") != -1)
-		return True
-	EndIf
-	return False
-EndFunction
-
-bool Function IsAnalComplex(Actor ActorRef)
-	If (StringUtil.Find(GetInteractionString(ActorRef), "Anal") != -1)
-		return True
-	EndIf
-	return False
-EndFunction
-
-bool Function IsOralComplex(Actor ActorRef)
-	string interString = GetInteractionString(ActorRef)
-	If ((StringUtil.Find(interString, "Oral") != -1) \
-	|| (StringUtil.Find(interString, "LickingShaft") != -1) \
-	|| (StringUtil.Find(interString, "Deepthroat") != -1))
-		return True
-	EndIf
-	return False
-EndFunction
-
 Function ApplyCumFX(Actor SourceRef)
-	If (!IsCollisionRegistered() || !Config.UseCum)
+	If (!Config.UseCum)
         return
     EndIf
 	int i = 0
 	While (i < _Positions.Length)
 		Actor TargetRef = _Positions[i]
-		If (TargetRef != SourceRef && TargetRef.Is3DLoaded())
-			Cell ParentCell = TargetRef.GetParentCell()
-			If (ParentCell && ParentCell.IsAttached())
-				;variable names are from SourceRef's (male/futa) perspective
-				;bool pHandJob_ = HasCollisionAction(CTYPE_HandJob, TargetRef, SourceRef)
-				;bool pFootJob_ = HasCollisionAction(CTYPE_FootJob, TargetRef, SourceRef)
-				;bool pBoobJob_ = HasCollisionAction(CTYPE_BoobJob, TargetRef, SourceRef)
-				;bool aFacial_ = HasCollisionAction(CTYPE_Facial, TargetRef, SourceRef)
-				;bool aSkullfuck_ = HasCollisionAction(CTYPE_Skullfuck, TargetRef, SourceRef)
-				bool pOral_ = HasCollisionAction(CTYPE_Oral, TargetRef, SourceRef)
-				bool pDeepthroat_ = HasCollisionAction(CTYPE_Deepthroat, TargetRef, SourceRef)
-				bool pLickingShaft_ = HasCollisionAction(CTYPE_LickingShaft, TargetRef, SourceRef)
-				bool aVaginal_ = HasCollisionAction(CTYPE_Vaginal, TargetRef, SourceRef)
-				bool aAnal_ = HasCollisionAction(CTYPE_Anal, TargetRef, SourceRef)
-				bool any_oral = pOral_ || pDeepthroat_ || pLickingShaft_
-				Log("ApplyCumFX(): Source [" + SexLabUtil.ActorName(SourceRef) + "] Target [" + SexLabUtil.ActorName(TargetRef) + "] CumFX_Types [O: " + any_oral + ", V: " + aVaginal_ + ", A: " + aAnal_ + "]")
-				int aiType = -2
-				If (aVaginal_)
-					aiType = ActorLib.FX_VAGINAL
-				ElseIf (aAnal_)
-					aiType = ActorLib.FX_ANAL
-				ElseIf (any_oral)
-					aiType = ActorLib.FX_ORAL
-				EndIf
-				If (aiType != -2)
-					ActorLib.AddCumFx(TargetRef, aiType)
-					Int handle = ModEvent.Create("SexLabApplyCumFX")
-					ModEvent.PushForm(handle, TargetRef)
-					ModEvent.PushForm(handle, SourceRef)
-					ModEvent.PushInt(handle, aiType)
-					ModEvent.Send(handle)
-				EndIf
-			EndIf
+		If (TargetRef == SourceRef)
+			return
+		EndIf
+		If (!TargetRef.Is3DLoaded() || !TargetRef.GetParentCell() || !TargetRef.GetParentCell().IsAttached())
+			return
+		EndIf
+		bool[] interFlags = ListDetectedInteractionsInternal(SourceRef, TargetRef)
+		;variable names are from SourceRef's (male/futa) perspective
+		;bool pHandJob_ = interFlags[pHandJob]
+		;bool pFootJob_ = interFlags[pFootJob]
+		;bool pBoobJob_ = interFlags[pBoobJob]
+		;bool aFacial_ = interFlags[pBoobJob]
+		;bool aSkullfuck_ = interFlags[pBoobJob]
+		bool pOral_ = interFlags[pOral]
+		bool pDeepthroat_ = interFlags[pDeepthroat]
+		bool pLickingShaft_ = interFlags[pLickingShaft]
+		bool aVaginal_ = interFlags[aVaginal]
+		bool aGrinding_ = interFlags[aGrinding]
+		bool aAnal_ = interFlags[aAnal]
+		bool any_oral = pOral_ || pDeepthroat_ || pLickingShaft_
+		Log("ApplyCumFX(): Source [" + SexLabUtil.ActorName(SourceRef) + "] Target [" + SexLabUtil.ActorName(TargetRef) + "] CumFX_Types [O: " + any_oral + ", V: " + (aVaginal_ || aGrinding_) + ", A: " + aAnal_ + "]")
+		int aiType = -2
+		If (aVaginal_ || aGrinding_)
+			aiType = ActorLib.FX_VAGINAL
+		ElseIf (aAnal_)
+			aiType = ActorLib.FX_ANAL
+		ElseIf (any_oral)
+			aiType = ActorLib.FX_ORAL
+		EndIf
+		If (aiType != -2)
+			ActorLib.AddCumFx(TargetRef, aiType)
+			Int handle = ModEvent.Create("SexLabApplyCumFX")
+			ModEvent.PushForm(handle, TargetRef)
+			ModEvent.PushForm(handle, SourceRef)
+			ModEvent.PushInt(handle, aiType)
+			ModEvent.Send(handle)
 		EndIf
 		i += 1
 	EndWhile
@@ -1700,131 +1858,69 @@ Int Property CONSENT_NONCONNONSUB 	= 1 AutoReadOnly Hidden
 Int Property CONSENT_CONSUB 		= 2 AutoReadOnly Hidden
 Int Property CONSENT_NONCONSUB 		= 3 AutoReadOnly Hidden
 
-;--> actor is getting non-penile stimulation
-int Property pStimulation			= 0  AutoReadOnly Hidden	;pos_crotch is being fingered, fisted, or toys_inserted
-int Property aAnimObjFace			= 1  AutoReadOnly Hidden	;pos_anim_obj is in front of partner's face
-int Property pAnimObjFace			= 2  AutoReadOnly Hidden	;pos_face is in front of partner's anim_obj
-;--> actor's body is receiving/doing something
-int Property pSuckingToes			= 3  AutoReadOnly Hidden	;pos_toes are closer to partner's mouth
-int Property pGrinding				= 4  AutoReadOnly Hidden	;pos_body is being grinded against by partner's crotch
-int Property pSkullfuck				= 5  AutoReadOnly Hidden	;pos_head is being penetrated by partner's pp
-int Property aHandJob				= 6  AutoReadOnly Hidden	;pos_hand is moving around partner's pp
-int Property aFootJob				= 7  AutoReadOnly Hidden	;pos_foot is moving around partner's pp
-int Property aBoobJob				= 8  AutoReadOnly Hidden	;pos_boob is moving around partner's pp
-;--> actor's mouth is doing something
-int Property bKissing				= 9  AutoReadOnly Hidden	;pos_face is in front of partner's face
-int Property aSuckingToes			= 10  AutoReadOnly Hidden	;pos_face is in front of partner's toes
-int Property pFacial				= 11  AutoReadOnly Hidden	;pos_face is in front of partner's pp
-int Property aOral					= 12  AutoReadOnly Hidden	;pos_mouth is licking/sucking partner's crotch
-int Property aLickingShaft			= 13  AutoReadOnly Hidden	;pos_mouth is licking shaft of partner's pp
-int Property aDeepthroat			= 14  AutoReadOnly Hidden	;pos_mouth is deep-throating partner's pp
-;--> actor is getting penile penetration
-int Property pVaginal				= 15  AutoReadOnly Hidden	;pos_vag is being penetrated by partner's pp
-int Property pAnal					= 16  AutoReadOnly Hidden	;pos_anus is being penetrated by partner's pp
-;--> actor's pp is doing something
-int Property aFacial				= 17  AutoReadOnly Hidden	;pos_pp is in front of partner's face
-int Property aGrinding				= 18  AutoReadOnly Hidden	;pos_crotch is grinding against partner's body
-int Property pHandJob				= 19  AutoReadOnly Hidden	;pos_pp is being pleasured by partner's hands
-int Property pFootJob				= 20  AutoReadOnly Hidden	;pos_pp is being pleasured by partner's feet
-int Property pBoobJob				= 21  AutoReadOnly Hidden	;pos_pp is being pleasured by partner's boobs
-int Property pLickingShaft			= 22  AutoReadOnly Hidden	;pos_pp's shaft is being licked by partner's tongue
-int Property pOral					= 23  AutoReadOnly Hidden	;pos_crotch is being licked/sucked by partner's mouth
-int Property pDeepthroat			= 24  AutoReadOnly Hidden	;pos_pp is deep inside partner's mouth
-int Property aSkullfuck				= 25  AutoReadOnly Hidden	;pos_pp is penetrating partner's head
-int Property aVaginal				= 26  AutoReadOnly Hidden	;pos_pp is penetrating partner's vagina
-int Property aAnal					= 27  AutoReadOnly Hidden	;pos_pp is penetrating partner's anus
-
 AssociationType Property SpouseAssocation Auto
 Faction Property PlayerMarriedFaction Auto
-
-; -------------------------------------------------- ;
-; --- Interactions Detections                    --- ;
-; -------------------------------------------------- ;
-
-bool[] Function ListDetectedPhysicsInter(Actor akPosition)
-	;not relying on GetCollisionActions() to avoid slow papyrus loops and else-ifs
-	If !IsInteractionRegistered()
-        return Utility.CreateBoolArray(1, False)
-    EndIf
-	bool[] phyActive = Utility.CreateBoolArray(28, False)
-	phyActive[aAnimObjFace] = HasCollisionAction(CTYPE_AnimObjFace, None, akPosition)
-	phyActive[pAnimObjFace] = HasCollisionAction(CTYPE_AnimObjFace, akPosition, None)
-	phyActive[bKissing] = HasCollisionAction(CTYPE_Kissing, akPosition, None)
-	phyActive[aSuckingToes] = HasCollisionAction(CTYPE_SuckingToes, akPosition, None)
-	phyActive[pSuckingToes] = HasCollisionAction(CTYPE_SuckingToes, None, akPosition)
-	phyActive[aFacial] = HasCollisionAction(CTYPE_Facial, None, akPosition)
-	phyActive[pFacial] = HasCollisionAction(CTYPE_Facial, akPosition, None)
-	phyActive[aGrinding] = HasCollisionAction(CTYPE_Grinding, None, akPosition)
-	phyActive[pGrinding] = HasCollisionAction(CTYPE_Grinding, akPosition, None)
-	phyActive[aHandJob] = HasCollisionAction(CTYPE_HandJob, akPosition, None)
-	phyActive[pHandJob] = HasCollisionAction(CTYPE_HandJob, None, akPosition)
-	phyActive[aFootJob] = HasCollisionAction(CTYPE_FootJob, akPosition, None)
-	phyActive[pFootJob] = HasCollisionAction(CTYPE_FootJob, None, akPosition)
-	;phyActive[aBoobJob] = False 	; awaiting support
-	;phyActive[pBoobJob] = False	; awaiting support
-	phyActive[aLickingShaft] = HasCollisionAction(CTYPE_LickingShaft, akPosition, None)
-	phyActive[pLickingShaft] = HasCollisionAction(CTYPE_LickingShaft, None, akPosition)
-	phyActive[aOral] = HasCollisionAction(CTYPE_Oral, akPosition, None)
-	phyActive[pOral] = HasCollisionAction(CTYPE_Oral, None, akPosition)
-	phyActive[aDeepthroat] = HasCollisionAction(CTYPE_Deepthroat, akPosition, None)
-	phyActive[pDeepthroat] = HasCollisionAction(CTYPE_Deepthroat, None, akPosition)
-	phyActive[aSkullfuck] = HasCollisionAction(CTYPE_Skullfuck, None, akPosition)
-	phyActive[pSkullfuck] = HasCollisionAction(CTYPE_Skullfuck, akPosition, None)
-	phyActive[aVaginal] = HasCollisionAction(CTYPE_Vaginal, None, akPosition)
-	phyActive[pVaginal] = HasCollisionAction(CTYPE_Vaginal, akPosition, None)
-	phyActive[aAnal] = HasCollisionAction(CTYPE_Anal, None, akPosition)
-	phyActive[pAnal] = HasCollisionAction(CTYPE_Anal, akPosition, None)
-	return phyActive
-EndFunction
-
-bool[] Function ListDetectedPosTagsInter(Actor akPosition)
-    If !HasSceneTag("RimTagged") ;hentairim
-        return Utility.CreateBoolArray(1, False)
-    EndIf
-	string[] posTags = SexLabRegistry.GetPositionTags(GetActiveScene(), GetActiveStage(), GetPositionIdx(akPosition))
-	bool[] tagActive = Utility.CreateBoolArray(28, False)
-	string[] interTypes = Config.NameAllInteractions
-	int i = 0
-	int len = posTags.Length
-	While (i < len)
-		int tagIdx = interTypes.Find(posTags[i])
-		If (tagIdx != -1)
-            tagActive[tagIdx] = true
-        EndIf
-		i += 1
-	EndWhile
-	return tagActive
-EndFunction
 
 ; -------------------------------------------------- ;
 ; --- Interactions Factors                       --- ;
 ; -------------------------------------------------- ;
 
-string Function CreateInteractionString(Actor akPosition)
-	string ret = "..."
-	string[] interTypes = Config.NameAllInteractions
-	If Config.UsePhysicBasedDetection
-		ret = InterateForInteractionString(interTypes, ListDetectedPhysicsInter(akPosition))
-	Else
-		ret = InterateForInteractionString(interTypes, ListDetectedPosTagsInter(akPosition))
-	EndIf
-	return ret
-EndFunction
-
-float Function CalculateInteractionFactor(Actor akPosition, string InteractionString)
-	float factorPhysic = 0.0
-	string[] InterActive = StringUtil.Split(InteractionString, ",")
+float Function CalculateInteractionFactor(Actor akPosition, bool[] interActive)
+	float factorTotal = 0.5
+	float[] factorValues = sslSystemConfig.GetEnjoymentFactors()
+	int len = interActive.Length
 	int i = 0
-	int len = InterActive.Length
 	While (i < len)
-		If InterActive[i]
-			float value = sslSystemConfig.GetEnjoymentFactor(InterActive[i])
-			float velocityMult = CalcInterVelocityMultiplier(akPosition, InterActive[i])
-			factorPhysic += (value / 20) * velocityMult
+		If (interActive[i])
+			; velFactor: [Range: 1.0 to 2.0]
+			; factorValue: [Default: 1 to 12] [Adjusted: 0.583 to 4.25]
+			; factorType: [Result: 0.583 to 8.5]
+			float velFactor = CalcInterVelocityFactor(akPosition, i)
+			float adjustedFactor = 0.25 + (factorValues[i] / 3.0)
+			factorTotal += (adjustedFactor * velFactor)
+			;Log("InterFactor: TYPE: " + i + ", Value: " + factorValues[i] + ", Adjusted: " + adjustedFactor)
 		EndIf
 		i += 1
 	EndWhile
-	return factorPhysic
+	return factorTotal
+EndFunction
+
+float Function CalcInterVelocityFactor(Actor akActor, int interType)
+	;Velocity is simply too unpredictable in its current implementation
+	If (!IsInteractionRegistered())
+		return 1.5
+	EndIf
+	int CType = 0
+	If (interType == aVaginal || interType == pVaginal)
+		CType = CTYPE_Vaginal
+	ElseIf (interType == aAnal || interType == pAnal)
+		CType = CTYPE_Anal
+	ElseIf (interType == aOral || interType == pOral)
+		CType = CTYPE_Oral
+	ElseIf (interType == aGrinding || interType == pGrinding)
+		CType = CTYPE_Grinding
+	ElseIf (interType == aDeepthroat || interType == pDeepthroat)
+		CType = CTYPE_Deepthroat
+	ElseIf (interType == aSkullfuck || interType == pSkullfuck)
+		CType = CTYPE_Skullfuck
+	ElseIf (interType == aLickingShaft || interType == pLickingShaft)
+		CType = CTYPE_LickingShaft
+	ElseIf (interType == aFootJob || interType == pFootJob)
+		CType = CTYPE_FootJob
+	ElseIf (interType == aHandJob || interType == pHandJob)
+		CType = CTYPE_HandJob
+	ElseIf (interType == bKissing)
+		CType = CTYPE_Kissing
+	ElseIf (interType == aAnimObjFace || interType == pAnimObjFace)
+		CType = CTYPE_AnimObjFace
+	ElseIf (interType == aSuckingToes || interType == pSuckingToes)
+		CType = CTYPE_SuckingToes
+	EndIf
+	;calculate velocity multiplier... have seen velActual upto 0.097075
+	;after adjustments: 0.01-->1.11, 0.05-->1.55, 0.09-->1.99
+	float velActual = Math.Abs(GetActionVelocity(akActor, None, CType))
+	float velAdjusted = 1.0 + (velActual * 11.0)
+	return velAdjusted
 EndFunction
 
 ; -------------------------------------------------- ;
@@ -1949,147 +2045,33 @@ EndFunction
 ; --- Best Relation                              --- ;
 ; -------------------------------------------------- ;
 
-;/mapping: Stranger=-2~2 | PersonOfInterest=3~7 | Lover=8~12 | Spouse=13~17 | LoverSpouse=18~22
-w_agg=-2 | w_vic=-1 | <<stranger=0>> | w_dom=1 | w_sub=2
-W_agg=3 | w_vic=4 | <<poi=5>> | w_dom=6 | w_sub=7
-W_agg=8 | w_vic=9 | <<lover=10>> | w_dom=11 | w_sub=12
-W_agg=13 | w_vic=14 | <<spouse=15>> | w_dom=16 | w_sub=17
-W_agg=18 | w_vic=19 | <<spouse+lover=20>> | w_dom=21 | w_sub=22/;
-int Function GetRelationForScene(Actor akPosition, Actor TargetRef, int ConSubStatus)
-	int BaseRelation = 0
-	int ContextRelation = 0
-	int retRelation = 0
-	bool withSpouse = False
-	bool withLover = False
-	
-	If akPosition == PlayerRef
-		If TargetRef.IsInFaction(PlayerMarriedFaction)
-			withSpouse = true
-			BaseRelation = 15
-		EndIf
-	Else
-		If akPosition.HasAssociation(SpouseAssocation, TargetRef)
-			withSpouse = true
-			BaseRelation = 15
-		EndIf
-	EndIf
-	If !withSpouse && akPosition.GetRelationshipRank(TargetRef) >= 4
-		withLover = true
-		BaseRelation = 10
-	ElseIf !withLover && !withSpouse && (akPosition.GetRelationshipRank(TargetRef) >= 1) && (SexLabStatistics.GetTimesMet(akPosition, TargetRef) >= 3)
-		BaseRelation = 5
-	EndIf
-
-	If ConSubStatus == CONSENT_CONSUB
-		If IsVictim(akPosition)
-			ContextRelation = 1
-		ElseIf IsVictim(TargetRef)
-			ContextRelation = 2
-		EndIf
-	Else
-		If IsVictim(akPosition)
-			ContextRelation = -2
-		ElseIf IsVictim(TargetRef)
-			ContextRelation = -1
-		EndIf
-	EndIf
-
-	retRelation = BaseRelation + ContextRelation
-	return retRelation
+bool Function CheckLoverAssociation(Actor akPosition, Actor TargetRef)
+	return ((akPosition == PlayerRef && TargetRef.IsInFaction(PlayerMarriedFaction)) \
+	|| akPosition.HasAssociation(SpouseAssocation, TargetRef) \
+	|| akPosition.GetRelationshipRank(TargetRef) >= 4)
 EndFunction
 
-int Function GetBestRelationForScene(Actor akPosition, int ConSubStatus)
-	if _Positions.Length <= 1
-		return 0
-	elseif _Positions.Length == 2
-		if(akPosition == _Positions[0])
-			return GetRelationForScene(akPosition, _Positions[1], ConSubStatus)
-		else
-			return GetRelationForScene(akPosition, _Positions[0], ConSubStatus)
-		endif
-	endIf
-	int ret = -2
+bool Function ActorIsWithLover(Actor akPosition)
+	If (_Positions.Length <= 1)
+		return False
+	EndIf
 	int i = 0
-	while i < _Positions.Length
-		if _Positions[i] != akPosition
-			int relation = GetRelationForScene(akPosition, _Positions[i], ConSubStatus)
-			if relation > ret
-				ret = relation
-			endif
-		endIf
-		i += 1
-	endWhile
-	return ret
-EndFunction
-
-; -------------------------------------------------- ;
-; --- Utility Functions                          --- ;
-; -------------------------------------------------- ;
-
-string Function InterateForInteractionString(string[] interTypes, bool[] interActive)
-	string ret = ""
-	int i = 0
-	int len = interActive.Length
-	While (i < len)
-		If interActive[i]
-			If ret != ""
-				ret += ","
+	While (i < _Positions.Length)
+		If (_Positions[i] != akPosition)
+			If (CheckLoverAssociation(akPosition, _Positions[i]))
+				return True
 			EndIf
-			ret += interTypes[i]
 		EndIf
 		i += 1
 	EndWhile
-	return ret
-EndFunction
-
-float Function CalcInterVelocityMultiplier(Actor akActor, string actType)
-	If !actType
-		return 0.0
-	EndIf
-	;convert string to int
-	string baseType = StringUtil.Substring(actType, 1)
-	int CType = 0
-	If baseType == "Vaginal"
-		CType = CTYPE_Vaginal
-	ElseIf baseType == "Anal"
-		CType = CTYPE_Anal
-	ElseIf baseType == "Oral"
-		CType = CTYPE_Oral
-	ElseIf baseType == "Grinding"
-		CType = CTYPE_Grinding
-	ElseIf baseType == "Deepthroat"
-		CType = CTYPE_Deepthroat
-	ElseIf baseType == "Skullfuck"
-		CType = CTYPE_Skullfuck
-	ElseIf baseType == "LickingShaft"
-		CType = CTYPE_LickingShaft
-	ElseIf baseType == "FootJob"
-		CType = CTYPE_FootJob
-	ElseIf baseType == "HandJob"
-		CType = CTYPE_HandJob
-	ElseIf baseType == "Kissing"
-		CType = CTYPE_Kissing
-	ElseIf baseType == "AnimObjFace"
-		CType = CTYPE_AnimObjFace
-	ElseIf baseType == "SuckingToes"
-		CType = CTYPE_SuckingToes
-	EndIf
-	;calculate velocity multiplier
-	float velocityMax = 0.03 ; have seen values upto 0.097075
-	float velocityMult = 0.0
-	float velocityCur = Math.Abs(GetActionVelocity(akActor, None, CType))
-	If (velocityCur < 0.25)
-		velocityCur = 0.25
-	EndIf
-	velocityMult = velocityCur/velocityMax
-	return velocityMult
+	return False
 EndFunction
 
 ; ---------------------------------------------- ;
 ; --- Enjoyment Game                         --- ;
 ; ---------------------------------------------- ;
 
-Function GameAdjustEnj(Actor akActor, Actor akPartner = None, int AdjustBy = 0)
+Function GameAdjustEnj(Actor akActor, Actor akPartner, int AdjustBy = 0)
 	If (AdjustBy != 0)
 		AdjustEnjoyment(akPartner, AdjustBy)
 		return

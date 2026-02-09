@@ -37,7 +37,7 @@ SoundCategory property AudioVoice auto
 
 int Function GetAnimationCount() native global
 float[] Function GetEnjoymentFactors() native global
-float Function GetEnjoymentFactor(String asString) native global
+float Function GetEnjoymentFactor(int aiValue) native global
 Form[] Function GetStrippableItems(Actor akActor, bool abWornOnly) native global
 
 bool Function GetSettingBool(String asSetting) native global
@@ -1092,12 +1092,12 @@ bool Property InternalEnjoymentEnabled hidden
     SetSettingBool("bInternalEnjoymentEnabled", value)
   EndFunction
 EndProperty
-bool Property UsePhysicBasedDetection hidden
+bool Property FallbackToTagsForDetection hidden
   bool Function Get()
-    return GetSettingBool("bUsePhysicBasedDetection")
+    return GetSettingBool("bFallbackToTagsForDetection")
   EndFunction
   Function Set(bool value)
-    SetSettingBool("bUsePhysicBasedDetection", value)
+    SetSettingBool("bFallbackToTagsForDetection", value)
   EndFunction
 EndProperty
 float Property EnjRaiseMultInter hidden

@@ -444,8 +444,10 @@ $SSL_bGameEnabled	Enable Enjoyment Game
 $SSL_bGameEnabledHighlight	Toggles the enjoyment minigame inspired from SLSO's implementation.
 
 # ------ General Configs
-$SSL_bUsePhysicBasedDetection	Enable Collision Detections
-$SSL_bUsePhysicBasedDetectionHighlight	Toggles the reliance on advanced collision typing capabilities of SexLab P+.\nCollision typing offers real-time info on all interactions an actor is involved in at any given moment.\nIf disabled, the system will instead rely upon position tags from HentaiRim.
+# TODO: $SSL_bFallbackToTagsForDetection
+$SSL_bFallbackToTagsForDetection	Allow Fallback to Position Tags
+# TODO: $SSL_bFallbackToTagsForDetectionHighlight
+$SSL_bFallbackToTagsForDetectionHighlight	Toggles fallback to position tags for interactions detection when the internal physics-based real-time collision type guessing is not available.
 $SSL_bNoStaminaEndsScene	No Stamina Ends Scene
 $SSL_bNoStaminaEndsSceneHighlight	Ends the scene automatically when the actor's stamina is depleted.
 $SSL_bMaleOrgasmEndsScene	Male Orgasm Ends Scene

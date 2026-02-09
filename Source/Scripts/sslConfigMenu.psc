@@ -809,7 +809,7 @@ Function EnjoymentSettings()
 	AddToggleOptionST("InternalEnjoymentEnabled", "$SSL_bInternalEnjoymentEnabled", Config.InternalEnjoymentEnabled)
 
 	AddHeaderOption("General Configs", enj_header)
-	AddStateOptionBool("bUsePhysicBasedDetection", "$SSL_bUsePhysicBasedDetection", enj_flag)
+	AddStateOptionBool("bFallbackToTagsForDetection", "$SSL_bFallbackToTagsForDetection", enj_flag)
 	AddStateOptionBool("bNoStaminaEndsScene", "$SSL_bNoStaminaEndsScene", enj_flag)
 	AddStateOptionBool("bMaleOrgasmEndsScene", "$SSL_bMaleOrgasmEndsScene", enj_flag)
 	AddStateOptionBool("bDomMustOrgasm", "$SSL_bDomMustOrgasm", enj_flag)

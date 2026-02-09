@@ -214,25 +214,11 @@ EndFunction
 Function EnableTraditionalHotkeys()
 	RegisterForKey(Config.ChangeAnimation)
 	RegisterForKey(Config.MoveScene)
-	If (!Config.GameEnabled || !HasPlayer)
-		return
-	EndIf
-	RegisterForKey(Config.GameUtilityKey)
-	RegisterForKey(Config.GamePauseKey)
-	RegisterForKey(Config.GameRaiseEnjKey)
-	RegisterForKey(Config.GameHoldbackKey)
-	RegisterForKey(Config.GameSelectNextPos)
 EndFunction
 
 Function DisableTraditionalHotkeys()
 	UnregisterForKey(Config.ChangeAnimation)
 	UnregisterForKey(Config.MoveScene)
-	; Enjoyment Game
-	UnregisterForKey(Config.GameUtilityKey)
-	UnregisterForKey(Config.GamePauseKey)
-	UnregisterForKey(Config.GameRaiseEnjKey)
-	UnregisterForKey(Config.GameHoldbackKey)
-	UnregisterForKey(Config.GameSelectNextPos)
 EndFunction
 
 Event OnKeyDown(int KeyCode)

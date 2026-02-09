@@ -444,8 +444,8 @@ $SSL_bGameEnabled	Enable Enjoyment Game
 $SSL_bGameEnabledHighlight	Toggles the enjoyment minigame inspired from SLSO's implementation.
 
 # ------ General Configs
-$SSL_bUsePhysicBasedDetection	Enable Collision Detections
-$SSL_bUsePhysicBasedDetectionHighlight	Toggles the use of advanced collision type-guessing based on relative bone positions and movements.\nCollision typing offers real-time info on the interactions an actor is involved in at any given moment.\nIf disabled, the system will instead rely upon position tags (less accurate).
+$SSL_bFallbackToTagsForDetection	Allow Fallback to Position Tags
+$SSL_bFallbackToTagsForDetectionHighlight	Toggles fallback to position tags for interactions detection when the internal physics-based real-time collision type guessing is not available.
 $SSL_bNoStaminaEndsScene	No Stamina Ends Scene
 $SSL_bNoStaminaEndsSceneHighlight	Ends the scene automatically when the actor's stamina is depleted.
 $SSL_bMaleOrgasmEndsScene	Male Orgasm Ends Scene
@@ -485,7 +485,7 @@ $SSL_iEnjGameMagickaCostHighlight	The amount of MAGICKA to be depleted upon a re
 $SSL_bGameRequiredOnHighEnj	Require Minigame on High Enj
 $SSL_bGameRequiredOnHighEnjHighlight	Toggles/disables player's enjoyment gain through collision detection when it goes above 80.\nWith this enabled, the player will have to actively rely on the minigame to reach orgasm.
 $SSL_bGameSpamDelayPenalty	Minigame Spam/Delay Penalty
-$SSL_bGameSpamDelayPenaltyHighlight	Toggles enjoyment penalties along with stamina and magicka depletion for the player upon badly timed attempts at raising enjoyment.\nNOTE: This option only works when combined with the above option.
+$SSL_bGameSpamDelayPenaltyHighlight	Toggles enjoyment penalties along with stamina and magicka depletion for the player upon badly timed attempts at raising enjoyment. (IMP: This option only works when combined with the above option.)
 
 # ------ Game Hotkeys
 $SSL_iGameUtilityKey	Game Modifier Key
