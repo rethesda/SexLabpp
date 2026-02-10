@@ -251,7 +251,7 @@ namespace Thread::NiNode
 		const auto pHead = a_motionA.GetLatestMoment(NiMotion::pHead);
 
 		const auto pPelvis = a_motionA.GetLatestMoment(NiMotion::pPelvis);
-		const float distanceLimit = headBound.boundMax.y * Settings::fThroatToleranceRadius;
+		const float distanceLimit = headBound.boundMax.y * Settings::fVeryCloseToHeadRatio;
 		const float distance = headBound.IsPointInside(pPelvis) ? 0.1f : pHead.GetDistance(pSchlongEnd);
 		if (distance > distanceLimit * 2.0f) {
 			return result;
@@ -347,7 +347,7 @@ namespace Thread::NiNode
 		const NiMath::Segment sSchlong{ pSchlongStart, pSchlongEnd };
 		const auto pMouth = a_motionA.GetLatestMoment(NiMotion::pMouth);
 
-		const float distanceLimit = headBound.boundMax.y * Settings::fThroatToleranceRadius;
+		const float distanceLimit = headBound.boundMax.y * Settings::fVeryCloseToHeadRatio;
 		const float distance = sSchlong.ShortestSegmentTo(pMouth).Length();
 		if (distance > distanceLimit * 2.0f) {
 			return result;

@@ -130,6 +130,10 @@ namespace Thread::NiNode
 				state.interactions[NiType::Grinding] = EvaluateGrinding(mA, mB);
 			}
 			state.interactions[NiType::Anal] = EvaluateAnal(mA, mB);
+			state.interactions[NiType::Oral] = EvaluateOral(mA, mB);
+			state.interactions[NiType::Deepthroat] = EvaluateDeepthroat(mA, mB);
+			state.interactions[NiType::Skullfuck] = EvaluateSkullfuck(mA, mB);
+			state.interactions[NiType::LickingShaft] = EvaluateLickingShaft(mA, mB);
 		}
 		if (a != b) {
 			return;

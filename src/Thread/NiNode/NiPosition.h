@@ -15,7 +15,6 @@ namespace Thread::NiNode
 	// 	{
 	// 		// This interacting with partner penis
 	// 		bool GetHeadPenisInteractions(const Snapshot& a_partner, std::shared_ptr<Node::NodeData::Schlong> a_schlong);
-	// 		bool GetHandPenisInteractions(const Snapshot& a_partner, std::shared_ptr<Node::NodeData::Schlong> a_schlong);
 	// 		bool GetFootPenisInteractions(const Snapshot& a_partner, std::shared_ptr<Node::NodeData::Schlong> a_schlong);
 	// 		// This interacting with partner vagina
 	// 		bool GetHeadVaginaInteractions(const Snapshot& a_partner);
