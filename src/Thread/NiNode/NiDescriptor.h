@@ -12,32 +12,13 @@ namespace Thread::NiNode
 		enum Type
 		{
 			None = 0,
-			Vaginal,
-			Anal,
-			Oral,
-			Grinding,
-			Deepthroat,
-			Skullfuck,
-			LickingShaft,
-			FootJob,
-			HandJob,
-			Kissing,
-			Facial,
-			AnimObjFace,
-			ToeSucking,
-			Boobjob,
+#define NI_TYPE(name) name,
+
+#include "NiType.def"
+
+#undef NI_TYPE
 		};
 		constexpr static inline size_t NUM_TYPES = magic_enum::enum_count<Type>();
-
-		enum Area
-		{
-			None = 0,
-			Pelvis,
-			Mouth,
-
-		};
-		constexpr static inline size_t NUM_AREAS = magic_enum::enum_count<Area>();
-
 	}
 
 	class INiDescriptor
@@ -114,7 +95,7 @@ namespace Thread::NiNode
 		static void Initialize(CSimpleIniA& inifile)
 		{
 			constexpr auto NaN = std::numeric_limits<float>::quiet_NaN();
-			std::string section { magic_enum::enum_name<NiType::Type>(Id) };
+			std::string section{ magic_enum::enum_name<NiType::Type>(Id) };
 			bias = static_cast<float>(inifile.GetDoubleValue(section.c_str(), "bias", NaN));
 			if (std::isnan(bias)) {
 				const auto err = std::format("Descriptor '{}': Missing bias value", section);

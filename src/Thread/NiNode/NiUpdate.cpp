@@ -41,7 +41,12 @@ namespace Thread::NiNode
 		}
 
 		try {
-			NiDescriptor<NiType::Kissing>::Initialize(inifile);
+#define NI_TYPE(name) \
+	NiDescriptor<NiType::Type::name>::Initialize(inifile);
+
+#include "NiType.def"
+
+#undef NI_TYPE
 
 			logger::info("Descriptors: Model initialization complete");
 			return true;
@@ -65,7 +70,7 @@ namespace Thread::NiNode
 
 		std::scoped_lock mlLk{ _mlMutex };
 		const bool isMLTraining = mlTrainingState.type != NiType::Type::None;
-	
+
 		std::scoped_lock lk{ _m };
 		time += GetDeltaTime();
 		for (auto&& [_, process] : _instances) {
@@ -79,7 +84,7 @@ namespace Thread::NiNode
 			process->ForEachInteraction([&](RE::ActorPtr a, RE::ActorPtr b, const NiInteraction& interaction) {
 				const auto csvRow = interaction.descriptor ? interaction.descriptor->CsvRow() : "";
 				if (csvRow.empty() || !a->IsPlayerRef() && !b->IsPlayerRef()) {
-					return;  // only log interactions involving the player & interaction has likelihood
+					return;	 // only log interactions involving the player & interaction has likelihood
 				}
 				const auto actorAId = a->GetFormID();
 				const auto actorBId = b->GetFormID();
@@ -160,7 +165,7 @@ namespace Thread::NiNode
 		}
 		mlTrainingState.type = a_type;
 		mlTrainingState.enabled = enabled;
-		mlTrainingState.frameCount = 0;  // reset frame count when changing state
+		mlTrainingState.frameCount = 0;	 // reset frame count when changing state
 		logger::info("ML Training State updated: Type={}, Enabled={}", magic_enum::enum_name(a_type), enabled);
 	}
 
@@ -186,7 +191,7 @@ namespace Thread::NiNode
 	}
 
 	NiUpdate::MLTrainingState NiUpdate::GetMLTrainingState()
-	{	
+	{
 		std::scoped_lock lk{ _mlMutex };
 		return mlTrainingState;
 	}
