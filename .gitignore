@@ -20,7 +20,6 @@ meta.ini
 *.dll
 *.pdb
 *.pex
-*.swf
 
 .env*
 !.env.example
