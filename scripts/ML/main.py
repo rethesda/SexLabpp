@@ -139,6 +139,12 @@ def _run_training(mods_path: str | Path = None, out_dir: str = None) -> Path:
     model_path.mkdir(parents=True, exist_ok=True)
 
     for cluster, df in df_map.items():
+        df[LABEL_COLUMN] = (
+            df[LABEL_COLUMN]
+            .astype(str)
+            .str.strip()
+            .replace("0", f"{cluster}_NONE")
+        )
         interaction_count = len(get_interactions(df))
         print(f"\nTraining models for cluster: {cluster}, interactions: {interaction_count}")
         if interaction_count == 0:
