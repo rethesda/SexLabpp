@@ -38,8 +38,11 @@ namespace Thread::NiNode
 		std::vector<NiInteraction> interactions{};
 
 		bool IncludesType(NiType::Type type) const;
+		bool IsValid() const { return !interactions.empty(); }
+		bool IsBinary() const { return interactions.size() == 1; }
+		bool IsSoftmax() const { return interactions.size() > 1; }
 		NiType::Cluster GetClusterType() const;
-		NiInteraction* ApplySoftMax();
+		NiInteraction* ApplySoftmax();
 	};
 
 	NiInteractionCluster EvaluateCrotchInteractions(const NiMotion& a_motionA, const NiMotion& a_motionB);

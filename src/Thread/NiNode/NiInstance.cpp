@@ -150,28 +150,34 @@ namespace Thread::NiNode
 		state.interactionClusters[static_cast<size_t>(NiType::Cluster::KissingCl)] = EvaluateKissingCluster(mA, mB);
 	}
 
-	void NiInstance::UpdateHysteresis(PairInteractionState&, float)
+	void NiInstance::UpdateHysteresis(PairInteractionState& a_state, float a_timeStamp)
 	{
-		// const float delta = a_timeStamp - state.lastUpdateTime;
-		// TODO: impl
-		// for (auto&& interaction : state.interactions) {
-		// 	if (!interaction.descriptor) {
-		// 		interaction.active = false;
-		// 		interaction.timeActive = 0.0f;
-		// 		continue;
-		// 	}
-		// 	const float confRaw = interaction.descriptor->Predict();
-		// 	const float conf = NiMath::Sigmoid(confRaw);
-		// 	assert(conf >= 0.0f && conf <= 1.0f);
-		// 	const auto doActive = !interaction.active && conf >= Settings::fEnterThreshold;
-		// 	const auto doInactive = interaction.active && conf < Settings::fExitThreshold;
-		// 	if (doActive || doInactive) {
-		// 		interaction.active = doActive;
-		// 		interaction.timeActive = 0.0f;
-		// 	} else {
-		// 		interaction.timeActive += delta;
-		// 	}
-		// }
+		const float delta = a_timeStamp - a_state.lastUpdateTime;
+		for (auto&& cluster : a_state.interactionClusters) {
+			if (cluster.IsBinary()) {
+				auto& it = cluster.interactions.front();
+				const auto sig = NiMath::Sigmoid(it.descriptor->Predict());
+				if (sig > Settings::fEnterThreshold) {
+					it.active = true;
+					it.timeActive += delta;
+				} else if (sig < Settings::fExitThreshold) {
+					it.active = false;
+					it.timeActive = 0.0f;
+				} else if (it.active) {
+					it.timeActive += delta;
+				}
+			} else if (cluster.IsSoftmax()) {
+				const auto mostProbable = cluster.ApplySoftmax();
+				for (auto&& interaction : cluster.interactions) {
+ 					interaction.active = &interaction == mostProbable;
+					if (interaction.active) {
+						interaction.timeActive += delta;
+					} else {
+						interaction.timeActive = 0.0f;
+					}
+				}
+			}
+		}
 	}
 
 }  // namespace Thread::NiNode

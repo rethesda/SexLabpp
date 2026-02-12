@@ -20,6 +20,52 @@ namespace Thread::NiNode
 		return NiType::GetClusterForType(interactions.front().GetType());
 	}
 
+	NiInteraction* NiInteractionCluster::ApplySoftmax()
+	{
+		if (interactions.empty()) {
+			return nullptr;
+		} else if (interactions.size() == 1) {
+			return &interactions.front();
+		}
+
+		std::vector<float> logits;
+		logits.reserve(interactions.size());
+		for (auto& interaction : interactions) {
+			if (!interaction.descriptor)
+				logits.push_back(-std::numeric_limits<float>::infinity());
+			else
+				logits.push_back(interaction.descriptor->Predict());
+		}
+		float maxLogit = *std::max_element(logits.begin(), logits.end());
+
+		std::vector<float> expVals;
+		expVals.reserve(logits.size());
+
+		float sum = 0.0f;
+		for (float z : logits) {
+			float e = std::exp(z - maxLogit);
+			expVals.push_back(e);
+			sum += e;
+		}
+		for (float& e : expVals)
+			e /= sum;
+
+		int bestIndex = 0;
+		float bestProb = expVals[0];
+		for (int i = 1; i < expVals.size(); ++i) {
+			if (expVals[i] > bestProb) {
+				bestProb = expVals[i];
+				bestIndex = i;
+			}
+		}
+
+		if (bestProb < Settings::fEnterThresholdSoftmax) {
+			return nullptr;
+		}
+
+		return &interactions[bestIndex];
+	}
+
 	namespace
 	{
 		template <typename NiDescriptorType>
@@ -93,6 +139,7 @@ namespace Thread::NiNode
 		auto descV = std::make_unique<NiDescriptor<NiType::Type::Vaginal>>();
 		auto descA = std::make_unique<NiDescriptor<NiType::Type::Anal>>();
 		auto descG = std::make_unique<NiDescriptor<NiType::Type::Grinding>>();
+		auto descN = std::make_unique<NiDescriptor<NiType::Type::Crotch_NONE>>();
 
 		const auto EvaluateInteraction = [&](NiMotion::Anchor motionAnchor, NiMotion::Anchor motionAnchorEnd)
 		  -> std::optional<std::tuple<const MotionDescriptor, RE::NiPoint3, float, float, float>> {
@@ -126,15 +173,19 @@ namespace Thread::NiNode
 		descV->AddValue(INiDescriptor::Feature::Angle##idx, cos);              \
 		descA->AddValue(INiDescriptor::Feature::Angle##idx, cos);              \
 		descG->AddValue(INiDescriptor::Feature::Angle##idx, cos);              \
+		descN->AddValue(INiDescriptor::Feature::Angle##idx, cos);              \
 		AddBasicPairedScores##idx(descV.get(), motion, schlongTipMotion);      \
 		AddBasicPairedScores##idx(descA.get(), motion, schlongTipMotion);      \
 		AddBasicPairedScores##idx(descG.get(), motion, schlongTipMotion);      \
+		AddBasicPairedScores##idx(descN.get(), motion, schlongTipMotion);      \
 		descV->AddValue(INiDescriptor::Feature::Distance##idx, distanceScore); \
 		descV->AddValue(INiDescriptor::Feature::Velocity##idx, velocityScore); \
 		descA->AddValue(INiDescriptor::Feature::Distance##idx, distanceScore); \
 		descA->AddValue(INiDescriptor::Feature::Velocity##idx, velocityScore); \
 		descG->AddValue(INiDescriptor::Feature::Distance##idx, distanceScore); \
 		descG->AddValue(INiDescriptor::Feature::Velocity##idx, velocityScore); \
+		descN->AddValue(INiDescriptor::Feature::Distance##idx, distanceScore); \
+		descN->AddValue(INiDescriptor::Feature::Velocity##idx, velocityScore); \
 	}
 
 		const auto resV = EvaluateInteraction(NiMotion::pVaginalStart, NiMotion::pVaginalEnd);
@@ -143,12 +194,12 @@ namespace Thread::NiNode
 		ADD_DATA(resV, 01)
 		ADD_DATA(resA, 02)
 		ADD_DATA(resG, 03)
-
 #undef ADD_DATA
 
 		result.interactions.emplace_back(std::move(descV), std::get<4>(*resV));
 		result.interactions.emplace_back(std::move(descA), std::get<4>(*resA));
 		result.interactions.emplace_back(std::move(descG), std::get<4>(*resG));
+		result.interactions.emplace_back(std::move(descN), 0.0f);
 
 		return result;
 	}
@@ -208,6 +259,7 @@ namespace Thread::NiNode
 		auto descDP = std::make_unique<NiDescriptor<NiType::Type::Deepthroat>>();
 		auto descSK = std::make_unique<NiDescriptor<NiType::Type::Skullfuck>>();
 		auto descLS = std::make_unique<NiDescriptor<NiType::Type::LickingShaft>>();
+		auto descN = std::make_unique<NiDescriptor<NiType::Type::Head_NONE>>();
 
 #define ADD_DATA(descriptor)                                                      \
 	descriptor->AddValue(INiDescriptor::Feature::Angle01, cosY);                  \
@@ -225,6 +277,7 @@ namespace Thread::NiNode
 		ADD_DATA(descDP)
 		ADD_DATA(descSK)
 		ADD_DATA(descLS)
+		ADD_DATA(descN)
 
 #undef ADD_DATA
 

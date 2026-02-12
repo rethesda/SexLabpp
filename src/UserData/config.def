@@ -100,6 +100,7 @@ INI_SETTING(fMaxKissSpeed, 1.6f, "NiType")
 INI_SETTING(fMaxAnglePenetration, 70.0f, "NiType")
 INI_SETTING(fMinSpeedPenetration, 6.0f, "NiType")
 INI_SETTING(fMinTypeDuration, 0.7f, "NiType")
+INI_SETTING(fEnterThresholdSoftmax, 0.4f, "NiType")
 INI_SETTING(fEnterThreshold, 0.6f, "NiType")
 INI_SETTING(fExitThreshold, 0.35f, "NiType")
 
