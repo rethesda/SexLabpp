@@ -144,10 +144,12 @@ namespace Thread::NiNode
 	void NiUpdate::UpdateMLTrainingState(NiType::Type a_type, bool enabled)
 	{
 		std::scoped_lock lk{ _mlMutex };
-		if (mlTrainingState.type != a_type && mlTrainingState.recordedData.size() > 0) {
+		const auto oldCluster = NiType::GetClusterForType(mlTrainingState.type);
+		const auto newCluster = NiType::GetClusterForType(a_type);
+		if (oldCluster != newCluster && mlTrainingState.recordedData.size() > 0) {
 			// Clear recorded data when changing to a different interaction type
-			const auto oldStateStr = magic_enum::enum_name(mlTrainingState.type);
-			const auto newStateStr = magic_enum::enum_name(a_type);
+			const auto oldStateStr = magic_enum::enum_name(oldCluster);
+			const auto newStateStr = magic_enum::enum_name(newCluster);
 			logger::info("ML Training State changing from {} to {}, clearing recorded data with {} rows", oldStateStr, newStateStr, mlTrainingState.recordedData.size());
 			const auto csvFile = std::ranges::fold_left(mlTrainingState.recordedData, "", [](std::string&& acc, const std::string& row) {
 				return acc.empty() ? row : std::move(acc) + "\n" + row;
