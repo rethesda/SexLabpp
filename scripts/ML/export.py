@@ -20,7 +20,7 @@ def _ensure_ini_path(ini_path: str | Path) -> Path:
     return ini_path
 
 def _normalize_feature_name(feature_name: str) -> str:
-    return feature_name.split("_", 1)[1] if "_" in feature_name else feature_name
+    return feature_name.split("_")[-1] if "_" in feature_name else feature_name
 
 def export_binary_model_to_ini(model, interaction_name: str, out_path: str | Path) -> None:
     model = _validate_model_or_path(model)
