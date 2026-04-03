@@ -47,14 +47,14 @@ namespace Thread::NiNode
 
 	NiInteractionCluster EvaluateCrotchInteractions(const NiMotion& a_motionA, const NiMotion& a_motionB);
 	NiInteractionCluster EvaluateHeadInteractions(const NiMotion& a_motionA, const NiMotion& a_motionB);
-
+	// TODO: Hand & Footjob funcs here
 	NiInteractionCluster EvaluateKissingCluster(const NiMotion& a_motionA, const NiMotion& a_motionB);
 
-	NiInteraction EvaluateFootJob(const NiMotion& a_motionA, const NiMotion& a_motionB);
-	NiInteraction EvaluateHandJob(const NiMotion& a_motionA, const NiMotion& a_motionB);
-	NiInteraction EvaluateFacial(const NiMotion& a_motionA, const NiMotion& a_motionB);
-	NiInteraction EvaluateAnimObjFace(const NiMotion& a_motionA, const NiMotion& a_motionB);
-	NiInteraction EvaluateFootWorship(const NiMotion& a_motionA, const NiMotion& a_motionB);
-	NiInteraction EvaluateBoobjob(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateFootJob(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateHandJob(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateFacial(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateAnimObjFace(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateFootWorship(const NiMotion& a_motionA, const NiMotion& a_motionB);
+	// NiInteraction EvaluateBoobjob(const NiMotion& a_motionA, const NiMotion& a_motionB);
 
 }  // namespace Thread::NiNode

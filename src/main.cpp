@@ -1,5 +1,4 @@
 #include "Papyrus/Papyrus.h"
-#include "Registry/CumFx.h"
 #include "Registry/Library.h"
 #include "Registry/Stats.h"
 #include "Serialization.h"
@@ -38,10 +37,9 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
 {
 	switch (message->type) {
 	case SKSE::MessagingInterface::kPostLoad:
-		Settings::Initialize();
-		Registry::CumFx::GetSingleton()->Initialize();
 		break;
 	case SKSE::MessagingInterface::kDataLoaded:
+		Settings::Initialize();
 		if (!GameForms::LoadData()) {
 			logger::critical("Unable to load esp objects");
 			const auto err =
@@ -56,8 +54,8 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* message)
 		Thread::Collision::CollisionHandler::Install();
 		Thread::NiNode::NiUpdate::Install();
 		Registry::Library::GetSingleton()->Initialize();
+		Registry::Statistics::StatisticsData::GetSingleton()->Register();
 		UserData::StripData::GetSingleton()->Load();
-		Settings::InitializeData();
 		break;
 	case SKSE::MessagingInterface::kSaveGame:
 		std::thread([]() {
@@ -128,8 +126,6 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 	serialization->SetLoadCallback(Serialization::Serialize::LoadCallback);
 	serialization->SetRevertCallback(Serialization::Serialize::RevertCallback);
 	serialization->SetFormDeleteCallback(Serialization::Serialize::FormDeleteCallback);
-
-	Registry::Statistics::StatisticsData::GetSingleton()->Register();
 
 	logger::info("Initialization complete");
 
